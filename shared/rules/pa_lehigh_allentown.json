@@ -1,0 +1,876 @@
+{
+  "provenance": {
+    "jurisdiction": "Allentown city",
+    "instrument": "Allentown Zoning Ordinance, Chapter 660 (Ord. No. 16166, adopted 10-15-2025), § 660-42 Accessory dwelling units, § 660-49 Outbuildings, and the Article 4 building type tables",
+    "kind": "place",
+    "status": "in_force",
+    "status_detail": "New Chapter 660 adopted 10-15-2025 by Ord. No. 16166. § 660-1C: effective on January 1, 2026. It repealed the 2010 zoning chapter. eCode360 New Laws list on 2026-11-11 showed only resolutions, no pending zoning ordinance.",
+    "effective_date": "2026-01-01",
+    "source_urls": [
+      "https://ecode360.com/49783893",
+      "https://ecode360.com/49640988",
+      "https://ecode360.com/49641099",
+      "https://ecode360.com/49640948",
+      "https://ecode360.com/49640751",
+      "https://ecode360.com/49640764",
+      "https://ecode360.com/49640802",
+      "https://ecode360.com/49640812",
+      "https://ecode360.com/49640858",
+      "https://ecode360.com/49640869",
+      "https://ecode360.com/49640876",
+      "https://ecode360.com/49640915",
+      "https://ecode360.com/49647221",
+      "https://ecode360.com/49647726",
+      "https://ecode360.com/49648138",
+      "https://ecode360.com/49625836",
+      "https://ecode360.com/AL4161/laws",
+      "https://www.allentownpa.gov/en-us/Government/Departments/Community-Economic-Development/Planning-Zoning/Zoning",
+      "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/22",
+      "https://ecode360.com/49640311"
+    ],
+    "verified_on": "2026-11-11",
+    "county": "Lehigh",
+    "municipality_type": "city",
+    "geoid": "4207702000",
+    "code_host": "ecode360",
+    "code_url": "https://ecode360.com/49783893",
+    "code_current_through": "2026-10-07",
+    "code_current_through_note": "eCode360 header: Includes legislation through 10-07-2026.",
+    "checks": [
+      "Whether an ADU is allowed depends on building type and zone. Rowhouses allow it only inside the house. Twin house, House A in N3 and N4, House B and House C allow it in the house or an outbuilding (Article 4 tables, part F)",
+      "No ADU in House A in GX-C, GX-N, NX or N2, in Lane rowhouse, Small general, General, Storefront or Commercial center buildings (Article 4 tables, part F, dash means not allowed)",
+      "Outbuilding height: two stories or the height of the house, whichever is less. Floor-to-floor rules of the house apply (660-49G). 660-41B(4) caps accessory structures at 15 ft 'unless otherwise specified in this chapter'; whether that 15 ft also binds an outbuilding with an ADU is not settled. Ask the Zoning Officer",
+      "Only one street-facing entrance on a house with an ADU, unless a second one existed before (660-42C(8)(b))",
+      "Outbuildings on lots under 15,000 sq ft in an N zone: two at most (660-49E)",
+      "Code slip: 660-86A points to 660-44B for ADU parking, but the ADU rule is 660-42C(7) and 660-44 is EV charging",
+      "Corner and through lots (660-18J): the front lot line follows the city's A, B and C street designation (GIS layer 'City Zoning - Street Types'); on an A and B corner the A street is the front, on a B and C corner the B street. The Zoning Officer may decide otherwise (660-18J(3))",
+      "Outbuildings on corner lots: no closer to the side street lot line than the house (Article 4 tables part E)"
+    ],
+    "notes": "Zoning office: Bureau of Planning and Zoning, Office of Zoning (city web page in source_urls). Zone codes follow Article 2: N1 to N5 neighborhood zones, NX, GX-N, GX-C. Rules vary by building type inside each zone, so the districts table lists per-type numbers in notes. Census GEOID is the 2020 county subdivision code from TIGERweb. Pending changes: none found. eCode360 New Laws on 2026-11-11 listed only resolutions."
+  },
+  "adu": {
+    "status": {
+      "value": "allowed_by_right",
+      "section": "660-42C(1) and Article 4 building type tables, part F",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Article 4 tables list 'Accessory Dwelling Units: 1 in principal building or outbuilding' for allowed types. A zoning permit from the Zoning Officer is needed (660-114)."
+    },
+    "term": {
+      "value": "accessory dwelling unit (ADU)",
+      "section": "660-135, Dwelling unit, accessory (ADU)",
+      "url": "https://ecode360.com/49648138",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "A separate dwelling unit within a building occupied by a principal dwelling unit or ... within an accessory outbuilding."
+    }
+  },
+  "approval": {
+    "path": {
+      "value": "by_right",
+      "section": "660-42C(1), 660-114A, Article 4 tables part F",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Where the building type table lists an ADU, it is allowed with a zoning permit from the Zoning Officer. 660-114A: a zoning permit is required from the Zoning Officer."
+    },
+    "fallback_path": {
+      "value": null,
+      "section": "660-115, 660-121",
+      "url": "https://ecode360.com/49647765",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "The ADU text names no special exception path. A lot that fails the standards would need a variance from the Zoning Hearing Board. Not confirmed for each case."
+    }
+  },
+  "eligibility": {
+    "zoning_districts": {
+      "value": [
+        "N1",
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "NX",
+        "GX-N",
+        "GX-C"
+      ],
+      "section": "Article 4: 660-24F, 660-25F, 660-27F, 660-28F, 660-29F, 660-30F, 660-31F",
+      "url": "https://ecode360.com/49640869",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Zones where some building type lists an ADU. N1 and N2, NX: internal only (rowhouse types). Detached ADU only in N3, N4, N5, GX-N, GX-C (twin house, House A in N3 and N4, House B, House C)."
+    },
+    "building_types": {
+      "value": [
+        "detached",
+        "semi_detached",
+        "attached"
+      ],
+      "section": "660-24F to 660-31F",
+      "url": "https://ecode360.com/49640812",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Rowhouses (attached): 1 in principal building only. Twin house (semi-detached) and House A, B, C (detached): 1 in principal building or outbuilding."
+    },
+    "min_lot_sqft": {
+      "value": null,
+      "section": "660-42C(1)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No ADU minimum lot size. The building type minimum applies. Instead: total floor area of principal dwelling unit and accessory dwelling unit, combined, must be at least 1,750 square feet."
+    },
+    "gates": {
+      "value": [
+        {
+          "kind": "building_type",
+          "condition": "Rowhouses (Town, Urban, Suburban) allow an ADU only in the principal building. No outbuilding ADU.",
+          "effect": "bars",
+          "applies_to": [
+            "detached_new",
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": null,
+          "building_types": [
+            "attached"
+          ],
+          "section": "660-24F, 660-25F, 660-27F",
+          "url": "https://ecode360.com/49640751"
+        },
+        {
+          "kind": "district",
+          "condition": "In N1, N2 and NX no building type allows an ADU in an outbuilding. Only rowhouse types allow one, inside the house.",
+          "effect": "bars",
+          "applies_to": [
+            "detached_new",
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": [
+            "N1",
+            "N2",
+            "NX"
+          ],
+          "building_types": null,
+          "section": "660-24F, 660-25F, 660-26F, 660-27F, 660-29F",
+          "url": "https://ecode360.com/49640751"
+        },
+        {
+          "kind": "building_type",
+          "condition": "House A allows no ADU in GX-C, GX-N, NX or N2. House A is not a building type in N1.",
+          "effect": "bars",
+          "applies_to": null,
+          "districts": [
+            "N1",
+            "N2",
+            "NX",
+            "GX-C",
+            "GX-N"
+          ],
+          "building_types": [
+            "detached"
+          ],
+          "section": "660-29F",
+          "url": "https://ecode360.com/49640858"
+        },
+        {
+          "kind": "abutting_way",
+          "condition": "A detached ADU (in an outbuilding) needs a lot that abuts an alley, or a street on its rear or street side lot line. A corner lot with a side street also qualifies.",
+          "effect": "bars",
+          "applies_to": [
+            "detached_new",
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": null,
+          "building_types": null,
+          "test": "has_alley",
+          "section": "660-42C(1)(c)",
+          "url": "https://ecode360.com/49640988"
+        },
+        {
+          "kind": "other",
+          "condition": "ADUs only on a lot occupied by one dwelling unit.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "section": "660-42C(1)(a)",
+          "url": "https://ecode360.com/49640988"
+        },
+        {
+          "kind": "other",
+          "condition": "Floor area of the principal unit and the ADU combined must be at least 1,750 sq ft.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "section": "660-42C(1)(b)",
+          "url": "https://ecode360.com/49640988"
+        },
+        {
+          "kind": "owner_occupancy",
+          "condition": "A record owner lives in one of the units for most of the year. Affidavit and recorded deed restriction before the permit.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "section": "660-42C(10), 660-42C(12)",
+          "url": "https://ecode360.com/49640988"
+        },
+        {
+          "kind": "design",
+          "condition": "Outbuilding with an ADU on a permanent foundation. Only one street-facing entrance on the house.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "section": "660-42C(8)(a), 660-42C(8)(b)",
+          "url": "https://ecode360.com/49640988"
+        },
+        {
+          "kind": "design",
+          "condition": "Accessory buildings of 250 sq ft or more seen from an A or B street match the house roof type and materials.",
+          "effect": "condition",
+          "applies_to": [
+            "detached_new",
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": null,
+          "building_types": null,
+          "section": "660-41B(7)",
+          "url": "https://ecode360.com/49640948"
+        },
+        {
+          "kind": "utilities",
+          "condition": "Outbuilding water and sewer must tie to the house. Separate connections prohibited. PA DEP evaluates the sewer connection.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "section": "660-49H, 660-42C(2)",
+          "url": "https://ecode360.com/49641099"
+        },
+        {
+          "kind": "lot_size",
+          "condition": "House A and House B lots need at least 3,500 sq ft and 40 ft of width in N3 and N4 (House B also in N5). The twin house needs 1,800 sq ft. 660-42 sets no ADU lot minimum. A smaller existing lot may be nonconforming. Ask the zoning officer",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": [
+            "N3",
+            "N4",
+            "N5"
+          ],
+          "building_types": [
+            "detached"
+          ],
+          "section": "660-29D, 660-30D, 660-28D, 660-42C(1)",
+          "url": "https://ecode360.com/49783893"
+        }
+      ],
+      "section": "660-42C, Article 4 tables part F",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Building type, district and lot gates from 660-42 and the Article 4 tables."
+    },
+    "existing_structure_only": {
+      "value": false,
+      "section": "660-42C(4)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Methods include: Constructing an outbuilding (see 660-49) on a lot occupied by a single principal dwelling unit."
+    },
+    "historic_bypass": {
+      "value": null,
+      "section": "660-42",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No historic rule in the ADU section."
+    }
+  },
+  "form": {
+    "types_allowed": {
+      "value": [
+        "internal",
+        "attached",
+        "detached_new",
+        "garage_conversion",
+        "over_garage"
+      ],
+      "section": "660-42C(4), 660-49B, 660-49G",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "660-42C(4) lists interior conversion, adding floor area, a new outbuilding, and converting an existing outbuilding. Over a garage is read from 660-49B (detached garages and ADUs are both outbuildings) and the two-story limit. Rowhouses: internal only."
+    }
+  },
+  "size": {
+    "max_sqft": {
+      "value": 800,
+      "section": "660-42C(5)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "may not exceed 800 square feet or 40% of the floor area of the principal dwelling unit, whichever is less."
+    },
+    "max_share_of_house": {
+      "value": 0.4,
+      "section": "660-42C(5)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "40% of the floor area of the principal dwelling unit, whichever is less."
+    },
+    "min_sqft": {
+      "value": 400,
+      "section": "660-42C(5) and Table 660-6 in 660-36A",
+      "url": "https://ecode360.com/49640915",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "ADUs must comply with the alternative minimum floor area requirements of Table 660-6. Efficiency and 1-bedroom 400, 2-bedroom 550, 3-bedroom 750 sq ft."
+    }
+  },
+  "envelope": {
+    "max_height_ft": {
+      "value": null,
+      "section": "660-49G(1), 660-41B(4)",
+      "url": "https://ecode360.com/49641099",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Outbuildings may not exceed two stories in height or the height of the principal building, whichever is less. The code gives no feet number for an outbuilding. Ask the Zoning Officer for the height in feet."
+    },
+    "setback_front_ft": {
+      "value": null,
+      "section": "660-41B(6) and Article 4 tables part E",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "An accessory structure is not allowed in any front yard. Outbuildings go in the rear yard only. Street side: no closer to lot line than principal building."
+    },
+    "setback_side_ft": {
+      "value": 3,
+      "section": "660-27E, 660-28E, 660-29E, 660-30E (House C: 660-31E)",
+      "url": "https://ecode360.com/49640869",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Side and Rear Setback: 3 ft. min. for twin house, House A and House B. House C in N5: 5 ft. min."
+    },
+    "setback_rear_ft": {
+      "value": 3,
+      "section": "660-28E, 660-29E, 660-30E (House C: 660-31E)",
+      "url": "https://ecode360.com/49640869",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Side and Rear Setback: 3 ft. min. House C in N5: 5 ft. min."
+    },
+    "setback_rear_alley_ft": {
+      "value": 3,
+      "section": "660-28E to 660-31E",
+      "url": "https://ecode360.com/49640812",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No alley reduction for outbuildings in the types that allow a detached ADU. The 0 ft alley rule in rowhouse tables is for surface parking only."
+    },
+    "separation_ft": {
+      "value": null,
+      "section": "660-42, 660-49",
+      "url": "https://ecode360.com/49641099",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No separation distance from the house in the zoning text."
+    },
+    "internal_uses_district_height": {
+      "value": true,
+      "section": "660-41B(3)",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Accessory structures attached to a principal structure are regulated as principal structures."
+    },
+    "max_height_stories": {
+      "value": 2,
+      "section": "660-49G(1)",
+      "url": "https://ecode360.com/49641099",
+      "verified_on": "2026-11-13",
+      "confidence": "verified",
+      "note": "'Outbuildings may not exceed two stories in height or the height of the principal building, whichever is less.' 660-49G(2): 'Floor-to-floor height regulations applicable to the principal building on the lot apply to outbuildings.' No feet figure for an outbuilding. Added 2026-11-13; second reading 2026-11-14 agreed."
+    },
+    "height_capped_at_house": {
+      "value": true,
+      "section": "660-49G(1)",
+      "url": "https://ecode360.com/49641099",
+      "verified_on": "2026-11-13",
+      "confidence": "verified",
+      "note": "'... or the height of the principal building, whichever is less.' The open data has no house heights, so the lot build cannot check it. Added 2026-11-13; second reading 2026-11-14 agreed."
+    },
+    "accessory_structure_max_height_ft": {
+      "value": 15,
+      "section": "660-41B(4)",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-13",
+      "confidence": "verified",
+      "note": "'Accessory structures may not exceed 15 feet in height, unless otherwise specified in this chapter.' 660-49G sets the outbuilding height in stories, so whether the 15 ft also binds an outbuilding ADU is not settled (accessory_cap_binds_adu null). Added 2026-11-13; second reading 2026-11-14 agreed."
+    },
+    "accessory_cap_binds_adu": {
+      "value": null,
+      "section": "660-41B(4), 660-49G",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-13",
+      "confidence": "secondary",
+      "note": "Reading open: 660-41B(4) caps accessory structures at 15 ft 'unless otherwise specified in this chapter', and 660-49G specifies outbuildings in stories (two, or the house height). Both are shown. Ask the Zoning Officer. Added 2026-11-13; second reading 2026-11-14 agreed."
+    },
+    "front_yard_barred": {
+      "value": true,
+      "section": "660-41B(6); Article 4 tables part E (660-28E, 660-29E, 660-30E, 660-31E)",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-13",
+      "confidence": "verified",
+      "note": "660-41B(6): 'An accessory structure is not allowed in any front yard, except as otherwise expressly stated in this chapter.' The building type tables for twin house and House A, B, C put outbuildings in the 'Rear yard only' (House B) or 'Rear yard'. Street side (corner lots): 'No closer to lot line than principal building' (same tables). Added 2026-11-13; second reading 2026-11-14 agreed."
+    },
+    "accessory_rear_yard_only": {
+      "value": true,
+      "section": "Article 4 tables part E (660-28E, 660-29E, 660-30E, 660-31E)",
+      "url": "https://ecode360.com/49640948",
+      "verified_on": "2026-11-14",
+      "confidence": "verified",
+      "note": "The building type tables for twin house and House A, B, C put outbuildings in the 'Rear yard' (House B: 'Rear yard only'), so not in a side yard either. Street side (corner lots): 'No closer to lot line than principal building' (same tables)."
+    }
+  },
+  "coverage": {
+    "max_building_coverage": {
+      "value": null,
+      "section": "Article 4 tables part D",
+      "url": "https://ecode360.com/49640869",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Set by building type. Twin 70%, House A in N3 and N4 50%, House B 40%, House C 30%, Suburban rowhouse 60%, Town and Urban rowhouse 70%. See districts."
+    },
+    "max_impervious": {
+      "value": null,
+      "section": "Article 4",
+      "url": "https://ecode360.com/49640869",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "No impervious limit found in the building type tables read."
+    }
+  },
+  "use": {
+    "owner_occupancy": {
+      "value": true,
+      "section": "660-42C(10)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "At least one of the dwelling units ... must be occupied by a record owner of the subject property."
+    },
+    "family_only": {
+      "value": false,
+      "section": "660-42C(6), 660-42C(10)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No family tie required. Occupancy cap: a single household plus two additional adults, both units combined."
+    },
+    "short_term_rental_banned": {
+      "value": true,
+      "section": "660-42C(11)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "neither the principal unit or the accessory unit may be used as a short-term rental."
+    },
+    "occupancy": {
+      "value": "Both units combined: one household plus two more adults. In the Student Residence Overlay, no more than two students.",
+      "section": "660-42C(6)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified"
+    },
+    "max_adus": {
+      "value": 1,
+      "section": "660-42C(3)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No more than one accessory dwelling unit is allowed per lot."
+    },
+    "sale_apart_allowed": {
+      "value": null,
+      "section": "660-42C(12)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "Not stated. The deed restriction runs with the land and must tell buyers of the owner occupancy rule."
+    }
+  },
+  "parking": {
+    "spaces_required": {
+      "value": 1,
+      "section": "660-42C(7)",
+      "url": "https://ecode360.com/49640988",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "At least one off-street parking space is required for an accessory dwelling unit, in addition to the principal unit. 660-86A bars reductions but cites 660-44B by mistake."
+    },
+    "reading": {
+      "value": "House plus ADU: 3 spaces in total in N3, N4, N5 and GX zones (2 for the house under Table 660-10, plus 1 for the ADU). 2 in total in N1 and N2, where the house needs 1.",
+      "section": "660-84 Table 660-10, 660-42C(7)",
+      "url": "https://ecode360.com/49647204",
+      "verified_on": "2026-11-11",
+      "confidence": "verified"
+    }
+  },
+  "utilities": {
+    "new_connection_required": {
+      "value": false,
+      "section": "660-49H, 660-42C(2)",
+      "url": "https://ecode360.com/49641099",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Separate water and wastewater connections serving outbuildings are prohibited. Service must tie to the principal building. DEP evaluates the sewer connection."
+    }
+  },
+  "districts": {
+    "N3": {
+      "min_lot_sqft": {
+        "value": 1800,
+        "section": "660-27D, 660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49783893",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Smallest building type lot in N3: suburban rowhouse and twin house '1,800 s.f. min.' House A and House B need '3,500 s.f. min.' and 40 ft width. A building type siting rule, not an ADU rule."
+      },
+      "setback_side_ft": {
+        "value": 3,
+        "section": "Article 4 part E",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Outbuilding side and rear setback 3 ft. min. for every type allowed here."
+      },
+      "setback_rear_ft": {
+        "value": 3,
+        "section": "Article 4 part E",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Outbuilding side and rear setback 3 ft. min. for every type allowed here."
+      },
+      "max_building_coverage": {
+        "value": null,
+        "section": "660-27D, 660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Suburban rowhouse 60%, Twin 70%, House A 50%, House B 40%."
+      },
+      "principal_max_height_ft": {
+        "value": null,
+        "section": "660-27G, 660-28G, 660-29G, 660-30G",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Height is set in stories by type: Suburban rowhouse 2.5 stories (3 for up to half the units), Twin and House A 2.5 stories. House B 2 stories. No feet cap."
+      },
+      "max_building_coverage_by_type": {
+        "value": {
+          "semi_detached": 0.7,
+          "detached": 0.5
+        },
+        "section": "660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "secondary",
+        "note": "660-28D twin house 'Building Coverage 70% max.'; 660-29D House A (N3, N4) '50% max.'; 660-30D House B '40% max.'; 660-27D suburban rowhouse 60% (internal ADU only). semi_detached = twin house 0.70. detached = 0.50, the least strict detached type here (House A); a House B is 40%, so for a detached house this is an upper bound. Secondary because the open data does not say which house type a detached lot is. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "stricter_by_house_type": {
+        "value": [
+          {
+            "label": "House B",
+            "building_type": "detached",
+            "max_building_coverage": 0.4,
+            "section": "660-30D",
+            "note": "660-30D House B 'Building Coverage 40% max.' The row's detached figure (50%) is House A."
+          }
+        ],
+        "section": "660-29D, 660-30D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-14",
+        "confidence": "verified",
+        "note": "House A and House B are both detached; the open data does not say which one a lot is."
+      }
+    },
+    "N4": {
+      "min_lot_sqft": {
+        "value": 1800,
+        "section": "660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49783893",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Smallest building type lot in N4: twin house '1,800 s.f. min.' (22 ft width). House A and House B need '3,500 s.f. min.' and 40 ft width. No rowhouse type is allowed in N4. A building type siting rule, not an ADU rule."
+      },
+      "setback_side_ft": {
+        "value": 3,
+        "section": "Article 4 part E",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Outbuilding side and rear setback 3 ft. min. for every type allowed here."
+      },
+      "setback_rear_ft": {
+        "value": 3,
+        "section": "Article 4 part E",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Outbuilding side and rear setback 3 ft. min. for every type allowed here."
+      },
+      "max_building_coverage": {
+        "value": null,
+        "section": "660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Twin 70%, House A 50%, House B 40%."
+      },
+      "principal_max_height_ft": {
+        "value": null,
+        "section": "660-28G, 660-29G, 660-30G",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Height is set in stories by type: Twin and House A 2.5 stories. House B 2 stories. No feet cap."
+      },
+      "max_building_coverage_by_type": {
+        "value": {
+          "semi_detached": 0.7,
+          "detached": 0.5
+        },
+        "section": "660-28D, 660-29D, 660-30D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "secondary",
+        "note": "660-28D twin house 'Building Coverage 70% max.'; 660-29D House A (N3, N4) '50% max.'; 660-30D House B '40% max.'. semi_detached = twin house 0.70. detached = 0.50, the least strict detached type here (House A); a House B is 40%, so for a detached house this is an upper bound. Secondary because the open data does not say which house type a detached lot is. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "stricter_by_house_type": {
+        "value": [
+          {
+            "label": "House B",
+            "building_type": "detached",
+            "max_building_coverage": 0.4,
+            "section": "660-30D",
+            "note": "660-30D House B 'Building Coverage 40% max.' The row's detached figure (50%) is House A."
+          }
+        ],
+        "section": "660-29D, 660-30D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-14",
+        "confidence": "verified",
+        "note": "House A and House B are both detached; the open data does not say which one a lot is."
+      }
+    },
+    "N5": {
+      "min_lot_sqft": {
+        "value": 3500,
+        "section": "660-30D, 660-31D",
+        "url": "https://ecode360.com/49783893",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "House B '3,500 s.f. min.' (40 ft). House C '6,000 s.f. min.' (50 ft). A building type siting rule, not an ADU rule."
+      },
+      "setback_side_ft": {
+        "value": null,
+        "section": "660-30E, 660-31E",
+        "url": "https://ecode360.com/49640876",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "House B 3 ft. min. House C 5 ft. min."
+      },
+      "setback_rear_ft": {
+        "value": null,
+        "section": "660-30E, 660-31E",
+        "url": "https://ecode360.com/49640876",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "House B 3 ft. min. House C 5 ft. min."
+      },
+      "max_building_coverage": {
+        "value": null,
+        "section": "660-30D, 660-31D",
+        "url": "https://ecode360.com/49640876",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "House B 40%, House C 30%."
+      },
+      "principal_max_height_ft": {
+        "value": null,
+        "section": "660-30G, 660-31G",
+        "url": "https://ecode360.com/49640876",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "House B: 2 stories max, no feet cap (660-30G). House C: 2.5 stories max., 38 ft. max. (660-31G)."
+      },
+      "max_building_coverage_by_type": {
+        "value": {
+          "detached": 0.4
+        },
+        "section": "660-30D, 660-31D",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-13",
+        "confidence": "secondary",
+        "note": "660-30D House B 'Building Coverage 40% max.'; 660-31D House C '30% max.'. No twin house in N5. detached = 0.40, the least strict of the two (House B); a House C is 30%, so this is an upper bound. Secondary because the open data does not say which house type a detached lot is. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "accessory_setback_side_ft": {
+        "value": 3,
+        "section": "660-30E (House C: 660-31E)",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-13",
+        "confidence": "secondary",
+        "note": "House B outbuilding: 'Side and Rear Setback 3 ft. min.' (660-30E). House C (N5 only): 'Side and Rear Setback 5 ft. min.' (660-31E). The open data does not say which type a lot is, so 3 ft is used; a House C lot needs 5 ft. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "accessory_setback_rear_ft": {
+        "value": 3,
+        "section": "660-30E (House C: 660-31E)",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-13",
+        "confidence": "secondary",
+        "note": "House B outbuilding: 'Side and Rear Setback 3 ft. min.' (660-30E). House C (N5 only): 'Side and Rear Setback 5 ft. min.' (660-31E). The open data does not say which type a lot is, so 3 ft is used; a House C lot needs 5 ft. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "stricter_by_house_type": {
+        "value": [
+          {
+            "label": "House C",
+            "building_type": "detached",
+            "max_building_coverage": 0.3,
+            "accessory_setback_side_ft": 5,
+            "accessory_setback_rear_ft": 5,
+            "section": "660-31D, 660-31E",
+            "note": "660-31D House C 'Building Coverage 30% max.'; 660-31E 'Side and Rear Setback 5 ft. min.' The row's detached figures (40%, 3 ft) are House B."
+          }
+        ],
+        "section": "660-30D, 660-30E, 660-31D, 660-31E",
+        "url": "https://ecode360.com/49640869",
+        "verified_on": "2026-11-14",
+        "confidence": "verified",
+        "note": "House B and House C are both detached; the open data does not say which one a lot is."
+      }
+    },
+    "N1": {
+      "min_lot_sqft": {
+        "value": 1500,
+        "section": "660-25D",
+        "url": "https://ecode360.com/49640764",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Urban rowhouse 1,500 s.f. min. ADU inside the house only."
+      },
+      "max_building_coverage": {
+        "value": 0.7,
+        "section": "660-25D",
+        "url": "https://ecode360.com/49640764",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Building Coverage 70% max."
+      }
+    },
+    "N2": {
+      "min_lot_sqft": {
+        "value": 1500,
+        "section": "660-24D",
+        "url": "https://ecode360.com/49640751",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Town rowhouse 1,500 s.f. min. ADU inside the house only. House A in N2 allows no ADU."
+      },
+      "max_building_coverage": {
+        "value": 0.7,
+        "section": "660-24D",
+        "url": "https://ecode360.com/49640751",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Building Coverage 70% max."
+      }
+    },
+    "NX": {
+      "min_lot_sqft": {
+        "value": 1800,
+        "section": "660-27D",
+        "url": "https://ecode360.com/49640802",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Suburban rowhouse 1,800 s.f. min. ADU inside the house only. House A in NX allows no ADU."
+      },
+      "max_building_coverage": {
+        "value": 0.6,
+        "section": "660-27D",
+        "url": "https://ecode360.com/49640802",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Building Coverage 60% max."
+      }
+    },
+    "GX-N": {
+      "accessory_setback_side_ft": {
+        "value": 3,
+        "section": "660-28E",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N (the only type here that allows an ADU in an outbuilding; House A lists no ADU in GX zones, 660-29F): accessory structures in the 'Rear yard', 'Side and Rear Setback 3 ft. min.', street side 'No closer to lot line than principal building'. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "accessory_setback_rear_ft": {
+        "value": 3,
+        "section": "660-28E",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N: 'Side and Rear Setback 3 ft. min.' Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "max_building_coverage_by_type": {
+        "value": {
+          "semi_detached": 0.7
+        },
+        "section": "660-28D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N: 'Building Coverage 70% max.' Other building types in GX zones allow no outbuilding ADU, so only the twin value is filled. Added 2026-11-13; second reading 2026-11-14 agreed."
+      }
+    },
+    "GX-C": {
+      "accessory_setback_side_ft": {
+        "value": 3,
+        "section": "660-28E",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N (the only type here that allows an ADU in an outbuilding; House A lists no ADU in GX zones, 660-29F): accessory structures in the 'Rear yard', 'Side and Rear Setback 3 ft. min.', street side 'No closer to lot line than principal building'. Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "accessory_setback_rear_ft": {
+        "value": 3,
+        "section": "660-28E",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N: 'Side and Rear Setback 3 ft. min.' Added 2026-11-13; second reading 2026-11-14 agreed."
+      },
+      "max_building_coverage_by_type": {
+        "value": {
+          "semi_detached": 0.7
+        },
+        "section": "660-28D",
+        "url": "https://ecode360.com/49640812",
+        "verified_on": "2026-11-13",
+        "confidence": "verified",
+        "note": "Twin house in GX-C, GX-N: 'Building Coverage 70% max.' Other building types in GX zones allow no outbuilding ADU, so only the twin value is filled. Added 2026-11-13; second reading 2026-11-14 agreed."
+      }
+    }
+  }
+}

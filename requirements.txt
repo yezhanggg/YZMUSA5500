@@ -1,0 +1,16 @@
+# Already in my conda env "geospatial". For a new machine: pip install -r requirements.txt
+pandas
+geopandas
+pyogrio
+rasterio
+rasterstats
+osmnx>=2.1.1
+networkx
+scikit-learn
+requests
+pyproj
+matplotlib
+folium
+jupyterlab
+altair
+pyarrow

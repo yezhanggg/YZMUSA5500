@@ -1,0 +1,12 @@
+# Data stays on the data drive ($ADU_DATA_DIR), never in git
+/data
+.env
+.env.*
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
+test-results/

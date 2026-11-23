@@ -1,0 +1,528 @@
+{
+  "provenance": {
+    "jurisdiction": "Manheim township",
+    "instrument": "Zoning Ordinance of Manheim Township 2014, as amended, published by the township as per-article PDFs in its Document Center. ADU text in Section 2515 (Article XXV)",
+    "kind": "place",
+    "status": "in_force",
+    "status_detail": "The township revision list shows amendments through Ordinance 2024-01, 01/22/2024. The ecode360 Chapter 500 copy is stale (through 2014). Article XXV PDF lists Ord. 2021-04, 2023-15 and 2024-01. Article PDFs read: 5 (2024), 6 and 7 (2021), 8 (2024), 9, 20 (2024), 21 (2023), 25 (2024).",
+    "effective_date": null,
+    "source_urls": [
+      "https://manheimtownship.org/DocumentCenter/View/8076/2-Ordinance-Updates",
+      "https://manheimtownship.org/DocumentCenter/View/8081/3TABLE-OF-CONTENTS",
+      "https://manheimtownship.org/DocumentCenter/View/8077/8ARTICLE-5--Definitions",
+      "https://manheimtownship.org/DocumentCenter/View/3062/9ARTICLE-6-Agricultural",
+      "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+      "https://manheimtownship.org/DocumentCenter/View/8078/11ARTICLE-8Residential",
+      "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+      "https://manheimtownship.org/DocumentCenter/View/8057/23-ARTICLE-20Parking-and-Loading-",
+      "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "https://manheimtownship.org/1170/Accessory-Dwelling-Unit-Permit",
+      "https://manheimtownship.org/478/Planning-Zoning",
+      "https://manheimtownship.org/1874/Zoning-Ordinance-Rewrite-Project",
+      "https://www2.census.gov/geo/docs/reference/codes2020/cousub/st42_pa_cousub2020.txt"
+    ],
+    "verified_on": "2026-11-11",
+    "county": "Lancaster",
+    "municipality_type": "township",
+    "geoid": "4207146896",
+    "code_host": "own site",
+    "code_url": "https://manheimtownship.org/DocumentCenter/View/8076/2-Ordinance-Updates",
+    "code_current_through": "2024-01-22",
+    "code_current_through_note": "Revision list: 'Revised 01/22/2024 by Ordinance 2024-01'. Ordinance of February 10, 2014, as amended.",
+    "checks": [
+      "Special exception from the Zoning Hearing Board in A, R-1, R-2 and R-3 (use tables, 603.5, 703.7 and Section 2515)",
+      "Section 2515 is the specific rule: owner plus relatives by blood, marriage or adoption, and a unit above a detached garage is allowed (2515.2.A(3), (8)). The Article V definition and the township ADU permit page still describe a unit for an elderly, handicapped or disabled relative, inside the house or off a common hall. Ask the Zoning Officer which reading the township applies",
+      "The ADU permit is issued after the certificate of use and occupancy. It expires December 31 each year and is renewed with a fee (2515.2.B, township ADU permit page)",
+      "Lot must be at least 90% of the district minimum lot size: R-1 18,000, R-2 13,500, R-3 6,300 sq ft with public water and sewer (2515.2.A(13))",
+      "In the A district an ADU counts as a subdivision for lot allocation and needs one transferable development right (605.3.E, 605.3.M)",
+      "Nearest by-right alternative: duplex dwellings are a use by right in R-3 (902.4)",
+      "Article V defines 'Dwelling, carriage house' as a single dwelling on the second floor above a detached garage, max 1,000 sq ft. No district use list read names it. Article XIX (planned residential development) was not read",
+      "T-Zone Overlay rules may add use regulations. Article XXIV was only keyword searched"
+    ],
+    "notes": "Zoning office: Planning and Zoning Department, https://manheimtownship.org/478/Planning-Zoning. ADU permit page: https://manheimtownship.org/1170/Accessory-Dwelling-Unit-Permit. Pending: the township is rewriting its whole Zoning Ordinance (Zoning Ordinance Rewrite Project). Draft Zoning Districts and Map Report dated 08.13.26 and a draft map. Not adopted. Not law."
+  },
+  "adu": {
+    "term": {
+      "value": "accessory dwelling unit",
+      "section": "Article V 'Dwelling unit, accessory', Section 2515",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Section 2515 heading 'ACCESSORY DWELLING UNITS'. Article V defines 'DWELLING UNIT, ACCESSORY'."
+    },
+    "status": {
+      "value": "family_only",
+      "section": "2515.2 and 2515.2.A(8)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Special exception. 'Occupancy ... shall be limited to the property owner or those related by blood or marriage or adoption to the property owner.'"
+    }
+  },
+  "approval": {
+    "path": {
+      "value": "special_exception",
+      "section": "2515.2, 703.7, Article VIII and IX use tables",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'Accessory dwelling units shall be permitted as a use by special exception'. Zoning Hearing Board. General standards of 2805.2 also apply."
+    },
+    "fallback_path": {
+      "value": "variance",
+      "section": "2515.2, MPC 910.2",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "A lot that fails a 2515 criterion, or is in another district, needs a variance from the Zoning Hearing Board. A stand-alone ground floor cottage is not a listed form (2515.2.A(3))."
+    },
+    "alternatives": {
+      "value": [
+        {
+          "name": "Duplex dwelling (two units, not limited to family)",
+          "path": "by_right",
+          "districts": [
+            "R-3"
+          ],
+          "conditions": "Public sewer and water required. 6,000 sq ft of lot per dwelling unit. Lot width 75 ft at the street line.",
+          "min_lot_sqft": 12000,
+          "section": "902.4, 905 D. Duplex dwellings",
+          "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3"
+        }
+      ],
+      "section": "902.4",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'Duplex dwellings' are a use by right in R-3 only (902.4 and the residential use table)."
+    }
+  },
+  "eligibility": {
+    "zoning_districts": {
+      "value": [
+        "A",
+        "R-1",
+        "R-2",
+        "R-3"
+      ],
+      "section": "603.5, 703.7, use tables in Articles VII to IX",
+      "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Use table 'Accessory dwelling units SE SE SE' for R-1, R-2, R-3. Agricultural district 603.5 lists ADUs as a special exception."
+    },
+    "building_types": {
+      "value": [
+        "detached",
+        "semi_detached"
+      ],
+      "section": "2515.2.A, 2515.2.A(4)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Text says 'single-family dwellings'. Reading: single-family detached and semidetached. Townhouses not clear. The Article V definition names a single-family detached dwelling for the common-hall form."
+    },
+    "min_lot_sqft": {
+      "value": null,
+      "section": "2515.2.A(13)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'lots that are ninety (90) percent or more of the zoning district's required minimum lot size'. No single number. R-1 public sewer lot 20,000 sq ft gives 18,000."
+    },
+    "existing_structure_only": {
+      "value": false,
+      "section": "2515.2.A(4)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'may be constructed in either an existing or a new single-family dwelling.'"
+    },
+    "historic_bypass": {
+      "value": false,
+      "section": "Section 2515",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No historic rule in 2515. Article XXIII Historic Overlay may still apply."
+    },
+    "gates": {
+      "value": [
+        {
+          "kind": "utilities",
+          "condition": "'The principal dwelling and accessory dwelling unit must be served by public sewer and public water service.'",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "2515.2.A(12)",
+          "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-"
+        },
+        {
+          "kind": "lot_size",
+          "condition": "The lot needs only 90% of the district minimum lot size.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "2515.2.A(13)",
+          "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-"
+        },
+        {
+          "kind": "existing_structure",
+          "condition": "A detached ADU is allowed only above a detached garage. Not in a basement.",
+          "effect": "bars",
+          "applies_to": [
+            "over_garage",
+            "garage_conversion"
+          ],
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": "has_accessory_building",
+          "section": "2515.2.A(3), (9)",
+          "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-"
+        },
+        {
+          "kind": "design",
+          "condition": "An addition must keep 'the appearance of the building ... that of a single-family dwelling.'",
+          "effect": "condition",
+          "applies_to": [
+            "attached"
+          ],
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "2515.2.A(5)",
+          "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-"
+        },
+        {
+          "kind": "other",
+          "condition": "A restoration plan, including removal of the stove, is filed with the application. The unit is removed within 90 days after the permit ends.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "2515.2.A(14), 2515.2.B(5)",
+          "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-"
+        },
+        {
+          "kind": "other",
+          "condition": "A district: the ADU counts as a subdivision for lot allocation and needs one transferable development right.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": [
+            "A"
+          ],
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "605.3.E, 605.3.M",
+          "url": "https://manheimtownship.org/DocumentCenter/View/3062/9ARTICLE-6-Agricultural"
+        }
+      ],
+      "section": "2515, 605.3",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Conditions of Section 2515."
+    },
+    "min_lot_share_of_district": {
+      "value": 0.9,
+      "section": "2515.2.A(13)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'Accessory dwelling units are permitted to be located on lots that are ninety (90) percent or more of the zoning district's required minimum lot size.'"
+    }
+  },
+  "form": {
+    "types_allowed": {
+      "value": [
+        "internal",
+        "attached",
+        "over_garage"
+      ],
+      "section": "2515.2.A(3), 2515.2.A(9)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'contained in, or attached to, the principal dwelling or be located above a detached garage.' Not in basements."
+    }
+  },
+  "size": {
+    "max_sqft": {
+      "value": 1000,
+      "section": "2515.2.A(6)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'nor more than one thousand (1,000) square feet, nor have more than two (2) bedrooms.'"
+    },
+    "max_share_of_house": {
+      "value": 0.4,
+      "section": "2515.2.A(6)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'shall not exceed forty (40) percent of the principal dwelling total floor area'"
+    },
+    "min_sqft": {
+      "value": null,
+      "section": "Section 2515",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "No minimum size in 2515."
+    }
+  },
+  "envelope": {
+    "max_height_ft": {
+      "value": 20,
+      "section": "2102.2",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Detached private garage: 'Maximum height: Twenty (20) feet.' Reading: applies to a garage with an ADU above. Inside or attached units use the 35 ft district height."
+    },
+    "setback_front_ft": {
+      "value": null,
+      "section": "2102.4",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Detached garage: no structure 'between the required building setback line and the street line'."
+    },
+    "setback_side_ft": {
+      "value": null,
+      "section": "2102.5",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Detached garage: not 'within the minimum required side yard of the prevailing district'. See districts."
+    },
+    "setback_rear_ft": {
+      "value": 10,
+      "section": "2102.6",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Detached garage: 'No structure shall be located within ten (10) feet of the rear property line.' Attached units follow the 35 ft principal rear yard."
+    },
+    "separation_ft": {
+      "value": null,
+      "section": "Article XXI, Article XXII",
+      "url": "https://manheimtownship.org/DocumentCenter/View/7168/24ARTICLE-21-Accessory-Use",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "No separation between buildings on one lot found in Articles XXI or XXII."
+    },
+    "internal_uses_district_height": {
+      "value": true,
+      "section": "2515.2.A(1), 705.1, 805.1, 905.1",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "'All provisions of the zoning district shall apply'. District height 35 ft."
+    }
+  },
+  "coverage": {
+    "max_building_coverage": {
+      "value": null,
+      "section": "705.2.B(3)[e], 805.2.B(3)[e], 905.2.B(3)[e]",
+      "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Residential districts set a minimum open area (50%) instead of building coverage."
+    }
+  },
+  "use": {
+    "occupancy": {
+      "value": "The owner lives in the house or the ADU. Both units only for the owner and relatives by blood, marriage or adoption. Two bedrooms at most in the ADU.",
+      "section": "2515.2.A(6) to (8)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified"
+    },
+    "owner_occupancy": {
+      "value": true,
+      "section": "2515.2.A(7)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'The property owner must occupy either the principal dwelling or the accessory dwelling unit as their permanent residence.'"
+    },
+    "family_only": {
+      "value": true,
+      "section": "2515.2.A(8)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'limited to the property owner or those related by blood or marriage or adoption to the property owner.'"
+    },
+    "short_term_rental_banned": {
+      "value": null,
+      "section": "Section 2515",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "Not addressed in 2515. Family-only occupancy rules out rental to others."
+    },
+    "max_adus": {
+      "value": 1,
+      "section": "2515.2.A(10)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'Only one (1) accessory dwelling unit shall be permitted per principal dwelling.'"
+    },
+    "sale_apart_allowed": {
+      "value": null,
+      "section": "Section 2515",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "Not addressed. The permit ends when 'the property is sold' (2515.2.B(5))."
+    }
+  },
+  "parking": {
+    "spaces_required": {
+      "value": 1,
+      "section": "2515.2.A(11)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'One (1) additional off-street parking space shall be provided for the accessory dwelling unit.'"
+    },
+    "total_on_site": {
+      "value": 3,
+      "section": "2002.1.a, 2515.2.A(11)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8057/23-ARTICLE-20Parking-and-Loading-",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Single-family detached: 'two (2.0) spaces for each dwelling unit', plus one for the ADU."
+    }
+  },
+  "utilities": {
+    "new_connection_required": {
+      "value": null,
+      "section": "2515.2.A(12)",
+      "url": "https://manheimtownship.org/DocumentCenter/View/8079/28-ARTICLE-25Performance-Standards-",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "'must be served by public sewer and public water service.' Separate connections or meters not addressed."
+    }
+  },
+  "districts": {
+    "R-1": {
+      "min_lot_sqft": {
+        "value": 20000,
+        "section": "705.2.B(3)[a]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District minimum where both public water and public sewer are provided: 'Minimum lot area: 20,000 square feet'. An ADU lot needs 90% of it, 18,000 sq ft (2515.2.A(13), eligibility.min_lot_share_of_district). Principal yards: front 30 ft, each side 15 ft, rear 35 ft."
+      },
+      "setback_front_ft": {
+        "value": 30,
+        "section": "705.2.B(3)[d][i]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. A detached garage may not stand between the building setback line and the street (2102.4)."
+      },
+      "setback_side_ft": {
+        "value": 15,
+        "section": "705.2.B(3)[d][ii]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Side yard, each side'. A detached garage may not be in the required side yard (2102.5). An attached unit follows the principal yards."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "705.1",
+        "url": "https://manheimtownship.org/DocumentCenter/View/3063/10ARTICLE-7-Residential-1",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Maximum building height: 35 feet'."
+      }
+    },
+    "R-2": {
+      "min_lot_sqft": {
+        "value": 15000,
+        "section": "805.2.B(3)[a]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/8078/11ARTICLE-8Residential",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District minimum where both public water and public sewer are provided: 'Minimum lot area: 15,000 square feet'. An ADU lot needs 90% of it, 13,500 sq ft (2515.2.A(13), eligibility.min_lot_share_of_district). Principal yards: front 25 ft, each side 15 ft, rear 35 ft."
+      },
+      "setback_front_ft": {
+        "value": 25,
+        "section": "805.2.B(3)[d][i]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/8078/11ARTICLE-8Residential",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. A detached garage may not stand between the building setback line and the street (2102.4)."
+      },
+      "setback_side_ft": {
+        "value": 15,
+        "section": "805.2.B(3)[d][ii]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/8078/11ARTICLE-8Residential",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Side yard, each side'. A detached garage may not be in the required side yard (2102.5). An attached unit follows the principal yards."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "805.1",
+        "url": "https://manheimtownship.org/DocumentCenter/View/8078/11ARTICLE-8Residential",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Maximum building height: 35 feet'."
+      }
+    },
+    "R-3": {
+      "min_lot_sqft": {
+        "value": 7000,
+        "section": "905.2.B(3)[a]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District minimum where both public water and public sewer are provided: 'Minimum lot area: 7,000 square feet'. An ADU lot needs 90% of it, 6,300 sq ft (2515.2.A(13), eligibility.min_lot_share_of_district). Principal yards: front 25 ft, each side 10 ft, rear 35 ft."
+      },
+      "setback_front_ft": {
+        "value": 25,
+        "section": "905.2.B(3)[d][i]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. A detached garage may not stand between the building setback line and the street (2102.4)."
+      },
+      "setback_side_ft": {
+        "value": 10,
+        "section": "905.2.B(3)[d][ii]",
+        "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Side yard, each side'. A detached garage may not be in the required side yard (2102.5). An attached unit follows the principal yards."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "905.1",
+        "url": "https://manheimtownship.org/DocumentCenter/View/7176/12ARTICLE-9Residential-3",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Maximum building height: 35 feet'."
+      }
+    }
+  }
+}

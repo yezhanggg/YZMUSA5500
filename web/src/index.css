@@ -1,0 +1,458 @@
+/* Only src/ holds classes: the notebook pages in public/ are left out of the scan. */
+@import 'tailwindcss' source('.');
+
+/* Theme (the same as the Backyard Homes PA tool): violet primary, warm off-white surfaces, stone hairlines. */
+:root {
+  --radius: 0.75rem;
+  --background: #fbfaf8;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --primary: rgb(124 58 237);
+  --primary-foreground: #ffffff;
+  --muted: #f1efec;
+  --muted-foreground: #475569;
+  --accent: #f3efff;
+  --accent-foreground: #4c1d95;
+  --border: #e7e5e4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+}
+
+@theme {
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.4;
+  --text-small: 13px;
+  --text-small--line-height: 1.45;
+  --text-body: 14px;
+  --text-body--line-height: 1.5;
+  --text-lead: 16px;
+  --text-lead--line-height: 1.5;
+  --text-title: 20px;
+  --text-title--line-height: 1.25;
+  --text-display: 26px;
+  --text-display--line-height: 1.15;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: #1e293b;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv11' 1;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+::selection {
+  background: #ddd6fe;
+}
+
+/* Quiet scrollbars for panels */
+.scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d3d1 transparent;
+}
+.scroll-quiet::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-quiet::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ADU size slider: filled track up to the thumb */
+input[type='range'].weight {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range'].weight::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #7c3aed 0 var(--pct, 50%), #e7e5e4 var(--pct, 50%) 100%);
+}
+input[type='range'].weight::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: #e7e5e4;
+}
+input[type='range'].weight::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: #7c3aed;
+}
+input[type='range'].weight::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid #7c3aed;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+  transition: transform 0.15s;
+}
+input[type='range'].weight::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid #7c3aed;
+}
+input[type='range'].weight:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+input[type='range'].weight:focus-visible {
+  outline: none;
+}
+input[type='range'].weight:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgb(124 58 237 / 0.25);
+}
+
+/* Map chrome */
+.maplibregl-ctrl-group {
+  border-radius: 10px !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 4px 12px rgb(0 0 0 / 0.06) !important;
+}
+.maplibregl-ctrl-attrib {
+  font-size: 11px;
+}
+
+/* Click ripple: a violet ring that grows and fades, then is removed */
+.bh-ripple {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid rgb(124 58 237 / 0.8);
+  background: rgb(124 58 237 / 0.12);
+  pointer-events: none;
+  animation: bh-ripple 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes bh-ripple {
+  from {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Words with a slow light passing over them (loading states) */
+.shimmer-text {
+  color: #64748b;
+  background: linear-gradient(90deg, #64748b 0%, #64748b 35%, #7c3aed 50%, #64748b 65%, #64748b 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-pass 2.2s linear infinite;
+}
+@keyframes shimmer-pass {
+  from {
+    background-position: 110% 0;
+  }
+  to {
+    background-position: -110% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bh-ripple {
+    animation: none;
+    opacity: 0;
+  }
+  .shimmer-text {
+    animation: none;
+    -webkit-text-fill-color: currentColor;
+    background: none;
+  }
+}
+
+/* Map credits (i): bottom left of the open map area, so the map controls own the bottom right */
+.bh-shell .maplibregl-ctrl-bottom-right {
+  right: auto;
+  left: var(--attr-left, 12px);
+  bottom: var(--attr-bottom, 12px);
+}
+.bh-shell .maplibregl-ctrl-bottom-right .maplibregl-ctrl {
+  margin: 0;
+}
+
+/* While the right panel is being resized: the resize cursor everywhere, no text selection */
+.bh-resizing,
+.bh-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Touch targets: at least 44 px on tablets, phones and any touch screen */
+@media (max-width: 1023px), (pointer: coarse) {
+  .tap {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* The write-up pages (docs/*.md, turned into HTML at build time) */
+.doc {
+  color: #1e293b;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.doc > * + * {
+  margin-top: 1rem;
+}
+/* Text keeps a readable line length. Tables and figures may use the whole width. */
+.doc > :not(.table-wrap):not(figure) {
+  max-width: 46rem;
+}
+.doc > figure {
+  max-width: 56rem;
+}
+.doc h2 {
+  margin-top: 2.5rem;
+  padding-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #0f172a;
+  scroll-margin-top: 88px;
+}
+.doc h3 {
+  margin-top: 2rem;
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #0f172a;
+  scroll-margin-top: 88px;
+}
+.doc h4,
+.doc h5,
+.doc h6 {
+  margin-top: 1.5rem;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.doc h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.doc a {
+  color: #6d28d9;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: #c4b5fd;
+  text-underline-offset: 2px;
+}
+.doc a:hover {
+  color: #4c1d95;
+}
+.doc strong {
+  font-weight: 700;
+  color: #0f172a;
+}
+.doc ul,
+.doc ol {
+  padding-left: 1.4rem;
+}
+.doc ul {
+  list-style: disc;
+}
+.doc ol {
+  list-style: decimal;
+}
+.doc li + li {
+  margin-top: 0.3rem;
+}
+.doc li > ul,
+.doc li > ol {
+  margin-top: 0.3rem;
+}
+.doc li::marker {
+  color: #8b5cf6;
+}
+.doc code {
+  border-radius: 5px;
+  background: #f1efec;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.88em;
+  color: #334155;
+}
+.doc pre {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: #0f172a;
+  padding: 0.8rem 1rem;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.doc pre code {
+  background: none;
+  padding: 0;
+  color: #e2e8f0;
+}
+.doc .table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(231 229 228 / 0.9);
+}
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.doc th {
+  background: #f8f7f5;
+  text-align: left;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+.doc th,
+.doc td {
+  min-width: 5.5rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid #f1efec;
+  vertical-align: top;
+}
+.doc tbody tr:last-child td {
+  border-bottom: 0;
+}
+.doc td code {
+  white-space: nowrap;
+}
+.doc figure {
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(231 229 228 / 0.9);
+}
+.doc figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.doc figcaption {
+  border-top: 1px solid #f1efec;
+  padding: 0.55rem 0.9rem;
+  font-size: 13px;
+  color: #64748b;
+}
+.doc img {
+  max-width: 100%;
+}
+.doc blockquote {
+  border-left: 3px solid #c4b5fd;
+  padding-left: 1rem;
+  color: #475569;
+}
+.doc hr {
+  border: 0;
+  border-top: 1px solid #e7e5e4;
+  margin: 2rem 0;
+}
+
+/* Printing a write-up page (the report PDF is printed this way): the page text only, no menu, footer or side list. */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.6in 0.7in;
+  }
+  html,
+  body {
+    background: white !important;
+  }
+  header,
+  footer,
+  aside,
+  nav[aria-label='Next and previous page'],
+  .print-hide {
+    display: none !important;
+  }
+  main > div {
+    padding: 0 !important;
+  }
+  article > h1 {
+    font-size: 20pt !important;
+  }
+  .doc {
+    font-size: 9.5pt;
+    line-height: 1.42;
+  }
+  .doc > * + * {
+    margin-top: 0.55rem;
+  }
+  .doc > :not(.table-wrap):not(figure) {
+    max-width: none;
+  }
+  .doc h2 {
+    margin-top: 1.1rem;
+    font-size: 13pt;
+  }
+  .doc figure {
+    margin-top: 0.6rem;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .doc figure img,
+  .doc img {
+    width: auto;
+    max-width: 100%;
+    max-height: 2.35in;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .doc figcaption {
+    padding: 0.15rem 0;
+    border: 0;
+    text-align: center;
+    font-size: 8pt;
+  }
+  .doc figure,
+  .doc table {
+    break-inside: avoid;
+  }
+  .doc h2,
+  .doc h3 {
+    break-after: avoid;
+  }
+}

@@ -1,0 +1,758 @@
+{
+  "provenance": {
+    "jurisdiction": "Hempfield township",
+    "instrument": "Code of the Township of Hempfield (Westmoreland County), Chapter 87 Zoning, as published on eCode360, with Tables 1 to 4 as attachments",
+    "kind": "place",
+    "status": "in_force",
+    "status_detail": "eCode360: includes legislation through 03-23-2026 (Supp 74, Mar 2026). New Laws (2) listed, not opened. Table 1 and Table 3 amended 3-23-2026 by Ord. No. 2026-03. eCode360 is Cloudflare-walled for plain fetches. Text and table PDFs were read in a browser.",
+    "effective_date": null,
+    "source_urls": [
+      "https://ecode360.com/HE0496",
+      "https://ecode360.com/10769959",
+      "https://ecode360.com/10769996",
+      "https://ecode360.com/10770990",
+      "https://ecode360.com/10771193",
+      "https://ecode360.com/10770249",
+      "https://ecode360.com/10770343",
+      "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+      "https://ecode360.com/attachment/330310/HE0496-087d%20TND%20Exhibit%20A.pdf",
+      "https://ecode360.com/print/HE0496?guid=10769959",
+      "https://ecode360.com/10770001",
+      "https://ecode360.com/10770003",
+      "https://ecode360.com/10770350",
+      "https://ecode360.com/attachment/330310/HE0496-087a%20Table%201.pdf",
+      "https://ecode360.com/attachment/330310/HE0496-087b%20Table%202.pdf",
+      "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+      "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "https://www.hempfieldtwp.com/162/Planning-Zoning",
+      "https://www2.census.gov/geo/docs/reference/codes2020/cousub/st42_pa_cousub2020.txt"
+    ],
+    "verified_on": "2026-11-11",
+    "county": "Westmoreland",
+    "municipality_type": "township",
+    "geoid": "4212933792",
+    "code_host": "ecode360",
+    "code_url": "https://ecode360.com/10769959",
+    "code_current_through": "2026-03-23",
+    "code_current_through_note": "Includes legislation through 03-23-2026. New Laws (2) not yet codified.",
+    "checks": [
+      "Outside the TND overlay the code has no ADU rule. A second unit may be sought as an unlisted use by special exception from the Zoning Hearing Board (87-15B, 87-186A). The Board must find its impact no greater than a listed use",
+      "The accessory apartment rule (87-79) is in Article XV, the TND overlay. The overlay covers six tax parcels (87-71, TND Exhibit A). Single-family dwellings are P in TC-R and N in TC-B (Table 1)",
+      "TC-R: one apartment within a single-family dwelling by special exception. One bedroom, more than 400 sq ft, at most 35% of the livable floor area. Owner lives in one unit. The other unit only for a relative by blood or marriage (87-79A)",
+      "No garage or portion of a garage may be used for or converted to a residential use (87-17G(1))",
+      "A nonpaying guest house in an accessory building is only for occasional guests, 'not for permanent occupancy by others as housekeeping units' (87-210 'Accessory building')",
+      "Nearest by-right alternative: a duplex is P in SR, CR and VR (Table 1). SR duplex lots need 8,000 sq ft per dwelling unit and 100 ft width (Table 3)",
+      "Table 2 lists 'Quarters separate from the principal dwelling (caretaker's quarters)' as P in A, RR, TC-R, NC and BT. No standards or definition. It is tied to a caretaker, not a general ADU path. Ask the Zoning Officer",
+      "TND parking: 2 spaces per dwelling unit, garages excluded (87-75, Table 5)",
+      "Table 2 also lists 'Other accessory uses customarily associated with permitted uses and special exceptions' as P*: permitted on a Zoning Officer finding that the use is subordinate, or by special exception. A second dwelling unit is not a customary accessory use on its face. Ask the Zoning Officer"
+    ],
+    "notes": "Zoning office: Planning and Zoning, https://www.hempfieldtwp.com/162/Planning-Zoning. Pending: New Laws (2) on eCode360 are Ord. 2026-05 (Development Authority) and 2026-06 (stray cats), per the review. Neither is about dwellings. A March 2026 news headline mentions proposed zoning changes. Not checked against an ordinance. Not law."
+  },
+  "adu": {
+    "term": {
+      "value": "accessory apartment",
+      "section": "87-79",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'§ 87-79. Accessory apartments.' The term sits only in Article XV, the TND overlay. 87-75 also says 'accessory dwelling units' for TND density counting."
+    },
+    "status": {
+      "value": "family_only",
+      "section": "87-79A, 87-71, Table 1",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Inside the TND overlay (TC-R): one apartment within a single-family dwelling by special exception, for a relative of the owner. Outside the TND the code has no ADU text."
+    },
+    "scope_districts": {
+      "value": [
+        "TC-R"
+      ],
+      "section": "87-71, 87-79, Table 1",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "87-79 is in Article XV, the TND overlay. Single-family dwellings are P in TC-R and N in TC-B (Table 1), so the rule reaches TC-R only."
+    },
+    "status_outside": {
+      "value": "not_addressed",
+      "section": "Table 1, Table 2",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087a%20Table%201.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Outside the TND, Table 1 and Table 2 have no ADU row."
+    }
+  },
+  "approval": {
+    "path": {
+      "value": "special_exception",
+      "section": "87-79A",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "'A special exception is required to create a single apartment within a single-family dwelling'. TC-R only."
+    },
+    "fallback_path": {
+      "value": "variance",
+      "section": "87-186A, MPC 910.2",
+      "url": "https://ecode360.com/10770990",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "If the Zoning Hearing Board does not accept the unlisted-use route, or a TC-R lot fails an 87-79 rule, the path is a variance."
+    },
+    "district_paths": {
+      "value": [
+        {
+          "districts": [
+            "TC-R"
+          ],
+          "path": "special_exception",
+          "section": "87-79A",
+          "url": "https://ecode360.com/10770350",
+          "note": "'A special exception is required to create a single apartment within a single-family dwelling'. Family only, owner-occupied (87-79A(11), (12))."
+        }
+      ],
+      "section": "87-79A, 87-71, Table 1",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "The accessory apartment rule applies in the TND overlay. Single-family dwellings are P in TC-R and N in TC-B (Table 1)."
+    },
+    "unlisted_use_path": {
+      "value": "special_exception",
+      "section": "87-15B, 87-186A",
+      "url": "https://ecode360.com/10770990",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "'Any use not listed in Table 1 ... or Table 2 ... may be authorized by special exception' if the Board finds the impact equal to or less than a listed use. Reading: a second unit outside the TND is unlisted."
+    }
+  },
+  "eligibility": {
+    "zoning_districts": {
+      "value": [
+        "TC-R"
+      ],
+      "section": "87-79A, Table 1",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087a%20Table%201.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Single-family dwellings are P in TC-R and N in TC-B. Outside the TND see approval.unlisted_use_path."
+    },
+    "building_types": {
+      "value": [
+        "detached",
+        "semi_detached"
+      ],
+      "section": "87-79A, Table 1",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "'a single apartment within a single-family dwelling'. Reading: detached or semidetached single-family. Not townhouses or multifamily."
+    },
+    "existing_structure_only": {
+      "value": null,
+      "section": "87-79A",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Text does not say whether the house must already exist."
+    },
+    "historic_bypass": {
+      "value": false,
+      "section": "87-79, 87-186",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "No historic rule."
+    },
+    "gates": {
+      "value": [
+        {
+          "kind": "district",
+          "condition": "Accessory apartment in TC-R (87-79): one apartment inside a single-family dwelling, one bedroom, more than 400 sq ft, at most 35% of the livable floor area. Exterior stairs not on a street wall.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": [
+            "TC-R"
+          ],
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-79A(1) to (4), (9)",
+          "url": "https://ecode360.com/10770350"
+        },
+        {
+          "kind": "family",
+          "condition": "TC-R: the owner lives in one unit. The other unit 'may only be occupied by a person who is related by blood or marriage to such owner(s).'",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": [
+            "TC-R"
+          ],
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-79A(11), (12)",
+          "url": "https://ecode360.com/10770350"
+        },
+        {
+          "kind": "building_type",
+          "condition": "TC-R: 87-79 needs a single-family dwelling. Townhouses and multifamily buildings do not qualify.",
+          "effect": "bars",
+          "applies_to": null,
+          "districts": [
+            "TC-R"
+          ],
+          "building_types": [
+            "attached"
+          ],
+          "when": "always",
+          "test": null,
+          "section": "87-79A",
+          "url": "https://ecode360.com/10770350"
+        },
+        {
+          "kind": "district",
+          "condition": "TC-R: the accessory apartment must be within the dwelling. No detached unit.",
+          "effect": "bars",
+          "applies_to": [
+            "detached_new",
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": [
+            "TC-R"
+          ],
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-79A",
+          "url": "https://ecode360.com/10770350"
+        },
+        {
+          "kind": "existing_structure",
+          "condition": "'No garage or portion of any garage shall be used for or converted to a residential use.'. Garage forms are left out of form.types_allowed for this reason.",
+          "effect": "condition",
+          "applies_to": [
+            "garage_conversion",
+            "over_garage"
+          ],
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-17G(1)",
+          "url": "https://ecode360.com/10770003"
+        },
+        {
+          "kind": "occupancy",
+          "condition": "An accessory building may hold a nonpaying guest house only 'for the occasional housing of guests' and 'not for permanent occupancy by others as housekeeping units'. Servants' quarters are listed. A detached rental unit is not.",
+          "effect": "condition",
+          "applies_to": [
+            "detached_new"
+          ],
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-210 'Accessory building' (1)(g), (h)",
+          "url": "https://ecode360.com/10771193"
+        },
+        {
+          "kind": "utilities",
+          "condition": "TC-R: water and sewage must be certified adequate for two units, and the Municipal Authority must accept the added sewage demand.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": [
+            "TC-R"
+          ],
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-79A(6) to (8)",
+          "url": "https://ecode360.com/10770350"
+        },
+        {
+          "kind": "other",
+          "condition": "Outside the TND, a special exception for an unlisted use needs a Board finding that its impact is equal to or less than a listed use (87-186A). Not an ADU rule. Nothing sets size or occupancy.",
+          "effect": "condition",
+          "applies_to": null,
+          "districts": null,
+          "building_types": null,
+          "when": "always",
+          "test": null,
+          "section": "87-186A",
+          "url": "https://ecode360.com/10770990",
+          "not_districts": [
+            "TC-R"
+          ]
+        }
+      ],
+      "section": "87-79, 87-17G, 87-186",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R rules and town-wide bars."
+    }
+  },
+  "form": {
+    "types_allowed": {
+      "value": [
+        "internal",
+        "attached",
+        "detached_new"
+      ],
+      "section": "87-186A, 87-79A, 87-17G(1)",
+      "url": "https://ecode360.com/10770990",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Unlisted-use route: no form is written. Garages may not hold a residence (87-17G(1)). In TC-R only inside the dwelling (gates)."
+    }
+  },
+  "size": {
+    "max_sqft": {
+      "value": null,
+      "section": "87-79A",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "No town-wide cap. TC-R: no square foot cap, only 35% (87-79A(4))."
+    },
+    "max_share_of_house": {
+      "value": 0.35,
+      "section": "87-79A(4)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R only. 'shall not exceed 35% of the entire livable gross floor area of the single-family dwelling'."
+    },
+    "min_sqft": {
+      "value": 400,
+      "section": "87-79A(3)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R only. 'shall be greater than 400 square feet'. Strictly more than 400."
+    }
+  },
+  "envelope": {
+    "max_height_ft": {
+      "value": 20,
+      "section": "87-18, Table 4",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Accessory structures: building height 20 feet in A, RR, SR, CR and VR. ADU itself must be inside the house."
+    },
+    "setback_front_ft": {
+      "value": null,
+      "section": "87-18, Table 4",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Accessory structures 'Shall not be constructed any closer to the front yard line than the front of the principal building'."
+    },
+    "setback_side_ft": {
+      "value": 10,
+      "section": "87-18, Table 4",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "SR accessory structures: side yard 10 feet. A and RR 25 ft, CR and VR 5 ft. See districts."
+    },
+    "setback_rear_ft": {
+      "value": 10,
+      "section": "87-18, Table 4",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "SR accessory structures: rear yard 10 feet. A and RR 35 ft, CR and VR 10 ft."
+    },
+    "separation_ft": {
+      "value": null,
+      "section": "87-17, 87-18",
+      "url": "https://ecode360.com/10770003",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "No separation between buildings on one lot found in 87-17."
+    },
+    "internal_uses_district_height": {
+      "value": true,
+      "section": "87-79A, Table 3",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary",
+      "note": "Unit is inside the house, so the district height (35 ft) applies."
+    },
+    "front_yard_barred": {
+      "value": true,
+      "section": "87-18, Table 4",
+      "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "Accessory structures 'Shall not be constructed any closer to the front yard line than the front of the principal building'."
+    }
+  },
+  "use": {
+    "owner_occupancy": {
+      "value": true,
+      "section": "87-79A(11)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R only (adu.scope_districts). 'The owner(s) ... must occupy one of the two residential units on the property.'"
+    },
+    "family_only": {
+      "value": true,
+      "section": "87-79A(12)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R only. The other unit 'may only be occupied by a person who is related by blood or marriage to such owner(s).'"
+    },
+    "short_term_rental_banned": {
+      "value": null,
+      "section": "87-79, 87-186",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "Not addressed."
+    },
+    "max_adus": {
+      "value": 1,
+      "section": "87-79A(1)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": "2026-11-11",
+      "confidence": "verified",
+      "note": "TC-R only. 'Only one apartment is allowed'."
+    },
+    "sale_apart_allowed": {
+      "value": null,
+      "section": "87-79",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "Not addressed."
+    }
+  },
+  "parking": {
+    "spaces_required": {
+      "value": null,
+      "section": "87-75 Table 5, 87-79A(10), Article XXI",
+      "url": "https://ecode360.com/10770343",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "No ADU row. TND Table 5: 'Single-family dwellings / 2 for each dwelling unit (garages excluded)'. Article XXI table outside the TND not read."
+    },
+    "reading": {
+      "value": "TC-R: 2 spaces per dwelling unit, garages excluded. If the apartment counts as a unit, house and apartment need 4 off-garage spaces. If not, 2. Parking must be on the same parcel (87-79A(10)). Outside the TND the Article XXI table was not read.",
+      "section": "87-75 Table 5, 87-79A(10)",
+      "url": "https://ecode360.com/10770343",
+      "verified_on": "2026-11-11",
+      "confidence": "secondary"
+    }
+  },
+  "utilities": {
+    "new_connection_required": {
+      "value": null,
+      "section": "87-79A(6) to (8)",
+      "url": "https://ecode360.com/10770350",
+      "verified_on": null,
+      "confidence": "unverified",
+      "note": "TC-R: water and sewage must be certified adequate for two units. Separate connections not addressed."
+    }
+  },
+  "districts": {
+    "TC-R": {
+      "min_lot_sqft": {
+        "value": 5000,
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "secondary",
+        "note": "TND Schedule A: single-family lot types SL3 and SL4 are 5K, SL1 and SL2 6K, LL 10K, EL 20K. The smallest single-family lot type (5,000 sq ft) is used here. Yards and height in this row are for SL1 and SL2."
+      },
+      "setback_front_ft": {
+        "value": 15,
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Front yard (exc. porch)' 15 ft for SL1 to SL4."
+      },
+      "setback_side_ft": {
+        "value": 5,
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Side yard, minimum' 5 ft, aggregate 15 ft for SL1 to SL4."
+      },
+      "setback_rear_ft": {
+        "value": 40,
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Rear yard (home)' 40 ft for SL1 and SL2, 20 ft for SL3 and SL4, 50 ft for LL and EL. The value here is for SL1 and SL2. See yard_tiers."
+      },
+      "principal_max_height_ft": {
+        "value": 38,
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'Maximum height (feet)' 38 for SL1 to SL4. 45 for larger lot types."
+      },
+      "adu_path": {
+        "value": "special_exception",
+        "section": "87-79A",
+        "url": "https://ecode360.com/10770350",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "'A special exception is required to create a single apartment within a single-family dwelling'."
+      },
+      "yard_tiers": {
+        "value": [
+          {
+            "min_lot_sqft": 5000,
+            "max_lot_sqft": 6000,
+            "applies_to": "principal",
+            "setback_front_ft": 15,
+            "setback_side_ft": 5,
+            "setback_rear_ft": 20,
+            "section": "87-73, TND Schedule A, SL3 and SL4",
+            "note": "Lot area 5K, rear yard (home) 20 ft."
+          },
+          {
+            "min_lot_sqft": 6000,
+            "max_lot_sqft": 10000,
+            "applies_to": "principal",
+            "setback_front_ft": 15,
+            "setback_side_ft": 5,
+            "setback_rear_ft": 40,
+            "section": "87-73, TND Schedule A, SL1 and SL2",
+            "note": "Lot area 6K, rear yard (home) 40 ft."
+          },
+          {
+            "min_lot_sqft": 10000,
+            "max_lot_sqft": 20000,
+            "applies_to": "principal",
+            "setback_front_ft": 20,
+            "setback_side_ft": 10,
+            "setback_rear_ft": 50,
+            "section": "87-73, TND Schedule A, LL1 and LL2",
+            "note": "Lot area 10K, height 45 ft."
+          },
+          {
+            "min_lot_sqft": 20000,
+            "applies_to": "principal",
+            "setback_front_ft": 25,
+            "setback_side_ft": 25,
+            "setback_rear_ft": 50,
+            "section": "87-73, TND Schedule A, EL1 and EL2",
+            "note": "Lot area 20K, height 45 ft."
+          }
+        ],
+        "section": "87-73, TND Schedule A",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087e%20TND%20Schedule%20A.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "secondary",
+        "note": "Schedule A sets bulk rules by lot type (SL1 to SL4, LL1, LL2, EL1, EL2), not by district. The TND plan assigns the lot type. The tiers here go by the lot type's minimum lot area, which is a reading."
+      }
+    },
+    "SR": {
+      "min_lot_sqft": {
+        "value": 10000,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "SR single-family detached. Principal yards: front 30 ft, side 10 ft, rear 15 ft."
+      },
+      "setback_front_ft": {
+        "value": 30,
+        "section": "87-18, Table 3, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. An accessory structure may not be closer to the front lot line than the front of the house (Table 4)."
+      },
+      "max_building_coverage": {
+        "value": 0.3,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum coverage."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum building height 35 ft."
+      },
+      "setback_side_ft": {
+        "value": 10,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, SR: side yard 10 feet. Principal side yard is in Table 3."
+      },
+      "setback_rear_ft": {
+        "value": 10,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, SR: rear yard 10 feet."
+      }
+    },
+    "RR": {
+      "min_lot_sqft": {
+        "value": 30000,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "RR single-family detached with utilities. Principal yards: front 30 ft, side 25 ft, rear 35 ft."
+      },
+      "setback_front_ft": {
+        "value": 30,
+        "section": "87-18, Table 3, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. An accessory structure may not be closer to the front lot line than the front of the house (Table 4)."
+      },
+      "max_building_coverage": {
+        "value": 0.25,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum coverage."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum building height 35 ft."
+      },
+      "setback_side_ft": {
+        "value": 25,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, RR: side yard 25 feet. Principal side yard is in Table 3."
+      },
+      "setback_rear_ft": {
+        "value": 35,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, RR: rear yard 35 feet."
+      }
+    },
+    "A": {
+      "min_lot_sqft": {
+        "value": 30000,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "A single-family detached with utilities. Principal yards: front 30 ft, side 25 ft, rear 35 ft."
+      },
+      "setback_front_ft": {
+        "value": 30,
+        "section": "87-18, Table 3, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "District front yard. An accessory structure may not be closer to the front lot line than the front of the house (Table 4)."
+      },
+      "max_building_coverage": {
+        "value": 0.25,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum coverage."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum building height 35 ft."
+      },
+      "setback_side_ft": {
+        "value": 25,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, A: side yard 25 feet. Principal side yard is in Table 3."
+      },
+      "setback_rear_ft": {
+        "value": 35,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, A: rear yard 35 feet."
+      }
+    },
+    "VR": {
+      "min_lot_sqft": {
+        "value": 8000,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "VR single-family detached. Front yard is the average of adjoining lots. Side 10 ft, rear 15 ft."
+      },
+      "max_building_coverage": {
+        "value": 0.5,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum coverage."
+      },
+      "principal_max_height_ft": {
+        "value": 35,
+        "section": "87-18, Table 3",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c%20Table%203.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Maximum building height 35 ft."
+      },
+      "setback_side_ft": {
+        "value": 5,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, CR and VR: side yard 5 feet. Principal side yard is in Table 3."
+      },
+      "setback_rear_ft": {
+        "value": 10,
+        "section": "87-18, Table 4",
+        "url": "https://ecode360.com/attachment/330310/HE0496-087c1%20Table%204.pdf",
+        "verified_on": "2026-11-11",
+        "confidence": "verified",
+        "note": "Table 4 accessory structures, CR and VR: rear yard 10 feet."
+      }
+    }
+  }
+}

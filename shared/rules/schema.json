@@ -1,0 +1,5685 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yz-musa-final/shared/rules/schema.json",
+  "title": "ADU rule file",
+  "description": "One file per place or per bill. Every rule value is a leaf: {value, section, url, verified_on, confidence, note, mode}. null with confidence unverified means not confirmed, so the resolver falls back. null with verified or secondary means the source sets no single number. mode tells a reform layer how to combine with the place: set replaces, at_least is a floor the town may not go under, at_most is a cap the town may not go over. Feet and square feet.",
+  "type": "object",
+  "required": [
+    "provenance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "provenance": {
+      "type": "object",
+      "required": [
+        "jurisdiction",
+        "instrument",
+        "kind",
+        "status",
+        "effective_date",
+        "source_urls",
+        "verified_on"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "jurisdiction": {
+          "type": "string"
+        },
+        "instrument": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "place",
+            "reform",
+            "default",
+            "statewide"
+          ]
+        },
+        "status": {
+          "enum": [
+            "in_force",
+            "pending",
+            "died"
+          ]
+        },
+        "status_detail": {
+          "type": "string"
+        },
+        "effective_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "source_urls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "verified_on": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "reaches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "does_not_reach": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "county": {
+          "type": "string",
+          "description": "County name without the word County, e.g. Lehigh. Town files only."
+        },
+        "municipality_type": {
+          "enum": [
+            "city",
+            "borough",
+            "township",
+            "town",
+            "municipality"
+          ],
+          "description": "As in the Census name. Home rule places keep their Census type (Bethel Park and Monroeville are municipality)."
+        },
+        "geoid": {
+          "type": "string",
+          "pattern": "^42\\d{8}$",
+          "description": "2020 Census county subdivision GEOID (state 42 + county 3 + cousub 5). Must exist in towns_index.json."
+        },
+        "code_host": {
+          "enum": [
+            "ecode360",
+            "municode",
+            "amlegal",
+            "general code",
+            "own site",
+            "other"
+          ],
+          "description": "Where the online code lives."
+        },
+        "code_url": {
+          "type": "string",
+          "description": "Link to the zoning chapter as published online."
+        },
+        "code_current_through": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "The date the online code says it is current to. null when the publisher shows none."
+        },
+        "code_current_through_note": {
+          "type": "string",
+          "description": "The currency line as the publisher shows it, e.g. 'Current through Ord. 2025-4, adopted 6-2-2025'."
+        },
+        "geoid_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^42\\d{8}$"
+          },
+          "description": "Other Census county subdivision GEOIDs of the same place, e.g. the part of a city in a second county (Bethlehem, Lehigh part 4207706088). Lookups by these find this file."
+        },
+        "code_caution": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A caution about the code text itself, shown with every answer: the online code is a placeholder, or amendments exist that were not seen."
+        }
+      }
+    },
+    "adu": {
+      "type": "object",
+      "description": "Town files: what the code calls an ADU and how it treats one, each cited. status not_addressed means the code has no ADU text. Then cite the nearest sections (accessory uses, family, two-family) in approval.path.",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/leaf_adu_status"
+        },
+        "term": {
+          "$ref": "#/$defs/leaf_str"
+        },
+        "scope_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "The ADU rule reaches only these districts or overlays. Elsewhere status_outside applies."
+        },
+        "status_outside": {
+          "$ref": "#/$defs/leaf_adu_status",
+          "description": "Status outside scope_districts (often not_addressed)."
+        },
+        "status_by_form": {
+          "$ref": "#/$defs/leaf_status_by_form"
+        },
+        "status_outside_by_district": {
+          "$ref": "#/$defs/leaf_status_by_district"
+        },
+        "scope_by_use": {
+          "$ref": "#/$defs/leaf_scope_by_use"
+        },
+        "defined_not_listed": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 28. With status not_addressed: the code defines an ADU, but no district use list names it (Kingston township 27-202). The path to ask then says the code defines an ADU but no district permits it, never that the code has no ADU rule."
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "description": "How a qualifying ADU is approved, and the path when the lot does not qualify.",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/leaf_path"
+        },
+        "fallback_path": {
+          "$ref": "#/$defs/leaf_path"
+        },
+        "detached_in_yard_path": {
+          "$ref": "#/$defs/leaf_path"
+        },
+        "district_paths": {
+          "$ref": "#/$defs/leaf_district_paths"
+        },
+        "historic_path": {
+          "$ref": "#/$defs/leaf_path"
+        },
+        "unlisted_use_path": {
+          "$ref": "#/$defs/leaf_path",
+          "description": "Path for a use the code does not list (for example a special exception for uses not provided for, Lancaster 300-17, Hempfield 87-186). Not where the code bars unlisted uses."
+        },
+        "alternatives": {
+          "$ref": "#/$defs/leaf_alternatives"
+        },
+        "form_paths": {
+          "$ref": "#/$defs/leaf_form_paths"
+        },
+        "unlisted_use_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Districts where approval.unlisted_use_path applies. Elsewhere the fallback path."
+        },
+        "use_variance_barred": {
+          "$ref": "#/$defs/leaf_use_variance_barred"
+        },
+        "unlisted_use_scope": {
+          "$ref": "#/$defs/leaf_unlisted_use_scope"
+        },
+        "land_development_second_building": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 15: true when the code makes a second residential building on a lot a land development (for example 'Construction of two or more residential buildings on a single lot'). A new detached unit then needs land development plan approval as well as the zoning path. Said as a condition for a new detached unit."
+        }
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "description": "Which lots qualify. building_types uses detached, semi_detached, attached.",
+      "additionalProperties": false,
+      "properties": {
+        "zoning_districts": {
+          "$ref": "#/$defs/leaf_list"
+        },
+        "building_types": {
+          "$ref": "#/$defs/leaf_list"
+        },
+        "overlay_bars": {
+          "$ref": "#/$defs/leaf_overlay_bars"
+        },
+        "min_lot_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "existing_structure_only": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "historic_bypass": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "gates": {
+          "$ref": "#/$defs/leaf_gates"
+        },
+        "lot_area_per_unit_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "min_lot_share_of_district": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "The lot needs only this share of the district minimum lot (Manheim: 0.9)."
+        },
+        "requires_conforming_lot": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when the code ties the ADU to a lot that meets the district minimum lot (a conforming lot). Without it, a lot below the district minimum is shown as a possible nonconforming lot, not barred."
+        },
+        "historic_test": {
+          "$ref": "#/$defs/leaf_str",
+          "description": "The town's own test for the historic path in plain words (for example on the Historic Resources Map). With it the resolver reads the lot fact historic_resource, not the Philadelphia inputs."
+        },
+        "districts_in_doubt": {
+          "$ref": "#/$defs/leaf_districts_in_doubt",
+          "description": "Districts that list the ADU while the ADU section names other districts. The tool says: listed, ask. Not allowed as a plain answer. Pass 11: named_by says which way the doubt runs. The lot reads the path to ask, qualified (conditional on reading), never a variance unless another test fails."
+        },
+        "districts_read_no_listing": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Pass 9: districts whose rules were read and whose use list has no ADU (and no row in districts). A lot there reads 'district read, no ADU listing'. A district in no list and with no row reads 'not read' instead."
+        }
+      }
+    },
+    "form": {
+      "type": "object",
+      "description": "Which ADU forms are allowed.",
+      "additionalProperties": false,
+      "properties": {
+        "types_allowed": {
+          "$ref": "#/$defs/leaf_types"
+        },
+        "labels": {
+          "$ref": "#/$defs/leaf_labels"
+        },
+        "types_allowed_historic": {
+          "$ref": "#/$defs/leaf_types",
+          "description": "Forms allowed on the historic path, when they differ from types_allowed."
+        },
+        "types_not_addressed": {
+          "$ref": "#/$defs/leaf_types",
+          "description": "Forms the code does not name (neither allowed nor barred). They read 'not addressed for this form, ask the zoning officer', not a variance. Leave them out of types_allowed."
+        },
+        "types_in_conflict": {
+          "$ref": "#/$defs/leaf_types",
+          "description": "Pass 9: forms on which the code's own passages conflict (one allows or names it, another bars or leaves it out). They read 'the code's text conflicts for this form, ask the zoning officer', never a firm yes or no. Leave them out of types_allowed and types_not_addressed; put both passages in the note."
+        }
+      }
+    },
+    "size": {
+      "type": "object",
+      "description": "Floor area of the ADU. When a reform layer gives both max_sqft and max_share_of_house as at_least, the floor is the lesser of the two.",
+      "additionalProperties": false,
+      "properties": {
+        "max_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "max_share_of_house": {
+          "$ref": "#/$defs/leaf_share"
+        },
+        "min_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "historic_exempt": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "max_share_internal": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "Share cap for a unit inside or attached to the house, when it differs from max_share_of_house (which then holds for a unit in an accessory building)."
+        },
+        "max_sqft_internal": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Floor area cap for a unit inside or attached to the house, when it differs from max_sqft."
+        },
+        "max_sqft_accessory_building": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Floor area cap for a unit in a detached or accessory building (new, garage conversion, over a garage), when it differs from max_sqft."
+        },
+        "max_share_accessory_building": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "Share cap for a unit in an accessory building, when it differs from max_share_of_house."
+        },
+        "max_sqft_by_form": {
+          "$ref": "#/$defs/leaf_num_by_form",
+          "description": "A size cap for one form only, e.g. {\"detached_new\": 800}. Wins over the other sq ft caps for that form."
+        },
+        "cap_is_greater_of": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when the code says max_sqft or max_share_of_house, whichever is GREATER. Otherwise the two are the lesser of."
+        },
+        "max_footprint_sqft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 25: a cap on the ground the unit's building covers, apart from the floor area cap (Narberth 500-802B(4): footprint 600 sq ft, floor area 800 sq ft). It binds a unit in an accessory building (new detached, garage conversion, over a garage; for a garage unit the garage's footprint), today only (under a bill the town's accessory caps give way). The lot record keeps it as rules.max_footprint_sqft and the unit test says a unit over it does not fit. Leave it out when the code caps only floor area."
+        },
+        "max_share_is_less_than": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 19: true when the code caps the unit at LESS THAN max_share_of_house ('shall be less than 70% that of the primary dwelling'), so a unit of exactly that share does not qualify. The sentence says 'Less than 70% of the house', and the number for a known house is the largest whole sq ft under the share. Only the general share is strict, not a share for one form or the bill's floor."
+        },
+        "max_share_by_form": {
+          "$ref": "#/$defs/leaf_num_by_form",
+          "description": "A share-of-house cap for one form only, e.g. {\"detached_new\": 1.0}. Wins over the other share caps for that form."
+        },
+        "max_share_of_part": {
+          "$ref": "#/$defs/leaf_share_of_part"
+        },
+        "exempt_building": {
+          "$ref": "#/$defs/leaf_exempt_building"
+        },
+        "max_share_of_house_and_unit": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "Pass 9: a size cap that is a share of the house and the unit together (for example 'no more than 35% of the total floor area of the dwelling, including the unit'). For a unit inside the house it is that share of the house. For an added unit (attached or detached) it is share / (1 - share) of the existing house. Use it in place of a hand-worked max_share_of_house."
+        },
+        "min_sqft_by_form": {
+          "$ref": "#/$defs/leaf_num_by_form",
+          "description": "Pass 10: a minimum floor area for one form only (for example an elder cottage of at least 300 sq ft). Said as a line for the forms allowed on the lot."
+        },
+        "max_sqft_by_lot_size": {
+          "$ref": "#/$defs/leaf_size_by_lot"
+        }
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "description": "Height and distances for a new ADU structure. max_height_ft is the limit for a detached or garage ADU. The last three are building code distances to a lot line or to the line between two buildings.",
+      "additionalProperties": false,
+      "properties": {
+        "max_height_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_front_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_side_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_rear_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_rear_alley_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "separation_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "accessory_structure_max_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "internal_uses_district_height": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "rated_wall_below_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "no_openings_below_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "sprinklered_unrated_min_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "max_height_garage_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Height cap for a garage (garage conversion, unit over a garage) when it differs from max_height_ft."
+        },
+        "height_capped_at_house": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when an accessory building may not be taller than the house (Lower Paxton 203-313H)."
+        },
+        "accessory_height_applies": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "false when the file says no accessory height rule reaches an ADU, so the district height applies. Leave out when unknown."
+        },
+        "district_yards_bind_accessory": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when the code makes accessory buildings meet the district (principal) yards. Otherwise a detached unit takes the envelope yards and an attached unit the district yards."
+        },
+        "accessory_cap_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Districts where accessory_structure_max_sqft applies, when the code limits it (Lower Paxton: residential lots under 2 acres)."
+        },
+        "accessory_floor_area_total_sqft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Lot-wide total floor area of all accessory buildings, an existing garage included (Warminster 27-1786.1.G, 500 sq ft of ground floor area). Not a per-building cap."
+        },
+        "accessory_structure_threshold_sqft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Above this floor area an accessory building needs a special exception or other approval (Norristown 320-232A(2), 600 sq ft). Not a cap. Use accessory_structure_max_sqft only for a hard cap."
+        },
+        "unit_within_building_envelope": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when the unit must sit inside the building envelope (outside the district yards), so no alley rear default applies (Warminster 27-1793)."
+        },
+        "yard_tiers": {
+          "$ref": "#/$defs/leaf_yard_tiers"
+        },
+        "max_height_stories": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Accessory building height in stories, when the code gives stories."
+        },
+        "max_height_where": {
+          "$ref": "#/$defs/leaf_height_where"
+        },
+        "accessory_structure_max_share": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "Every accessory structure: at most this share of the house, beside accessory_structure_max_sqft (whichever is less)."
+        },
+        "accessory_structure_max_height_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "The general accessory structure height, when the ADU text sets its own height in max_height_ft."
+        },
+        "accessory_structure_max_stories": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 28: the general accessory structure height in stories, beside accessory_structure_max_height_ft (Kingston township 27-343.3A(1): '1 1/2 stories or 15 feet, except in A-1 Districts'). It has the same district scope (accessory_height_cap_districts) and is said with the feet cap. Where the caps bind the ADU (accessory_cap_binds_adu), a unit in an accessory building takes it as its story limit today. Under a state bill it gives way to the bill's height floor, and the line says so."
+        },
+        "accessory_cap_binds_adu": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Whether the general accessory structure caps (accessory_structure_max_sqft, _max_share, _max_height_ft) also bind a unit in an accessory building. true: the lesser applies. false: the ADU text replaces them. null: not settled, both are shown."
+        },
+        "front_yard_barred": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when an accessory building may not stand in the front yard (between the house and the street), a bar rather than a setback number. Put any exception in the note (for example 100 ft from the street)."
+        },
+        "attached_height_capped_at_house": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "An attached unit (an addition) may not be taller than the existing house."
+        },
+        "accessory_rear_yard_only": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 8: true when an accessory building (and so a detached ADU) may stand only in the rear yard: not the front yard and not a side yard."
+        },
+        "max_height_by_stories": {
+          "$ref": "#/$defs/leaf_height_by_stories"
+        },
+        "accessory_rules_where": {
+          "$ref": "#/$defs/leaf_accessory_where"
+        },
+        "accessory_share_of_house_part": {
+          "$ref": "#/$defs/leaf_share_of_house_part"
+        },
+        "max_height_garage_where": {
+          "$ref": "#/$defs/leaf_garage_height_where"
+        },
+        "accessory_yards_inside_rear_yard": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 13: true when the accessory side and rear yards (envelope setback_side_ft, setback_rear_ft) hold only for a building inside the rear yard, and elsewhere the building stays in the buildable area and meets the district yards (for example 'permitted in the general buildable area and inside the rear yards as long as they are at least five feet from any property line'). A detached unit then shows the district yards, none where the file has no district row, and a condition says the rear yard figures."
+        },
+        "accessory_height_cap_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Pass 17: districts where accessory_structure_max_height_ft applies, when the code limits it (Elizabethtown 27-1302.2(6): 'within a residential zone'). Elsewhere the town's accessory height cap is not shown or used. A district's own cap is not affected."
+        },
+        "accessory_rear_yard_only_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Pass 17: districts where accessory_rear_yard_only applies, when the code limits it. Elsewhere front_yard_barred, if set, is the bar said."
+        },
+        "front_yard_barred_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Pass 26: districts where front_yard_barred applies, when the code limits it (Pittston 480-76: 'Accessory structures in R-1, R-2, and R-3 districts shall be permitted in the rear and side yards only'). Elsewhere the bar is not said and the unit keeps its front yard number. Where the lot's district is not given, the bar names these districts."
+        },
+        "adu_yards_bind_all_forms": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 18: true when the ADU side and rear yards in this envelope (setback_side_ft, setback_rear_ft) bind every form, a unit in or attached to the house as well as one in a separate building (New Garden 200-413E(11)(a), (b)). An attached unit then takes the larger of the district yard and this one, and a unit in the house takes this one."
+        },
+        "accessory_yards_districts": {
+          "$ref": "#/$defs/leaf_list",
+          "description": "Pass 18: districts where the accessory side and rear yards in this envelope (setback_side_ft, setback_rear_ft, setback_rear_alley_ft) apply, when the code limits them (Nanticoke 500-302C: unattached accessory structures in R zones). Elsewhere they are not used: a district row's accessory yards win, then its principal yards, and with neither no figure is given."
+        },
+        "setbacks_by_form": {
+          "$ref": "#/$defs/leaf_yards_by_form"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "description": "Lot coverage limits.",
+      "additionalProperties": false,
+      "properties": {
+        "max_building_coverage": {
+          "$ref": "#/$defs/leaf_share"
+        },
+        "max_impervious": {
+          "$ref": "#/$defs/leaf_share"
+        },
+        "min_allowance_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        }
+      }
+    },
+    "use": {
+      "type": "object",
+      "description": "Who may live there and how many units.",
+      "additionalProperties": false,
+      "properties": {
+        "owner_occupancy": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "family_only": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "short_term_rental_ban_allowed": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "short_term_rental_banned": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "max_adus": {
+          "$ref": "#/$defs/leaf_int"
+        },
+        "sale_apart_allowed": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "sale_apart_ban_allowed": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "occupancy": {
+          "$ref": "#/$defs/leaf_str"
+        },
+        "max_adus_by_lot_size": {
+          "$ref": "#/$defs/leaf_adus_by_lot"
+        },
+        "owner_occupancy_by_form": {
+          "$ref": "#/$defs/leaf_bool_by_form",
+          "description": "Pass 10: whether the owner must live on the lot, per form. Said as a condition on the forms it reaches. use.owner_occupancy stays the town-wide value."
+        }
+      }
+    },
+    "parking": {
+      "type": "object",
+      "description": "Extra off-street spaces for the ADU.",
+      "additionalProperties": false,
+      "properties": {
+        "spaces_required": {
+          "$ref": "#/$defs/leaf_int"
+        },
+        "total_on_site": {
+          "$ref": "#/$defs/leaf_int",
+          "description": "Total off-street spaces the lot needs with the ADU (house plus ADU), when the code states it."
+        },
+        "reading": {
+          "$ref": "#/$defs/leaf_str",
+          "description": "When the parking rule has more than one reading, state them here in plain words (e.g. '2 in total, or 4 if the apartment counts as a unit')."
+        },
+        "spaces_per_resident": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Spaces per resident of the unit, when the code counts residents. spaces_required stays null."
+        },
+        "spaces_rate": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 19: the spaces the code asks for the unit as written, before any rounding (Douglass 265-230C(7): 1.5). With fraction_rounding the answer says the rate, the rule and the whole count. spaces_required keeps the whole count."
+        },
+        "fraction_rounding": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/leaf_str"
+            },
+            {
+              "properties": {
+                "value": {
+                  "enum": [
+                    "any_fraction_counts",
+                    "quarter_or_more_counts",
+                    "half_or_more_counts",
+                    null
+                  ]
+                }
+              }
+            }
+          ],
+          "description": "Pass 19: the rule the code states for a fraction of a parking space. any_fraction_counts: any fraction counts as one space ('Fractions of spaces shall be rounded up'). quarter_or_more_counts: a fraction of one quarter or more counts as one. half_or_more_counts: one half or more. Set it only from the code's own words, never assumed. Said with spaces_rate."
+        }
+      }
+    },
+    "utilities": {
+      "type": "object",
+      "description": "Water and sewer.",
+      "additionalProperties": false,
+      "properties": {
+        "new_connection_required": {
+          "$ref": "#/$defs/leaf_bool"
+        },
+        "connection_fee_allowed": {
+          "$ref": "#/$defs/leaf_bool"
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "description": "Site rules that come from the ground, not from the ADU text. Read only for Philadelphia and Pittsburgh.",
+      "additionalProperties": false,
+      "properties": {
+        "steep_slopes": {
+          "$ref": "#/$defs/leaf_site_rows"
+        }
+      }
+    },
+    "statewide": {
+      "type": "object",
+      "description": "pa_statewide.json only. What applies in every Pennsylvania town, one cited text item per key. value is a short plain statement.",
+      "additionalProperties": {
+        "$ref": "#/$defs/leaf_str"
+      }
+    },
+    "districts": {
+      "type": "object",
+      "description": "Per base district standards. Keys are district codes as mapped (e.g. RSA-5, R1D-L).",
+      "additionalProperties": {
+        "$ref": "#/$defs/district"
+      }
+    }
+  },
+  "$defs": {
+    "leaf_num": {
+      "type": "object",
+      "description": "A number in feet or square feet. null means no single number. See confidence.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_share": {
+      "type": "object",
+      "description": "A share from 0 to 1.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_int": {
+      "type": "object",
+      "description": "A whole number.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_bool": {
+      "type": "object",
+      "description": "Yes or no.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_str": {
+      "type": "object",
+      "description": "A short text value.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_list": {
+      "type": "object",
+      "description": "A list. null means any.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_types": {
+      "type": "object",
+      "description": "ADU forms.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "enum": [
+              "detached_new",
+              "garage_conversion",
+              "over_garage",
+              "internal",
+              "attached"
+            ]
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_path": {
+      "type": "object",
+      "description": "Approval path.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "enum": [
+            "by_right",
+            "administrator_exception",
+            "special_exception",
+            "conditional_use",
+            "variance",
+            "not_allowed",
+            null
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        },
+        "hearing_named": {
+          "type": "boolean",
+          "description": "Pass 12: false when the code names no hearing for this decision (for example the governing body decides on a finding, Adams 167-21.1). The answer then says who decides and that the code names no hearing, never 'after a public hearing'. Leave it out where the code or the MPC gives a hearing."
+        },
+        "code_term": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Pass 15: the code's own name for this decision when the code does not call it by the path's name (for example 'use grant' for a Zoning Hearing Board decision on a use not listed). The path keeps its value for the tool. The sentences name the code's term and the path it is read as."
+        }
+      }
+    },
+    "leaf_overlay_bars": {
+      "type": "object",
+      "description": "Overlays that bar ADUs. districts null means every base district. council_districts and wards say where the overlay applies, so a lot can be placed by council district or ward when no overlay map is at hand.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "overlay",
+              "districts",
+              "historic_ok",
+              "section",
+              "url"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "overlay": {
+                "type": "string"
+              },
+              "districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "historic_ok": {
+                "type": "boolean"
+              },
+              "section": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "council_districts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "wards": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "applies_section": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "district": {
+      "type": "object",
+      "description": "Base district standards that bind an accessory structure.",
+      "additionalProperties": false,
+      "properties": {
+        "min_lot_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_front_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_side_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_side_semi_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "setback_rear_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "max_building_coverage": {
+          "$ref": "#/$defs/leaf_share"
+        },
+        "parking_spaces": {
+          "$ref": "#/$defs/leaf_int"
+        },
+        "principal_max_height_ft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "adu_path": {
+          "$ref": "#/$defs/leaf_path"
+        },
+        "lot_area_per_unit_sqft": {
+          "$ref": "#/$defs/leaf_num"
+        },
+        "separation_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Minimum distance between dwellings on a lot in this district, when the code sets one."
+        },
+        "accessory_setback_front_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Accessory building yard in this district, when it differs from the town-wide envelope value."
+        },
+        "accessory_setback_side_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Accessory building yard in this district, when it differs from the town-wide envelope value."
+        },
+        "accessory_setback_rear_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Accessory building yard in this district, when it differs from the town-wide envelope value."
+        },
+        "yard_tiers": {
+          "$ref": "#/$defs/leaf_yard_tiers"
+        },
+        "principal_max_stories": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Principal building height in stories, when the code gives stories. Fill it beside principal_max_height_ft, and alone when the code gives no feet figure."
+        },
+        "max_building_coverage_by_type": {
+          "$ref": "#/$defs/leaf_share_by_type",
+          "description": "Building coverage that differs by building type in this district (the lot's house type picks it). Without a match the district or town max_building_coverage applies."
+        },
+        "adu_max_sqft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "The ADU size cap in this district when it differs from size.max_sqft."
+        },
+        "adu_size_cap_lifted": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "true when the code sets no ADU size maximum in this district, so the town-wide caps do not apply."
+        },
+        "utility_rows": {
+          "$ref": "#/$defs/leaf_utility_rows"
+        },
+        "lot_area_per_unit_by_type": {
+          "$ref": "#/$defs/leaf_num_by_type",
+          "description": "Lot area per dwelling unit by building type (for example twin 6,000 against single-family 12,000). The lot's house type picks it."
+        },
+        "min_lot_sqft_by_type": {
+          "$ref": "#/$defs/leaf_num_by_type",
+          "description": "District minimum lot by building type, when the table gives one per type. The lot's house type picks it."
+        },
+        "stricter_by_house_type": {
+          "$ref": "#/$defs/leaf_house_type_cases"
+        },
+        "setback_sides_total_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 9: side yards given only as a total for both sides (for example 'side yards 30 ft together'). With no setback_side_ft in the row, no single side figure is shown (never the default) and the sentence gives the total."
+        },
+        "max_impervious_coverage": {
+          "$ref": "#/$defs/leaf_share",
+          "description": "Pass 10: the district's impervious cover (buildings and paved surfaces together) as a share of the lot. Use it, not max_building_coverage, where the code's 'lot coverage' means impervious cover. Shown as its own line and as the lot's max_impervious."
+        },
+        "accessory_structure_max_height_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 12: the general accessory building height cap in this district, when it differs from envelope.accessory_structure_max_height_ft (for example 20 ft in R-1 and R-2, 15 ft in R-3 and R-4). It replaces the town-wide figure for a lot in the district. Whether it binds a unit in an accessory building is still envelope.accessory_cap_binds_adu."
+        },
+        "accessory_structure_max_stories": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 28: the general accessory building height in stories in this district (Cumberland 27-503.1: 1 1/2 stories in R and RMH). It replaces envelope.accessory_structure_max_stories for a lot in the district and reads as that field does."
+        },
+        "setback_front_ft_by_type": {
+          "$ref": "#/$defs/leaf_num_by_type",
+          "description": "Pass 13: the front yard (ft) by the house type of the lot, keyed by building type, when one district row sets it apart for a house type (for example a twin's own yards). For a lot of a listed type it replaces setback_front_ft for the house and an attached unit. Otherwise setback_front_ft applies."
+        },
+        "setback_side_ft_by_type": {
+          "$ref": "#/$defs/leaf_num_by_type",
+          "description": "Pass 13: the side yard (ft) by the house type of the lot, keyed by building type, when one district row sets it apart for a house type (for example a twin's own yards). For a lot of a listed type it replaces setback_side_ft for the house and an attached unit. Otherwise setback_side_ft applies."
+        },
+        "setback_rear_ft_by_type": {
+          "$ref": "#/$defs/leaf_num_by_type",
+          "description": "Pass 13: the rear yard (ft) by the house type of the lot, keyed by building type, when one district row sets it apart for a house type (for example a twin's own yards). For a lot of a listed type it replaces setback_rear_ft for the house and an attached unit. Otherwise setback_rear_ft applies."
+        },
+        "max_adus": {
+          "$ref": "#/$defs/leaf_int",
+          "description": "Pass 15: ADUs per lot in this district, when the code sets a different count by district (for example one in R-C and R-S, up to two in R-U). It replaces use.max_adus for a lot in the district. use.max_adus keeps the figure for the other districts."
+        },
+        "accessory_structure_threshold_sqft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 15: the size above which an accessory building needs a further approval in this district only (for example a special exception for an accessory structure over 900 sq ft in RU). Not a cap. Like envelope.accessory_structure_threshold_sqft, and it replaces that figure for a lot in the district."
+        },
+        "min_lot_replaced_in_planned_development": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 15: true when a lot in a planned, cluster or conservation development the code names (lot fact in_planned_development) takes that development's own lot minimum in place of min_lot_sqft. On such a lot the line that says the lot is below the district minimum and may be nonconforming is not said."
+        },
+        "max_impervious_by_lot_size": {
+          "$ref": "#/$defs/leaf_impervious_by_lot",
+          "description": "Pass 16: the district's impervious cover when the code sets it by lot size (for example 35% under 10,000 sq ft, 30% over 10,000 and under 30,000, 25% at 30,000 or more). The tier for the lot replaces max_impervious_coverage in the owner text and the lot fit. A services row (utility_rows) that states its own max_impervious_coverage keeps it. Keep max_impervious_coverage as the base figure, shown when the lot size is not given or falls in a gap the code leaves."
+        },
+        "max_building_coverage_by_lot_size": {
+          "$ref": "#/$defs/leaf_cover_by_lot",
+          "description": "Pass 20: the district's building cover when the code sets it by lot size (for example 50% on 4,000 to 5,999 sq ft, 45% on 6,000 to 9,999 sq ft, 35% over 10,000 sq ft). The tier for the lot replaces max_building_coverage in the owner text and the lot fit. A services row that states its own max_building_coverage keeps it. Keep max_building_coverage as the base figure (null when the code gives none), shown when the lot size is not given or falls in a gap the code leaves."
+        },
+        "figures_in_dispute": {
+          "$ref": "#/$defs/leaf_figures_in_dispute",
+          "description": "Pass 16: the row's figures that another reading of the code puts at other values (for example a district that permits another district's uses 'as regulated therein' while its own chapter sets other yards and heights). value maps a row field to the other reading's figure. The row keeps the figure the file shows. Both are said and the row is qualified as not settled."
+        },
+        "min_height_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 17: the minimum height of every building in the district (Elizabethtown MU 27-12A12, 35 ft). Where a detached unit's height cap is lower, its path holds only if the minimum does not reach an ADU, and a line says so."
+        },
+        "yards_abutting_residential_ft": {
+          "$ref": "#/$defs/leaf_num",
+          "description": "Pass 18: the side and rear yard a principal building needs only where the yard abuts a residential district, with none otherwise (Lansdowne GB 330-17D(2), (3): 10 ft). The lot fact abuts_residential_district picks it. Not given, the yards are not shown and a condition says both cases. A side or rear figure of the row's own wins."
+        },
+        "setback_side_is_each_side": {
+          "$ref": "#/$defs/leaf_bool",
+          "description": "Pass 29: true when setback_side_ft is the least side yard on each side, beside setback_sides_total_ft (for example 'two side yards, neither of which shall be less than eight feet', Clifton Heights 340-17G). The side yards line then says 'at least 8 ft on each side' in place of 'on one side'."
+        },
+        "accessory_structure_max_height_by_lot_size": {
+          "$ref": "#/$defs/leaf_acc_height_by_lot",
+          "description": "Pass 29: the accessory building height cap by lot size in this district (leaf_acc_height_by_lot). Keep accessory_structure_max_height_ft as the base figure."
+        }
+      }
+    },
+    "leaf_adu_status": {
+      "type": "object",
+      "description": "How the town code treats an ADU. family_only: occupants must be family or caregivers. conversion_only: only inside an existing building. not_addressed: the code has no ADU text.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "enum": [
+            "allowed_by_right",
+            "special_exception",
+            "conditional_use",
+            "family_only",
+            "conversion_only",
+            "not_addressed",
+            "prohibited",
+            null
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_district_paths": {
+      "type": "object",
+      "description": "Approval path by zoning district, when it differs from approval.path. A district row's adu_path wins over this list.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "districts",
+              "path",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "districts": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              },
+              "path": {
+                "enum": [
+                  "by_right",
+                  "administrator_exception",
+                  "special_exception",
+                  "conditional_use",
+                  "variance",
+                  "not_allowed"
+                ]
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "term": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The code's name for the unit under this district listing, when it differs from adu.term. The town-wide conditions still apply."
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_gates": {
+      "type": "object",
+      "description": "Conditions that limit where or how an ADU is allowed. Scope: applies_to (ADU types, null = all), districts and building_types (null = everywhere), when (always, historic, not_historic). test names the lot fact that decides it (has_alley, has_accessory_building), null when no lot fact can. effect bars: in scope and the test fails (or there is no test), those types are not allowed. effect condition: shown to the user, never decides. lot_sqft_at_least and lot_sqft_below compare the lot area with value. Pass 7 tests on the house and services: house_sqft_at_least, house_sqft_over (value), house_built_before, accessory_building_built_before (value_date), house_exists, public_sewer, public_water. An unknown fact never bars: the answer says it depends on it. Also lot_width_at_least, lot_width_below (value, the lot fact lot_width_ft) and designated_on_plan (lot fact designated_on_plan). Pass 10: in_planned_development (lot fact in_planned_development, a planned or cluster development the code names); overlays, confidence and supersedes_district_figures per gate. Pass 13: no_accessory_building, the inverse of has_accessory_building, is met on a lot with no accessory building (for 'Accessory structures shall not be permitted'). A bar with disputed_by and no test, scoped by districts, building_types or overlays, reaches a lot in its scope as a failed bar, so the answer depends on the reading and never reads a plain variance. Pass 21: house_built_more_than_years_ago and house_built_within_years (value in years, counted back from today, lot fact house_year_built) and not_alley_only_access (met when the lot fact alley_only_access is false: the lot has public street frontage, not only an alley). Pass 28: lot_created_before (value_date, the lot fact lot_year_created): the lot existed before the date (Cumberland 27-602).",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "kind",
+              "condition",
+              "effect",
+              "section",
+              "url"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "building_type",
+                  "district",
+                  "lot_size",
+                  "lot_area_per_unit",
+                  "abutting_way",
+                  "existing_structure",
+                  "occupancy",
+                  "family",
+                  "age",
+                  "care",
+                  "owner_occupancy",
+                  "sponsor",
+                  "historic",
+                  "design",
+                  "utilities",
+                  "size",
+                  "parking",
+                  "other"
+                ]
+              },
+              "condition": {
+                "type": "string",
+                "minLength": 1
+              },
+              "effect": {
+                "enum": [
+                  "bars",
+                  "condition"
+                ]
+              },
+              "applies_to": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                }
+              },
+              "districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "building_types": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "detached",
+                    "semi_detached",
+                    "attached"
+                  ]
+                }
+              },
+              "when": {
+                "enum": [
+                  "always",
+                  "historic",
+                  "not_historic"
+                ]
+              },
+              "test": {
+                "enum": [
+                  "has_alley",
+                  "not_alley_only_access",
+                  "has_accessory_building",
+                  "no_accessory_building",
+                  "lot_sqft_at_least",
+                  "lot_sqft_below",
+                  "house_sqft_at_least",
+                  "house_sqft_over",
+                  "house_built_before",
+                  "accessory_building_built_before",
+                  "lot_created_before",
+                  "house_built_more_than_years_ago",
+                  "house_built_within_years",
+                  "house_exists",
+                  "public_sewer",
+                  "public_water",
+                  "lot_width_at_least",
+                  "lot_width_below",
+                  "designated_on_plan",
+                  "tract_sqft_at_least",
+                  "tract_sqft_below",
+                  "in_growth_area",
+                  "in_planned_development",
+                  "top_of_bank_ft_over",
+                  null
+                ]
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Threshold for test lot_sqft_at_least (met when the lot is at least this), lot_sqft_below (met when the lot is under this), house_sqft_at_least or house_sqft_over (the house floor area). Pass 19: top_of_bank_ft_over, met when the new building stands more than this many feet landward of the top of bank of a watercourse (lot fact top_of_bank_ft)."
+              },
+              "not_districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "The gate applies everywhere except these districts or overlays."
+              },
+              "bill_overrides": {
+                "type": "boolean",
+                "description": "true when HB 2186 would remove this condition (for example a connection or employee-only rule). Family, owner and lot rules are already treated so."
+              },
+              "value_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                "description": "Date for test house_built_before or accessory_building_built_before (met when the building was built before it, from the lot fact house_year_built or accessory_building_year_built). Pass 21: test house_built_more_than_years_ago (met when the house was built more than value years before this year) and house_built_within_years (met when it was built value years ago or less) count back from today, so the cutoff year moves each year. The year exactly value years back is not settled."
+              },
+              "only_below_lot_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "The gate holds only on a lot under this size (for example a rule for parcels of five acres or less)."
+              },
+              "unless_elevated": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "Pass 27: on a bar, true when the bar reaches only an accessory structure that is not elevated, not a new building built elevated as a residential structure (Grove City 152.061(E)). For detached_new the bar is then a condition: barred unless built elevated as a residential structure, its lowest floor at or above the regulatory flood elevation. The other forms in applies_to keep the bar. Put detached_new in applies_to for it to act."
+              },
+              "disputed_by": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "section",
+                  "note"
+                ],
+                "additionalProperties": false,
+                "description": "Pass 8: another passage that may undo this bar (for example [1] needs public sewer, [8] names an on-lot septic system). A lot that fails the test reads 'depends, ask the zoning officer' and cites both, never a plain no.",
+                "properties": {
+                  "section": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "overlays": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "Pass 10: the gate applies on a lot in one of these overlays (lot fact overlays). With districts too, a lot in a listed district or a listed overlay is in scope. Without districts, a lot whose overlays are not given reads 'applies only if the lot is in the overlay' and is never barred."
+              },
+              "confidence": {
+                "enum": [
+                  "verified",
+                  "secondary",
+                  "unverified"
+                ],
+                "description": "Pass 10: this gate's own confidence, when it differs from the gates leaf. Cited with the gate."
+              },
+              "supersedes_district_figures": {
+                "type": "boolean",
+                "description": "Pass 10: the gate describes a planned or cluster development whose own figures replace the district row (use test in_planned_development). On a lot that is in one, or may be (fact not given), the district yards are not shown: they depend."
+              },
+              "except_planned_development": {
+                "type": "boolean",
+                "description": "Pass 12: true when the gate does not reach a lot in a planned or cluster development (lot fact in_planned_development). Such a lot is out of the gate's scope; where the fact is not given the condition says 'Not on a lot in a planned or cluster development'."
+              },
+              "path": {
+                "enum": [
+                  "by_right",
+                  "administrator_exception",
+                  "special_exception",
+                  "conditional_use",
+                  "variance"
+                ],
+                "description": "Pass 16: the approval the forms in applies_to (every form when null) need on a lot the gate reaches, when it is more demanding than the ADU path (for example a special exception for any new building in a floodplain overlay). Applied only when the lot is known to be in the gate's overlay or district and its test is met. Otherwise the condition is said and the path stays. Use effect condition. Not applied under a state bill."
+              },
+              "adu_rule_only": {
+                "type": "boolean",
+                "description": "Pass 28: true when the gate is a standard of the ADU rule itself (East Coventry 27-1515, the in-law suite's conversion, entrance and on-site sewer standards), not of the land. A form that another ADU listing opens on the lot (an alternative with adu_listing and forms) is then free of it, as it is of the ADU rule's family and occupancy conditions."
+              },
+              "outside_zoning_chapter": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Pass 17: the chapter of the code the gate comes from when it is not the zoning chapter (for example 'Chapter 8' for a floodplain chapter). A lot that fails only such bars reads that relief follows that chapter's own appeal rules, and the zoning chapter's variance section (approval.fallback_path) is not cited as the path."
+              },
+              "waives_figures": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "min_lot",
+                    "parking"
+                  ]
+                },
+                "description": "Pass 19: with overlays, the figures the code lets a governing body modify or waive in the overlay (Canonsburg Downtown Overlay 170-401G(1), (2): lot dimensional requirements and parking). The line for a lot below the district minimum (min_lot) and the parking rate line (parking) then say so, for a lot in the overlay, or with 'If the lot is in' when the lot's overlays were not given. It never lifts a bar."
+              },
+              "supersedes_figures": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "yards",
+                    "building_coverage",
+                    "impervious_coverage",
+                    "accessory_height",
+                    "min_lot"
+                  ]
+                },
+                "description": "Pass 17: with supersedes_district_figures, the district figures the gate replaces. Others stay those of the district. Without it every district figure is replaced (Lower Pottsgrove Sanatoga Village overlay 250-125B: yards only, impervious cover stays the base district's). Pass 29: accessory_height (the district row's accessory building height and story caps) and min_lot (the district lot minimum, for a gate with the test designated_on_plan or in_planned_development). Without the list a planned-development gate with either test replaces those too, the lot fact true."
+              },
+              "keeps_accessory_yards": {
+                "type": "boolean",
+                "description": "Pass 20: with supersedes_district_figures and overlays, the overlay's own figures replace the district row's yards and cover but not the chapter's general accessory building yards (envelope), which still hold in the overlay (Bethel AACOD 480-100B: the community meets every other requirement of the chapter, so the 480-137 7 ft side and rear yards stay)."
+              },
+              "planned_development_kinds": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Pass 18: with test in_planned_development, the kinds of planned or cluster development the test accepts, as the code names them (Worcester 150-110.2A(1)(c): 'Option 3', not Options 1 and 2). The lot fact planned_development_kind must match one. A lot in a planned development of unknown kind depends on it."
+              },
+              "no_variance": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "section"
+                ],
+                "additionalProperties": false,
+                "description": "Pass 24: the code allows no variance for what this bar prohibits (Wilson 170-86A(8)(b)[2], West Caln 350-1002A(7)(b)[1][c]). A lot that fails the bar has the forms it reaches as not allowed, never a variance to ask for, even a form already left to a use variance. section is the passage that denies the variance, quote its words, note what else it says. On a condition gate it is carried with the condition and decides nothing.",
+                "properties": {
+                  "section": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "quote": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_alternatives": {
+      "type": "object",
+      "description": "Other ways to add a second unit that are not an ADU (two-family conversion, duplex, second principal dwelling). Never counted as the ADU being allowed.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "path",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "enum": [
+                  "by_right",
+                  "administrator_exception",
+                  "special_exception",
+                  "conditional_use",
+                  "variance",
+                  "not_allowed"
+                ]
+              },
+              "districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "conditions": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "min_lot_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "verified",
+                  "secondary",
+                  "unverified"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "adu_listing": {
+                "type": "boolean",
+                "description": "true when the code itself calls this an accessory dwelling unit under another listing (its own path and standards). It is shown as an ADU under another listing, not as 'not an ADU'."
+              },
+              "land_development": {
+                "type": "boolean",
+                "description": "true when the path also needs land development (subdivision and land development) plan approval, so it is never a plain zoning permit."
+              },
+              "min_units": {
+                "type": "integer",
+                "minimum": 2,
+                "description": "Units the path needs on the lot in all, when more than two (for example a conversion to three or more units). Over two, it is not a path for one added unit."
+              },
+              "min_lot_is_tract": {
+                "type": "boolean",
+                "description": "true when min_lot_sqft is a tract size (the development tract), not the lot of one house."
+              },
+              "min_lot_by_district": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "description": "Lot minimum by district code when it differs between the alternative's districts. Wins over min_lot_sqft for a listed district."
+              },
+              "disputed_min_lot": {
+                "type": "object",
+                "required": [
+                  "districts",
+                  "min_lot_sqft",
+                  "section",
+                  "note"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "districts": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "min_lot_sqft": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "section": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "min_lot_by_utility": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "description": "Pass 22: the other reading's lot minimum by public sewer and water, when it differs by the services (Maidencreek R-3 two-family: 20,000 sq ft with both, 130,680 sq ft without). The item matching the lot's services wins over min_lot_sqft, which stays the figure with public sewer and water. With the services not given every figure is said.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "when",
+                        "min_lot_sqft"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "when": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "public_sewer": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "public_water": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "min_lot_sqft": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                "description": "Pass 20: in these districts another reading of the code puts the alternative's lot minimum at min_lot_sqft, higher than the listing's own figure (Quakertown HR duplex: 5,000 sq ft by 308.6, or 10,890 sq ft by the 308.8 density cap). Both figures are said. A lot that meets only the lower one reads 'applies only if', never 'applies'."
+              },
+              "requires": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "description": "Other tests the alternative needs. test is a gate test (house or lot) or null for a fact the tool cannot know (a prior approval, a listed building). An unknown or untestable item makes it read 'applies only if', never 'applies'.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "condition"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "test": {
+                      "enum": [
+                        "house_sqft_at_least",
+                        "house_sqft_over",
+                        "house_built_before",
+                        "accessory_building_built_before",
+                        "lot_created_before",
+                        "house_built_more_than_years_ago",
+                        "house_built_within_years",
+                        "house_exists",
+                        "public_sewer",
+                        "public_water",
+                        "has_alley",
+                        "not_alley_only_access",
+                        "has_accessory_building",
+                        "lot_sqft_at_least",
+                        "lot_sqft_below",
+                        "lot_width_at_least",
+                        "lot_width_below",
+                        "designated_on_plan",
+                        "tract_sqft_at_least",
+                        "tract_sqft_below",
+                        "in_growth_area",
+                        null
+                      ]
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0
+                    },
+                    "value_date": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "condition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "only_without": {
+                      "enum": [
+                        "public_sewer",
+                        "public_water",
+                        null
+                      ],
+                      "description": "Pass 24: the item holds only on a lot without this public service (Canton 27-305(2): a density on on-lot sewage). A lot with the service skips it. A lot without it is tested as usual. With the service not given, the item is said with that open and reads 'applies only if'."
+                    }
+                  }
+                }
+              },
+              "overlays": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "The alternative holds only where one of these overlays is applied. Without the lot's overlays it reads 'applies only if'."
+              },
+              "disputed_path": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "path",
+                  "section",
+                  "note"
+                ],
+                "additionalProperties": false,
+                "description": "Pass 9: another passage gives this listing a different path (for example conditional use in the use section, special exception in a table note). Both are said; the code does not settle which.",
+                "properties": {
+                  "path": {
+                    "enum": [
+                      "by_right",
+                      "administrator_exception",
+                      "special_exception",
+                      "conditional_use",
+                      "variance",
+                      "not_allowed"
+                    ]
+                  },
+                  "section": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "short_term_rental_only": {
+                "type": "boolean",
+                "description": "Pass 9: true when the listing is for short-term (transient) rental only, not a long-term home."
+              },
+              "min_lot_by_utility": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "description": "Pass 9: the lot minimum by public sewer and water (for example 24,000 sq ft with both, 2 acres without). The item matching the lot's services wins over min_lot_sqft; with the services not given the lot test holds only when the lot meets every item.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "when",
+                    "min_lot_sqft"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "when": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "public_sewer": {
+                      "type": [
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "public_water": {
+                      "type": [
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "min_lot_sqft": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              "disputed_districts": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "districts",
+                  "section",
+                  "note"
+                ],
+                "additionalProperties": false,
+                "description": "Pass 10: passages of the code disagree on whether the listing reaches these districts (for example a use list names R-3, the section that sets the standards names RR, TV and MS). A lot in one reads 'depends, ask the zoning officer', never a plain yes.",
+                "properties": {
+                  "districts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  },
+                  "section": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "forms": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                },
+                "description": "Pass 15: with adu_listing true, the ADU forms this listing covers (for example internal for a unit inside an existing house). Where the listing reaches the lot and its path is less demanding than the ADU rule's path for a form, the form takes the listing's path, and the ADU rule's conditions on who may live in the unit (family, occupancy, owner) do not reach that form. Set it only where the code gives the listing its own path and standards."
+              },
+              "covers_forms": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                },
+                "description": "Pass 22: without adu_listing, the ADU forms whose work this use covers, though the code does not call it an ADU (Perkasie 186-18B(6): residential conversion of a house covers a unit inside it). The ADU path stays as it is. Where the use reaches the lot and its path is less demanding, the answer names that path for those forms beside the ADU path."
+              },
+              "builds": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                },
+                "description": "Pass 18: the ADU forms whose building work this path takes (detached_new for a second principal building or a manufactured home placed on the lot). Pass 22: work on an existing building counts too (internal for a conversion inside the house, garage_conversion for a conversion of an accessory building), so a habitation or floodplain bar on that form reaches it. A bar on the land (a gate with overlays or outside_zoning_chapter) that bars every one of these forms reaches the alternative too. An ADU under another listing uses its forms when this is not set."
+              },
+              "no_standards": {
+                "type": "boolean",
+                "description": "Pass 18: true when the listing's own standards are reserved or missing, so the code gives it a path but no standards. It then reads 'with its own path', never 'with its own path and standards'."
+              },
+              "accessory_max_height_ft": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Pass 18: the height an accessory building may reach under this listing, when the listing sets its own (Mount Joy Village Design Option 135-353J(7)(b): 25 ft). It is said with the listing. Where the listing reaches the lot and covers a detached form (forms), that form takes this height."
+              },
+              "parking_spaces": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 18: off-street parking spaces for the unit under this listing, beyond the house's own, when the listing sets its own (Mount Joy Village Design Option 135-353E(2)(e): two). It is said with the listing. Pass 28: null means the listing sets no parking for the unit (East Coventry Option 4, 27-11.104.3). Either way, on an adu_listing, the ADU rule's spaces do not reach the forms it opens on the lot, a line says the listing's own, and where every allowed form opens through it alone its figure replaces the ADU rule's."
+              },
+              "max_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 28, adu_listing only: the listing's own floor area cap for the unit (East Coventry Option 4, 27-11.104.3B: 1,500 sq ft). The forms it opens on the lot take this cap, and the ADU rule's size and share caps do not reach them. null means the listing sets no size cap."
+              },
+              "owner_occupancy": {
+                "type": "boolean",
+                "description": "Pass 28, adu_listing only: the listing's own owner rule. The ADU rule's owner condition already does not reach the forms the listing opens. true says the listing's own owner rule for them. false says it has none, and where every allowed form opens through it alone, owner_occupancy is false."
+              },
+              "family_only": {
+                "type": "boolean",
+                "description": "Pass 28, adu_listing only: the listing's own family rule. true says it for the forms the listing opens. false says it has none."
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_yard_tiers": {
+      "type": "object",
+      "description": "Yards that depend on lot size. Each tier: lot size range and the yards. The resolver picks the tier for the lot, or says the yards depend on the lot tier. Pass 24: where envelope.district_yards_bind_accessory is true, a principal tier is the detached unit's yard too (and the headline yard), unless the district row has an accessory yard of its own.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "min_lot_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "At least this lot size (inclusive)."
+              },
+              "min_lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 14: more than this lot size (exclusive), for a code's \"more than X\". Put the code's own figure."
+              },
+              "max_lot_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Less than this lot size (exclusive). For a code's \"X or less\" use max_lot_sqft_at_most."
+              },
+              "max_lot_sqft_at_most": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 14: this lot size or less (inclusive), for a code's \"X or less\". Put the code's own figure."
+              },
+              "applies_to": {
+                "enum": [
+                  "principal",
+                  "accessory"
+                ]
+              },
+              "setback_front_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_side_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_rear_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_labels": {
+      "type": "object",
+      "description": "Display names for ADU forms, keyed by type, e.g. {\"detached_new\": \"unit joined to the house by a breezeway\"}.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached_new": {
+              "type": "string"
+            },
+            "garage_conversion": {
+              "type": "string"
+            },
+            "over_garage": {
+              "type": "string"
+            },
+            "internal": {
+              "type": "string"
+            },
+            "attached": {
+              "type": "string"
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_share_by_type": {
+      "type": "object",
+      "description": "Building coverage by the house type of the lot, keyed by building type (detached, semi_detached, attached), e.g. {\"semi_detached\": 0.7, \"detached\": 0.5}. For a lot of a listed type it replaces max_building_coverage.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "semi_detached": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "attached": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_form_paths": {
+      "type": "object",
+      "description": "Approval path by ADU form, when a form's path differs from approval.path (for example a garage conversion by special exception where a unit in the house is by right). The resolver uses the more demanding of the two. Not applied under a state bill.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "forms",
+              "path",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "forms": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                },
+                "minItems": 1
+              },
+              "path": {
+                "enum": [
+                  "by_right",
+                  "administrator_exception",
+                  "special_exception",
+                  "conditional_use",
+                  "variance",
+                  "not_allowed"
+                ]
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_height_where": {
+      "type": "object",
+      "description": "An accessory height that holds only where the building sits (for example 24 ft outside the principal building setbacks, 15 ft inside them). envelope.max_height_ft keeps the height the tool shows. Each item is shown as a condition.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_height_ft",
+              "where",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_height_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "where": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_status_by_form": {
+      "type": "object",
+      "description": "ADU status for some forms when it differs from adu.status (for example a detached unit expressly prohibited where a unit in the house is not addressed). Forms left out take adu.status.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached_new": {
+              "enum": [
+                "allowed_by_right",
+                "special_exception",
+                "conditional_use",
+                "family_only",
+                "conversion_only",
+                "not_addressed",
+                "prohibited"
+              ]
+            },
+            "garage_conversion": {
+              "enum": [
+                "allowed_by_right",
+                "special_exception",
+                "conditional_use",
+                "family_only",
+                "conversion_only",
+                "not_addressed",
+                "prohibited"
+              ]
+            },
+            "over_garage": {
+              "enum": [
+                "allowed_by_right",
+                "special_exception",
+                "conditional_use",
+                "family_only",
+                "conversion_only",
+                "not_addressed",
+                "prohibited"
+              ]
+            },
+            "internal": {
+              "enum": [
+                "allowed_by_right",
+                "special_exception",
+                "conditional_use",
+                "family_only",
+                "conversion_only",
+                "not_addressed",
+                "prohibited"
+              ]
+            },
+            "attached": {
+              "enum": [
+                "allowed_by_right",
+                "special_exception",
+                "conditional_use",
+                "family_only",
+                "conversion_only",
+                "not_addressed",
+                "prohibited"
+              ]
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_num_by_form": {
+      "type": "object",
+      "description": "A number per ADU form, for a rule that names one form only.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached_new": {
+              "type": "number",
+              "minimum": 0
+            },
+            "garage_conversion": {
+              "type": "number",
+              "minimum": 0
+            },
+            "over_garage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "internal": {
+              "type": "number",
+              "minimum": 0
+            },
+            "attached": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_utility_rows": {
+      "type": "object",
+      "description": "District figures that change with public sewer and water. The district row holds the figures with both. Each item gives the figures when the lot's services match (public_sewer, public_water: true, false or null for either). Pass 9: accessory_* figures bind an accessory building (a detached unit) on such a lot; in_growth_area makes a row hold only inside or outside a mapped growth area.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "when",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "when": {
+                "type": "string",
+                "minLength": 1
+              },
+              "public_sewer": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "public_water": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "min_lot_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_front_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_side_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_rear_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "principal_max_height_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "max_building_coverage": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "accessory_setback_front_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "accessory_setback_side_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "accessory_setback_rear_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "accessory_max_height_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "accessory_max_stories": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "in_growth_area": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "Pass 9: the row holds inside (true) or outside (false) a mapped growth area or boundary that is not a zoning district (lot fact in_growth_area). Null: either."
+              },
+              "lot_area_per_unit_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "max_impervious_coverage": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Pass 10: impervious cover on such a lot (see districts.<code>.max_impervious_coverage)."
+              },
+              "setback_sides_total_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 11: side yards for both sides together on such a lot (with setback_side_ft the one-side minimum, so uneven sides such as 25 ft on one side and 200 ft on the other read 25 and 225)."
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_status_by_district": {
+      "type": "object",
+      "description": "Pass 8: the ADU status outside scope_districts when it differs by district (for example family_only by special exception in some districts, prohibited in another). A listed district takes its item's status; any other district outside the scope takes status_outside.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "districts",
+              "status"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "districts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "enum": [
+                  "allowed_by_right",
+                  "special_exception",
+                  "conditional_use",
+                  "family_only",
+                  "conversion_only",
+                  "not_addressed",
+                  "prohibited"
+                ]
+              },
+              "section": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_num_by_type": {
+      "type": "object",
+      "description": "Pass 8: a lot figure (sq ft) by the house type of the lot, keyed by building type (detached, semi_detached, attached), e.g. {\"semi_detached\": 6000}. For a lot of a listed type it replaces the district figure; otherwise the district figure applies and the answer names the other types' figures.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached": {
+              "type": "number",
+              "minimum": 0
+            },
+            "semi_detached": {
+              "type": "number",
+              "minimum": 0
+            },
+            "attached": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_unit_only": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "attached"
+            ]
+          },
+          "description": "Pass 29: in setback_side_ft_by_type, the house types whose figure is for the end unit of a row only (Clifton Heights 340-22G: one side yard of at least 12 ft for the end unit of an attached row). The side yards line says the figure is the end unit's and that an interior unit of a row has no side yard."
+        }
+      }
+    },
+    "leaf_share_of_part": {
+      "type": "object",
+      "description": "Pass 8: a size cap that is a share of a named part of the house (for example 50% of the 'primary living area': living room, dining room, kitchen, one bathroom, largest bedroom), not of the whole house. The tool cannot measure the part, so the sentence says the sq ft cap is only the outer limit.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "share",
+            "part"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "share": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "part": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_scope_by_use": {
+      "type": "object",
+      "description": "Pass 8: the ADU rule reaches every district where a principal use (for example a single-family detached dwelling) is permitted, rather than a named list. permitted_in: districts whose use lists were read and permit it. not_permitted_in: districts read and found not to permit it (they take status_outside). Any other district reads 'only if the use is permitted there', never a plain yes or no.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "use",
+            "permitted_in"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "use": {
+              "type": "string",
+              "minLength": 1
+            },
+            "permitted_in": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "not_permitted_in": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "read_not_named": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "description": "Pass 9: districts whose use lists were read and do not name the use the ADU rule hangs on, while they permit a related use (so not a plain no). They read 'read, does not name it: ask', never 'not on file'."
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_house_type_cases": {
+      "type": "object",
+      "description": "Pass 8: figures for house types the tool cannot tell apart (for example House A, B and C, all detached), stricter than the row's figure for the same building type. The row's figure is said as 'at most' (coverage) or 'at least' (yards) with each stricter case named; it is never shown as a flat number.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "building_type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "building_type": {
+                "enum": [
+                  "detached",
+                  "semi_detached",
+                  "attached"
+                ]
+              },
+              "max_building_coverage": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "setback_side_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "setback_rear_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "accessory_setback_side_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "accessory_setback_rear_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "section": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_height_by_stories": {
+      "type": "object",
+      "description": "Pass 8: an accessory (detached unit) height that depends on the number of stories, e.g. 13 ft for one story and 22 ft for two. Each item: stories and max_height_ft. The answer gives each figure; max_height_ft keeps the figure for the most stories allowed.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "stories",
+              "max_height_ft"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "stories": {
+                "type": "number",
+                "minimum": 1
+              },
+              "max_height_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "section": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_site_rows": {
+      "type": "object",
+      "description": "Site rules tied to the ground (steep slope, landslide, undermined areas). Each item is said to the owner as a condition or a question, never as a bar, when the lot's measured slope class or a mapped area it carries meets the row.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "kind",
+              "trigger",
+              "text",
+              "section",
+              "url",
+              "quote"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "condition",
+                  "ask"
+                ],
+                "description": "condition: a rule the owner must meet. ask: a question for the zoning office. Never a bar."
+              },
+              "trigger": {
+                "enum": [
+                  "measured_slope",
+                  "mapped_area",
+                  "measured_slope_in_mapped_area",
+                  "measured_slope_outside_mapped_area",
+                  "measured_slope_mapped_area_unknown"
+                ],
+                "description": "What says the row. measured_slope: the lot's slope_class from the terrain block. mapped_area: a mapped area flag the lot carries (area)."
+              },
+              "slope_classes": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "enum": [
+                    "ordinary",
+                    "moderate",
+                    "steep"
+                  ]
+                },
+                "description": "The row is said when the lot's measured slope_class is one of these. null: slope does not matter."
+              },
+              "area": {
+                "enum": [
+                  "steep_slope_area",
+                  "landslide_area",
+                  "undermined_area",
+                  null
+                ],
+                "description": "The resolver lot input for the mapped area. null: no mapped area."
+              },
+              "area_is": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "description": "Values of the area input that say the row (default [true]). [false] or [null] need slope_classes too."
+              },
+              "forms": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "detached_new",
+                    "garage_conversion",
+                    "over_garage",
+                    "internal",
+                    "attached"
+                  ]
+                },
+                "description": "Said only when one of these ADU forms is allowed on the lot (forms that put new building on the ground)."
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The owner sentence, with its sections in brackets."
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "verified_on": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "quote": {
+                "type": "string",
+                "minLength": 1,
+                "description": "A short verbatim quote of the code text."
+              },
+              "applies_by": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "How the code itself says where the rule applies (mapped area or measured slope)."
+              },
+              "exempt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "adds": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The review, report or approval the rule adds."
+              },
+              "area_on_lot_data": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "true when the lot records carry the mapped area this row reads."
+              },
+              "area_layer": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The public layer behind the area flag, or the one that would be needed."
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        }
+      }
+    },
+    "leaf_adus_by_lot": {
+      "type": "object",
+      "description": "Pass 9: ADUs per lot that change with lot (or tract) size, and the cap on each unit after the first. Each item: lot_sqft_at_least (or lot_sqft_over), max_adus, and optional extra_unit_max_sqft. basis 'tract' tests the parent tract (lot fact tract_sqft) instead of the lot. use.max_adus keeps the figure shown when the size is not given.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_adus"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "lot_sqft_at_least": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "max_adus": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "extra_unit_max_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "basis": {
+                "enum": [
+                  "lot",
+                  "tract"
+                ]
+              },
+              "section": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_exempt_building": {
+      "type": "object",
+      "description": "Pass 9: a unit in a qualifying existing building is exempt from caps that bind other units (for example a historic accessory building over 75 years old: no floor area cap, no ADU height limit, no setbacks). forms: the forms it reaches. caps: which caps give way (size, height, setbacks). older_than_years: the building's age test (lot fact accessory_building_year_built, or house_year_built for internal). historic: true when the building must also be a historic resource (lot fact historic_resource). With a fact not given the caps stay and the sentence says the exemption.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "forms",
+            "caps"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "forms": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "enum": [
+                  "detached_new",
+                  "garage_conversion",
+                  "over_garage",
+                  "internal",
+                  "attached"
+                ]
+              }
+            },
+            "caps": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "enum": [
+                  "size",
+                  "height",
+                  "setbacks"
+                ]
+              }
+            },
+            "older_than_years": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "historic": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "what": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_accessory_where": {
+      "type": "object",
+      "description": "Pass 9: accessory building yards, height or share that hold only where the building sits or above a size (for example 'in the required rear yard: 6 ft from the rear line, 15 ft high, 35% of the required rear yard', or 'over 500 sq ft: 20 ft side and rear'). Each item is shown as a condition for a detached unit; the headline yards are not changed. districts limits an item to those districts.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "where",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "where": {
+                "type": "string",
+                "minLength": 1
+              },
+              "districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "over_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "side_one_only": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "Pass 27: true when setback_side_ft holds on one side only and the other side keeps the district side yard (Glenolden 162-12C(8): 'may have one side yard of not less than three feet'). The figure is said as 'on one side only', and where a unit in an accessory building shows it, a line gives the district side yard for the other side."
+              },
+              "setback_front_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_side_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "setback_rear_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "max_height_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "max_share_of_rear_yard": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "min_from_front_line_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_width_below_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "description": "Pass 20: the item holds only on a lot narrower than this many feet (lot fact lot_width_ft). A lot this wide or wider drops it. Not given, the condition says it depends on the lot width."
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_bool_by_form": {
+      "type": "object",
+      "description": "Pass 10: a yes or no per ADU form, for a rule that differs by form (for example an owner rule for the unit in the house and none for an elder cottage).",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached_new": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "garage_conversion": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "over_garage": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "internal": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "attached": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_share_of_house_part": {
+      "type": "object",
+      "description": "Pass 10: an accessory building cap as a share of a named part of the house (its footprint, its first floor), which the tool cannot measure. Use it, not accessory_structure_max_share (a share of the house floor area). share may be over 1 (1.5 times the footprint). Each item is a condition for a detached unit; no number is computed.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "what",
+              "share",
+              "of",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "what": {
+                "type": "string",
+                "minLength": 1,
+                "description": "what the cap reaches, e.g. 'all accessory buildings together'"
+              },
+              "share": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "of": {
+                "type": "string",
+                "minLength": 1,
+                "description": "the base, named: 'the house footprint', 'the house's first floor area'"
+              },
+              "when": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "a case, e.g. 'for a single-story house'"
+              },
+              "districts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_garage_height_where": {
+      "type": "object",
+      "description": "Pass 10: a garage height exception by garage width or lot size (for example 'wider than 18 ft: 18 ft with a loft', 'on a property over three acres: 18 ft'). Each item is a condition for a detached unit; lot_over_sqft drops an item on a lot that is not over it.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "where",
+              "max_height_ft",
+              "section"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "where": {
+                "type": "string",
+                "minLength": 1
+              },
+              "max_height_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "garage_wider_than_ft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_over_sqft": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "section": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_use_variance_barred": {
+      "type": "object",
+      "description": "Pass 11: the code itself bars a use variance for a use the district does not permit (for example 'Under no circumstances shall the Zoning Hearing Board grant a variance to allow a use not permissible ... in the district involved', Hanover 370-907E). value true. Outside the ADU's districts the answer is not allowed, not a use variance: the code bars it, that is a local limit on a power the board has under MPC 910.2 (ask the zoning officer or a lawyer), and the route the code leaves is a zoning amendment. quote holds the code's words; districts (optional) limits it to some districts.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        },
+        "quote": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The code's own words, quoted in the answer."
+        },
+        "districts": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Where the bar reaches. Null: every district outside the ADU's districts."
+        }
+      }
+    },
+    "leaf_districts_in_doubt": {
+      "type": "object",
+      "description": "Pass 11: districts_in_doubt with named_by, which way the doubt runs per district: district_list (the default: the district's own use list names the ADU, the ADU section names other districts), adu_section (the ADU section names the district, the district's own use list does not), reach (whether the rule reaches the district is in doubt for another reason, said in the note).",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "integer"
+            ]
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        },
+        "named_by": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "enum": [
+              "district_list",
+              "adu_section",
+              "reach"
+            ]
+          },
+          "description": "Pass 11: {district: district_list | adu_section | reach}. A district left out reads district_list."
+        },
+        "notes_by_district": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Pass 13: {district: note}. Why this district is in doubt, said in place of note for a lot in it, so a lot never reads why other districts are in doubt. A district left out reads note."
+        },
+        "sections_by_district": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Pass 13: {district: sections}. The sections for this district, said in place of section for a lot in it. A district left out reads section."
+        }
+      }
+    },
+    "leaf_unlisted_use_scope": {
+      "type": "object",
+      "description": "Pass 12: how far approval.unlisted_use_path reaches. any_unlisted (the default when the leaf is absent): any use the code does not list. similar_only: only uses similar in nature to the uses the district lists (for example 'Uses similar in nature to the above by right uses', Skippack 200-26C(2)(a)). Then the answer says that a use similar to a permitted use may be authorized, and that whether an ADU is similar is not settled. districts (optional) limits the value to some of the unlisted-use districts; elsewhere any_unlisted. quote holds the code's words.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "enum": [
+            "any_unlisted",
+            "similar_only",
+            null
+          ]
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "set",
+            "at_least",
+            "at_most"
+          ]
+        },
+        "assumption": {
+          "type": "boolean"
+        },
+        "quote": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The code's own words, quoted in the answer."
+        },
+        "districts": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Where the value applies. Null: every district in approval.unlisted_use_districts."
+        }
+      }
+    },
+    "leaf_size_by_lot": {
+      "type": "object",
+      "description": "Pass 12: an ADU size cap that changes with lot area (for example 1,500 sq ft on a lot of three acres or less, 2,000 sq ft over three and under ten acres, 2,500 sq ft over ten acres). Each item: max_sqft and its lot area bounds, any of lot_sqft_over (more than), lot_sqft_at_least, lot_sqft_below (less than), lot_sqft_at_most. The first item whose bounds hold gives the cap and replaces size.max_sqft (a district's adu_max_sqft still wins). Without the lot area, or where no item reaches the lot (a gap the code leaves), no cap number is shown and the sentence lists the tiers.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_sqft"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_sqft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_least": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_below": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_most": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_impervious_by_lot": {
+      "type": "object",
+      "description": "Pass 16: impervious cover that changes with lot size, in a district row. Each item: max_impervious (a share of the lot) and its lot area bounds, any of lot_sqft_over (more than), lot_sqft_at_least, lot_sqft_below (less than), lot_sqft_at_most. The first item whose bounds hold gives the cover for the lot. Without the lot area, or where no item reaches the lot (a gap the code leaves), the row's max_impervious_coverage is shown and the sentence lists the tiers.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_impervious"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_impervious": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_least": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_below": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_most": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_cover_by_lot": {
+      "type": "object",
+      "description": "Pass 20: building cover that changes with lot size, in a district row, as leaf_impervious_by_lot. Each item: max_building_coverage (a share of the lot) and its lot area bounds, any of lot_sqft_over, lot_sqft_at_least, lot_sqft_below, lot_sqft_at_most. The first item whose bounds hold gives the cover for the lot. Without the lot area, or where no item reaches the lot, the row's max_building_coverage is shown and the sentence lists the tiers.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_building_coverage"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_building_coverage": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_least": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_below": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_most": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_figures_in_dispute": {
+      "type": "object",
+      "description": "Pass 16: district figures in dispute. value: {row field: the other reading's figure}. The note says why the readings differ. Coverage as a share of the lot. Pass 29: also the total for both sides (setback_sides_total_ft) and the row's accessory yards (accessory_setback_front_ft, accessory_setback_side_ft, accessory_setback_rear_ft).",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence",
+        "note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "min_lot_sqft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "setback_front_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "setback_side_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "setback_rear_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_building_coverage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_impervious_coverage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "principal_max_height_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "principal_max_stories": {
+              "type": "number",
+              "minimum": 0
+            },
+            "setback_sides_total_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "accessory_setback_front_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "accessory_setback_side_ft": {
+              "type": "number",
+              "minimum": 0
+            },
+            "accessory_setback_rear_ft": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "leaf_yards_by_form": {
+      "type": "object",
+      "description": "Pass 24: yards one ADU form keeps, apart from the headline yards (Wilson 170-83H(3)(d): a suite in an existing garage, 4 ft from the side and rear lines). The form's own yards replace the yards shown for that form only and are said as a condition for it. The headline yards never take them.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "detached_new": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "setback_front_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_side_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_rear_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "garage_conversion": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "setback_front_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_side_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_rear_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "over_garage": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "setback_front_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_side_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_rear_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "attached": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "setback_front_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_side_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "setback_rear_ft": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "leaf_acc_height_by_lot": {
+      "type": "object",
+      "description": "Pass 29: the accessory building height cap that changes with lot size, in a district row. Each item: max_height_ft and its lot area bounds, any of lot_sqft_over, lot_sqft_at_least, lot_sqft_below, lot_sqft_at_most. The first item whose bounds hold gives the cap for the lot and replaces accessory_structure_max_height_ft (Middlesex 175-15I(2): 15 ft under two acres, 25 ft on two acres or more). Without the lot area, or where no item reaches the lot, the row's accessory_structure_max_height_ft is shown and the sentence lists the tiers.",
+      "required": [
+        "value",
+        "section",
+        "url",
+        "verified_on",
+        "confidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "max_height_ft"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_height_ft": {
+                "type": "number",
+                "minimum": 0
+              },
+              "lot_sqft_over": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_least": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_below": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "lot_sqft_at_most": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "note": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": {
+          "enum": [
+            "verified",
+            "secondary",
+            "unverified"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}
