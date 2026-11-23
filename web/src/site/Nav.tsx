@@ -19,12 +19,12 @@ function Brand({ small }: { small?: boolean }) {
   return (
     <a href={href('home')} className="flex min-w-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-violet-500" aria-label="MUSA 5500 home">
       <svg viewBox="0 0 32 32" className={small ? 'h-7 w-7 shrink-0' : 'h-8 w-8 shrink-0'} aria-hidden>
-        <rect width="32" height="32" rx="8" fill="#7c3aed" />
+        <rect width="32" height="32" rx="3" fill="#143c3c" />
         <path d="M7 16l6-5 6 5v8H7z" fill="white" />
-        <rect x="20" y="18" width="6" height="6" rx="1" fill="#c4b5fd" />
+        <rect x="20" y="18" width="6" height="6" rx="1" fill="#c9b458" />
       </svg>
       <span className="min-w-0 leading-tight">
-        <span className="block font-display text-body font-bold text-slate-900">MUSA 5500</span>
+        <span className="block font-display text-[17px] font-semibold text-slate-900">MUSA 5500</span>
         {!small && <span className="block truncate text-caption text-slate-500">Housing demand and ADUs in Pennsylvania</span>}
       </span>
     </a>
@@ -51,9 +51,9 @@ function useDismiss(open: boolean, close: () => void) {
 /** The page list as a dropdown. */
 function MenuList({ current, onPick }: { current: Page; onPick: () => void }) {
   return (
-    <motion.div role="menu" aria-label="Pages" initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.98, transition: { duration: 0.12 } }} transition={SPRING_TAB} style={{ transformOrigin: 'top right' }} className="absolute right-0 top-full z-50 mt-2 w-[220px] rounded-xl bg-white p-1.5 shadow-xl ring-1 ring-black/5">
+    <motion.div role="menu" aria-label="Pages" initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.98, transition: { duration: 0.12 } }} transition={SPRING_TAB} style={{ transformOrigin: 'top right' }} className="absolute right-0 top-full z-50 mt-2 w-[220px] rounded-md bg-white p-1 shadow-lg ring-1 ring-stone-300">
       {NAV.map((n) => (
-        <a key={n.page} role="menuitem" href={href(n.page)} onClick={onPick} aria-current={n.page === current ? 'page' : undefined} className={cx('tap block rounded-lg px-3 py-2 text-small font-semibold transition-colors', n.page === current ? 'bg-violet-50 text-violet-800' : 'text-slate-800 hover:bg-stone-100')}>
+        <a key={n.page} role="menuitem" href={href(n.page)} onClick={onPick} aria-current={n.page === current ? 'page' : undefined} className={cx('tap block rounded-lg px-3 py-2 text-small font-semibold transition-colors', n.page === current ? 'bg-stone-100 text-slate-900' : 'text-slate-800 hover:bg-stone-100')}>
           {n.label}
         </a>
       ))}
@@ -68,15 +68,15 @@ export function SiteHeader() {
   const ref = useDismiss(open, () => setOpen(false));
   useEffect(() => setOpen(false), [page]);
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200/80 bg-[#fbfaf8]/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-stone-300 bg-[#f7f5f0]/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Brand />
         <nav aria-label="Pages" className="hidden items-center gap-0.5 md:flex">
           {NAV.map((n) => {
             const on = n.page === page;
             return (
-              <a key={n.page} href={href(n.page)} aria-current={on ? 'page' : undefined} className={cx('relative rounded-lg px-3 py-1.5 text-small font-semibold transition-colors', on ? 'text-violet-800' : 'text-slate-600 hover:text-slate-900')}>
-                {on && <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-lg bg-violet-50 ring-1 ring-violet-200/70" transition={SPRING_TAB} />}
+              <a key={n.page} href={href(n.page)} aria-current={on ? 'page' : undefined} className={cx('relative px-3 py-1.5 text-small font-semibold transition-colors', on ? 'text-slate-900' : 'text-slate-600 hover:text-slate-900')}>
+                {on && <motion.span layoutId="nav-pill" className="absolute inset-x-3 -bottom-[17px] h-[2px] bg-violet-800" transition={SPRING_TAB} />}
                 <span className="relative">{n.label}</span>
               </a>
             );

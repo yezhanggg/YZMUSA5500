@@ -1,4 +1,4 @@
-// A card that folds with one click on its title, remembered in localStorage (Boundaries, Data Layers).
+// A section that folds with one click on its title, remembered in localStorage (Boundaries, Data Layers).
 // `extra` sits on the title row next to the fold button (a switch), outside it, so both stay their own control.
 import { useState, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
@@ -24,15 +24,15 @@ export default function FoldCard({ title, storageKey, extra, titleId, titleHint,
     }
   };
   return (
-    <section aria-label={title} className="rounded-xl bg-violet-50/40 ring-1 ring-violet-200/70">
-      <div className="flex items-center gap-2 pr-3">
-        <button type="button" onClick={toggle} aria-expanded={open} title={titleHint} className="tap flex min-w-0 flex-1 items-center justify-between gap-2 py-2.5 pl-3 text-left text-body font-bold text-slate-900">
+    <section aria-label={title} className="border-t border-stone-200 pt-1">
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={toggle} aria-expanded={open} title={titleHint} className="tap flex min-w-0 flex-1 items-center justify-between gap-2 py-2 pl-0 text-left text-caption font-semibold uppercase tracking-[0.12em] text-stone-500 hover:text-slate-900">
           <span id={titleId}>{title}</span>
           <ChevronDown className={cx('h-4 w-4 shrink-0 text-slate-400 transition-transform', open && 'rotate-180')} aria-hidden />
         </button>
         {extra}
       </div>
-      {open && <div className={bodyClass ?? 'border-t border-violet-200/60 p-3'}>{children}</div>}
+      {open && <div className={bodyClass ?? 'pb-3 pt-1'}>{children}</div>}
     </section>
   );
 }

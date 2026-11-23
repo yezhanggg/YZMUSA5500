@@ -65,7 +65,7 @@ export default function AddressSearch() {
   };
 
   return (
-    <section aria-label="Address search" className="rounded-xl bg-white p-2.5 ring-1 ring-stone-200/80">
+    <section aria-label="Address search" className="">
       <form onSubmit={submit} role="search" className="flex items-center gap-1.5">
         <label htmlFor="address" className="sr-only">
           Search an address in Pennsylvania

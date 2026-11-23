@@ -70,7 +70,7 @@ function DataLayers() {
   const set = useTool((s) => s.set);
   const pick = (id: LayerId) => (id === 'forecast' ? set({ level: level === 'tract' ? 'town' : level }) : set({ metric: id, level: 'tract' }));
   return (
-    <FoldCard title="Data Layers" storageKey="m5500.dataLayersOpen" bodyClass="border-t border-violet-200/60 p-2">
+    <FoldCard title="Data Layers" storageKey="m5500.dataLayersOpen" bodyClass="pb-2">
       <div role="radiogroup" aria-label="Map layer" className="space-y-2">
         {LAYER_GROUPS.map((g) => (
           <div key={g.title}>
@@ -79,7 +79,7 @@ function DataLayers() {
               {g.layers.map((l) => {
                 const on = l.id === active;
                 return (
-                  <div key={l.id} className={cx('rounded-lg ring-1 transition-colors', on ? 'bg-white shadow-sm ring-violet-300' : 'ring-transparent')}>
+                  <div key={l.id} className={cx('border-l-2 transition-colors', on ? 'border-violet-700 bg-white/70' : 'border-transparent')}>
                     <button
                       type="button"
                       role="radio"
@@ -184,9 +184,9 @@ function LayerLegend({ id }: { id: LayerId }) {
         hint={m.label}
         items={[
           ...m.steps.map(([, c], i) => ({ name: m.names[i], color: c })),
-          { name: 'Measured (solid)', color: '#7c3aed' },
-          { name: 'Modelled (lighter)', color: '#7c3aed80' },
-          { name: 'Outside training range', color: '#7c3aed80', hatch: true },
+          { name: 'Measured (solid)', color: '#1f5e5a' },
+          { name: 'Modelled (lighter)', color: '#1f5e5a80' },
+          { name: 'Outside training range', color: '#1f5e5a80', hatch: true },
           { name: 'No data', color: NO_DATA },
         ]}
         note={<span title={ROOM_SENTENCE}>Lots per tract. Statewide: {NUMBERS.roomState} lots with room.</span>}
@@ -206,7 +206,7 @@ function LayerLegend({ id }: { id: LayerId }) {
 /** The compact block under a legend with the settings that change this layer only. */
 function Settings({ children }: { children: ReactNode }) {
   return (
-    <section aria-label="Layer settings" className="space-y-2.5 rounded-lg bg-violet-50/60 p-2.5 ring-1 ring-violet-200/60 [&_[role=radio]]:whitespace-nowrap [&_[role=radio]]:px-1.5">
+    <section aria-label="Layer settings" className="space-y-2.5 px-2.5 pb-2.5 [&_[role=radio]]:whitespace-nowrap [&_[role=radio]]:px-1.5">
       {children}
     </section>
   );

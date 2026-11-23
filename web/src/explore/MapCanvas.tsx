@@ -71,8 +71,8 @@ function addAreaLayers(map: MLMap) {
   }
   map.addLayer({ id: 'town-line', type: 'line', source: 'towns', minzoom: 8, paint: { 'line-color': '#475569', 'line-width': 0.6, 'line-opacity': 0.45 } }, before);
   // The picked area's outline: above the labels and the 3D buildings.
-  map.addLayer({ id: 'pick-glow', type: 'line', source: 'pick', paint: { 'line-color': '#a78bfa', 'line-width': 8, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0.35, 15, 0.12], 'line-blur': 4 } });
-  map.addLayer({ id: 'pick-line', type: 'line', source: 'pick', paint: { 'line-color': '#7c3aed', 'line-width': ['interpolate', ['linear'], ['zoom'], 13, 2.5, 15, 1.2] } });
+  map.addLayer({ id: 'pick-glow', type: 'line', source: 'pick', paint: { 'line-color': '#4f918b', 'line-width': 8, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 13, 0.35, 15, 0.12], 'line-blur': 4 } });
+  map.addLayer({ id: 'pick-line', type: 'line', source: 'pick', paint: { 'line-color': '#1f5e5a', 'line-width': ['interpolate', ['linear'], ['zoom'], 13, 2.5, 15, 1.2] } });
 }
 
 export default function MapCanvas() {
@@ -132,7 +132,7 @@ export default function MapCanvas() {
           minzoom: 14,
           layout: { visibility: useTool.getState().view3d ? 'visible' : 'none' },
           paint: {
-            'fill-extrusion-color': ['interpolate', ['linear'], ['coalesce', ['get', 'render_height'], 8], 0, '#e7e5e4', 40, '#d6d3d1', 120, '#c4b5fd'],
+            'fill-extrusion-color': ['interpolate', ['linear'], ['coalesce', ['get', 'render_height'], 8], 0, '#e7e5e4', 40, '#d6d3d1', 120, '#7fb2ad'],
             'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 14, 0, 15, ['coalesce', ['get', 'render_height'], 8]],
             'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
             'fill-extrusion-opacity': 0.85,

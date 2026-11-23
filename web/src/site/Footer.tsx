@@ -3,7 +3,7 @@ import { REPO_URL, TOOL_URL } from './config';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-stone-200/80 bg-white/60">
+    <footer className="border-t border-stone-300">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-caption text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
           MUSA 5500 Geospatial Data Science in Python, Fall 2026. Part of{' '}

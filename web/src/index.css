@@ -1,18 +1,18 @@
 /* Only src/ holds classes: the notebook pages in public/ are left out of the scan. */
 @import 'tailwindcss' source('.');
 
-/* Theme (the same as the Backyard Homes PA tool): violet primary, warm off-white surfaces, stone hairlines. */
+/* Theme: deep teal ink on warm paper, thin rules instead of boxes, small corners. */
 :root {
-  --radius: 0.75rem;
-  --background: #fbfaf8;
+  --radius: 0.375rem;
+  --background: #f7f5f0;
   --foreground: #0f172a;
   --card: #ffffff;
-  --primary: rgb(124 58 237);
+  --primary: rgb(31 94 90);
   --primary-foreground: #ffffff;
   --muted: #f1efec;
   --muted-foreground: #475569;
-  --accent: #f3efff;
-  --accent-foreground: #4c1d95;
+  --accent: #eef5f4;
+  --accent-foreground: #112f31;
   --border: #e7e5e4;
 }
 
@@ -30,8 +30,26 @@
 }
 
 @theme {
+  /* The violet scale is redefined as a deep teal ink, so every violet-* class in the app uses it. */
+  --color-violet-50: #eef5f4;
+  --color-violet-100: #d5e7e5;
+  --color-violet-200: #aed0cc;
+  --color-violet-300: #7fb2ad;
+  --color-violet-400: #4f918b;
+  --color-violet-500: #2f746f;
+  --color-violet-600: #1f5e5a;
+  --color-violet-700: #184b49;
+  --color-violet-800: #143c3c;
+  --color-violet-900: #112f31;
+  --color-violet-950: #0a1d1f;
+  /* Smaller corners everywhere. */
+  --radius-md: 0.25rem;
+  --radius-lg: 0.3125rem;
+  --radius-xl: 0.375rem;
+  --radius-2xl: 0.5rem;
+  --radius-3xl: 0.625rem;
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --text-caption: 12px;
   --text-caption--line-height: 1.4;
   --text-small: 13px;
@@ -65,7 +83,7 @@ body {
   font-variant-numeric: tabular-nums;
 }
 ::selection {
-  background: #ddd6fe;
+  background: #aed0cc;
 }
 
 /* Quiet scrollbars for panels */
@@ -96,7 +114,7 @@ input[type='range'].weight {
 input[type='range'].weight::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(to right, #7c3aed 0 var(--pct, 50%), #e7e5e4 var(--pct, 50%) 100%);
+  background: linear-gradient(to right, #1f5e5a 0 var(--pct, 50%), #e7e5e4 var(--pct, 50%) 100%);
 }
 input[type='range'].weight::-moz-range-track {
   height: 6px;
@@ -106,7 +124,7 @@ input[type='range'].weight::-moz-range-track {
 input[type='range'].weight::-moz-range-progress {
   height: 6px;
   border-radius: 999px;
-  background: #7c3aed;
+  background: #1f5e5a;
 }
 input[type='range'].weight::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -116,7 +134,7 @@ input[type='range'].weight::-webkit-slider-thumb {
   height: 18px;
   border-radius: 999px;
   background: #fff;
-  border: 2px solid #7c3aed;
+  border: 2px solid #1f5e5a;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
   transition: transform 0.15s;
 }
@@ -125,7 +143,7 @@ input[type='range'].weight::-moz-range-thumb {
   height: 14px;
   border-radius: 999px;
   background: #fff;
-  border: 2px solid #7c3aed;
+  border: 2px solid #1f5e5a;
 }
 input[type='range'].weight:active::-webkit-slider-thumb {
   transform: scale(1.15);
@@ -134,12 +152,12 @@ input[type='range'].weight:focus-visible {
   outline: none;
 }
 input[type='range'].weight:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 4px rgb(124 58 237 / 0.25);
+  box-shadow: 0 0 0 4px rgb(31 94 90 / 0.25);
 }
 
 /* Map chrome */
 .maplibregl-ctrl-group {
-  border-radius: 10px !important;
+  border-radius: 6px !important;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 4px 12px rgb(0 0 0 / 0.06) !important;
 }
 .maplibregl-ctrl-attrib {
@@ -151,8 +169,8 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   width: 36px;
   height: 36px;
   border-radius: 999px;
-  border: 2px solid rgb(124 58 237 / 0.8);
-  background: rgb(124 58 237 / 0.12);
+  border: 2px solid rgb(31 94 90 / 0.8);
+  background: rgb(31 94 90 / 0.12);
   pointer-events: none;
   animation: bh-ripple 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -170,7 +188,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 /* Words with a slow light passing over them (loading states) */
 .shimmer-text {
   color: #64748b;
-  background: linear-gradient(90deg, #64748b 0%, #64748b 35%, #7c3aed 50%, #64748b 65%, #64748b 100%);
+  background: linear-gradient(90deg, #64748b 0%, #64748b 35%, #1f5e5a 50%, #64748b 65%, #64748b 100%);
   background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -242,11 +260,12 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 }
 .doc h2 {
   margin-top: 2.5rem;
-  padding-top: 0.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e3dfd6;
   font-family: var(--font-display);
   font-size: 24px;
   line-height: 1.25;
-  font-weight: 700;
+  font-weight: 600;
   color: #0f172a;
   scroll-margin-top: 88px;
 }
@@ -255,7 +274,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   font-family: var(--font-display);
   font-size: 19px;
   line-height: 1.3;
-  font-weight: 700;
+  font-weight: 600;
   color: #0f172a;
   scroll-margin-top: 88px;
 }
@@ -274,14 +293,14 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   color: #0f172a;
 }
 .doc a {
-  color: #6d28d9;
+  color: #184b49;
   font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: #c4b5fd;
+  text-decoration-color: #7fb2ad;
   text-underline-offset: 2px;
 }
 .doc a:hover {
-  color: #4c1d95;
+  color: #112f31;
 }
 .doc strong {
   font-weight: 700;
@@ -305,7 +324,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   margin-top: 0.3rem;
 }
 .doc li::marker {
-  color: #8b5cf6;
+  color: #2f746f;
 }
 .doc code {
   border-radius: 5px;
@@ -316,7 +335,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 }
 .doc pre {
   overflow-x: auto;
-  border-radius: 12px;
+  border-radius: 6px;
   background: #0f172a;
   padding: 0.8rem 1rem;
   font-size: 13px;
@@ -329,9 +348,8 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 }
 .doc .table-wrap {
   overflow-x: auto;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 0 0 1px rgb(231 229 228 / 0.9);
+  border-top: 1px solid #1e293b;
+  border-bottom: 1px solid #1e293b;
 }
 .doc table {
   width: 100%;
@@ -340,7 +358,6 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   line-height: 1.45;
 }
 .doc th {
-  background: #f8f7f5;
   text-align: left;
   font-weight: 600;
   color: #475569;
@@ -350,7 +367,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 .doc td {
   min-width: 5.5rem;
   padding: 0.45rem 0.7rem;
-  border-bottom: 1px solid #f1efec;
+  border-bottom: 1px solid #e3dfd6;
   vertical-align: top;
 }
 .doc tbody tr:last-child td {
@@ -362,9 +379,6 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
 .doc figure {
   margin-top: 1.5rem;
   overflow: hidden;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 0 0 1px rgb(231 229 228 / 0.9);
 }
 .doc figure img {
   display: block;
@@ -372,8 +386,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   height: auto;
 }
 .doc figcaption {
-  border-top: 1px solid #f1efec;
-  padding: 0.55rem 0.9rem;
+  padding: 0.45rem 0;
   font-size: 13px;
   color: #64748b;
 }
@@ -381,7 +394,7 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
   max-width: 100%;
 }
 .doc blockquote {
-  border-left: 3px solid #c4b5fd;
+  border-left: 3px solid #7fb2ad;
   padding-left: 1rem;
   color: #475569;
 }

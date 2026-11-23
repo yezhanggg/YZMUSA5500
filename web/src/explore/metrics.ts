@@ -29,7 +29,7 @@ interface Metric {
 
 const GROWTH_STEPS: [number, string][] = [[-Infinity, '#be123c'], [-0.5, '#fda4af'], [0, '#a7f3d0'], [0.5, '#059669']];
 const GROWTH_NAMES = ['Fell over 0.5% a year', 'Fell 0 to 0.5%', 'Grew 0 to 0.5%', 'Grew over 0.5% a year'];
-const LEVEL_COLORS = ['#ede9fe', '#c4b5fd', '#8b5cf6', '#5b21b6'];
+const LEVEL_COLORS = ['#d5e7e5', '#7fb2ad', '#2f746f', '#143c3c'];
 
 export const METRICS: Record<MetricId, Metric> = {
   // Where you can build an ADU today, per municipality (tool/places.ts, drawn by tool/placesLayer.ts, not on tracts).
@@ -55,7 +55,7 @@ export const METRICS: Record<MetricId, Metric> = {
     short: 'Room',
     label: 'Lots with room for a 600 sq ft unit (MUSA 5500)',
     // Darker than the other violet scales: modelled tracts are drawn at half opacity and most tracts are hatched.
-    steps: [[-Infinity, '#ddd6fe'], [250, '#a78bfa'], [750, '#7c3aed'], [1500, '#4c1d95']],
+    steps: [[-Infinity, '#aed0cc'], [250, '#4f918b'], [750, '#1f5e5a'], [1500, '#112f31']],
     names: ['Under 250', '250 to 750', '750 to 1,500', 'Over 1,500'],
     moe: 'room_out',
   },
@@ -69,7 +69,7 @@ export const METRICS: Record<MetricId, Metric> = {
 
 /** The trend groups of pipeline/tract/groups.py, largest first, with a colour each. */
 export const GROUP_NAMES: string[] = Object.keys(HEADLINE.groups_counts);
-const GROUP_PALETTE = ['#94a3b8', '#60a5fa', '#f59e0b', '#a78bfa', '#f472b6', '#34d399', '#ef4444', '#14b8a6'];
+const GROUP_PALETTE = ['#94a3b8', '#60a5fa', '#f59e0b', '#4f918b', '#f472b6', '#34d399', '#ef4444', '#14b8a6'];
 export const GROUP_COLORS: [string, string][] = GROUP_NAMES.filter((g) => g !== 'Not enough data').map((g, i) => [g, GROUP_PALETTE[i % GROUP_PALETTE.length]]);
 
 /** Breaks for the levels in one window: people and homes per tract, rent in 2024 dollars. */
@@ -117,7 +117,7 @@ export function colorExpr(metric: MetricId, win: { v: WindowVar; w: Window } = {
 }
 
 /** Towns and counties: ADUs by 2031 (mid) per 1,000 people, for one forecast scenario. */
-export const AREA_STEPS: [number, string][] = [[-Infinity, '#f5f3ff'], [0.1, '#c4b5fd'], [0.5, '#8b5cf6'], [1, '#5b21b6']];
+export const AREA_STEPS: [number, string][] = [[-Infinity, '#eef5f4'], [0.1, '#7fb2ad'], [0.5, '#2f746f'], [1, '#143c3c']];
 export const AREA_NAMES = ['Under 0.1', '0.1 to 0.5', '0.5 to 1', 'Over 1'];
 
 export function areaColorExpr(f: Forecast, popProp: string): ExpressionSpecification {
