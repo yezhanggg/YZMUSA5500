@@ -8,8 +8,8 @@ import { preview } from 'vite';
 import { chromium } from 'playwright';
 
 const HERE = import.meta.dirname;
-/** The published site (GitHub Pages). */
-const LIVE = 'https://yezhanggg.github.io/YZMUSA5500/';
+/** The published site (Vercel). */
+const LIVE = 'https://musa5500.vercel.app/';
 const OUT = resolve(HERE, 'public', 'report.pdf');
 
 const server = await preview({ configFile: resolve(HERE, 'vite.config.ts') });

@@ -2,7 +2,7 @@
 title: "MUSA 5500 Report"
 ---
 
-Ye Zhang. MUSA 5500 Geospatial Data Science in Python, Fall 2026. Website: https://yezhanggg.github.io/YZMUSA5500/. Code: https://github.com/yezhanggg/YZMUSA5500
+Ye Zhang. MUSA 5500 Geospatial Data Science in Python, Fall 2026. Website: https://musa5500.vercel.app/. Code: https://github.com/yezhanggg/YZMUSA5500
 
 ## Introduction
 
@@ -65,4 +65,4 @@ Three things would change the answer the most. Lower build costs would help more
 
 **Limits.** ACS tract data is noisy and the 2020-24 base changed. The crosswalk splits by land area. The payoff test is a screen with one cost and one running cost share. The forecast factors are judgment calls, written down in `shared/assumptions.json`. Job access covers only Philadelphia, so it is not in the model.
 
-Full tables and figures are in [docs/results.md](https://github.com/yezhanggg/YZMUSA5500/blob/main/docs/results.md) and every step can be rerun from the [notebooks](https://yezhanggg.github.io/YZMUSA5500/#/notebooks).
+Full tables and figures are in [docs/results.md](https://github.com/yezhanggg/YZMUSA5500/blob/main/docs/results.md) and every step can be rerun from the [notebooks](https://musa5500.vercel.app/#/notebooks).

@@ -1,8 +1,8 @@
 // The MUSA 5500 website: Home, Proposal, the map and Notebooks & Code.
 //   npm run dev       http://localhost:5191/
 //   npm run build     builds into dist/ here
-// The base is relative ('./'), so the build works at any address: the root of a domain, GitHub Pages
-// (user.github.io/YZMUSA5500/) or a subfolder. Pages live in the hash, so a host only needs index.html.
+// The base is relative ('./'), so the build works at any address: the root of a domain
+// (musa5500.vercel.app) or a subfolder. Pages live in the hash, so a host only needs index.html.
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';

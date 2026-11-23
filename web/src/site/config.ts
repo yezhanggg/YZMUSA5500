@@ -7,8 +7,8 @@ export const REPO_URL = 'https://github.com/yezhanggg/YZMUSA5500';
 export const REPO_DIR = '';
 /** The lot-level tool this project feeds. */
 export const TOOL_URL = 'https://pa-adu.vercel.app/';
-/** Where this site is published (GitHub Pages, .github/workflows/pages.yml). */
-export const SITE_URL = 'https://yezhanggg.github.io/YZMUSA5500/';
+/** Where this site is published (Vercel). */
+export const SITE_URL = 'https://musa5500.vercel.app/';
 
 /** Files next to the page (the site uses a relative base, so it works at any address). */
 export const asset = (path: string) => new URL(`${import.meta.env.BASE_URL}${path}`, window.location.href).href;
