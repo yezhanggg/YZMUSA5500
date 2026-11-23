@@ -77,7 +77,7 @@ Say once: not legal advice, not a zoning determination.
 
 ### 8. Legal classes from the town files (1 min)
 
-<!-- source: ~/musa-drive/processed/5500/legal_class_coverage.csv (Nov 11 run), shared/rules/towns_index.json and the town files (Nov 16, commit 751cfaf), web/public/data/pa_places_meta.json (built 2026-11-16) -->
+<!-- source: ~/musa-drive/processed/5500/legal_class_coverage.csv (Nov 11 run), shared/rules/towns_index.json and the town files (Nov 16), web/public/data/pa_places_meta.json (built 2026-11-16) -->
 
 - Now (Nov 16): 155 towns beyond the two cities have rule files. With the two cities, 101 are verified by an independent second reading and 56 stay first readings. 60 of the 155 town codes have no ADU text at all. Reading bans ADUs.
 - 46.0 % of Pennsylvanians live in a place with a rule file (35.1 % verified, 10.9 % drafted).

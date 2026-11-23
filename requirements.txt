@@ -12,5 +12,8 @@ pyproj
 matplotlib
 folium
 jupyterlab
+nbconvert
+jsonschema
+pytest
 altair
 pyarrow

@@ -1,7 +1,7 @@
-# Draft section for results.md: every municipality
+# Extra section: every municipality
 
-Draft for the director. Not in the site render list. Numbers from `<data root>/processed/5500/places_summary.json`
-(built by `python -m pipeline.places_analysis`). Paste as section 10 of results.md if adopted.
+An extra section that follows results.md. It is not part of the report or the website. Numbers come from
+`<data root>/processed/5500/places_summary.json` (built by `python -m pipeline.places_analysis`).
 
 ### 10. Every municipality: where can you build an ADU today?
 
@@ -9,7 +9,7 @@ Draft for the director. Not in the site render list. Numbers from `<data root>/p
 
 Sections 8 and 9 read the rules of 38 places by hand (133 by Nov 15). Pennsylvania has 2,560 municipalities, each with its own zoning
 or none. To see the whole pattern, every county subdivision now gets one answer, the evidence tier behind it, and a
-dated source (docs/PLACES.md):
+dated source:
 
 - Hand-read rule files (verified or drafted): 133 files on Nov 15, 88 of them verified.
 - The state's record of which municipalities have no zoning at all (PA DCED Municipal Statistics, from the annual
@@ -23,7 +23,7 @@ Nov 15 with 133 rule files: by right 14 places (5.1% of people), no zoning 527 (
 52 (11.8%), not known 1,878 (50.2%). So the rule is now known for 49.8% of people. Rerun
 `python -m pipeline.places_analysis` to refresh the tables and figures.
 
-<!-- source: web/public/data/pa_places_meta.json counts.by_status, built 2026-11-15 (commit ce8d21a) -->
+<!-- source: web/public/data/pa_places_meta.json counts.by_status, built 2026-11-15 -->
 
 **People by the ADU rule where they live (2025 estimates, 13.06 million residents, Nov 12 run)**
 
@@ -91,6 +91,6 @@ classes.
 
 - The bills' totals do not move, because under a bill every place already counts as by right.
 - Today's total rises by 45%, mostly from no-zoning places. The bill effect (today to HB 2186) shrinks from about
-  13 times to about 9 times. The director decides whether to adopt this.
+  13 times to about 9 times. The report keeps the section 6 numbers.
 
 Not legal advice. Not a zoning determination. Check with the municipality before you plan a unit.

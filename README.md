@@ -20,7 +20,7 @@ pipeline/              the logic of each step, tested Python modules
   money.py, market.py  the loan payment and HUD rents the payoff test uses
   rules.py             reads the town rule files (shared/rules/)
   paths.py             where the data drive is ($ADU_DATA_DIR)
-  places_analysis.py   the every-municipality summary (docs/places.md, a draft)
+  places_analysis.py   the every-municipality summary (docs/places.md, an extra section)
 shared/                assumptions.json (every cost, rate and weight), the town rule files, boundaries download
 tests/                 pytest for the tract modules
 docs/                  proposal.md, report.md, and the full write-up: data.md, methods.md, results.md, figures/
