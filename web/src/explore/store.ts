@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import type { Map as MLMap } from 'maplibre-gl';
 import { BASE, RATE, SIZE_MAX, SIZE_MIN, SIZE_STEP, type Adu, type Bed, type Stories } from '../lib/numbers';
 import type { CountyProps, FC, LngLat, TownProps, TractProps } from './geo';
-import type { Forecast, MapLevel, MetricId, Window, WindowVar } from './metrics';
+import { YEAR_MAX, type Forecast, type MapLevel, type MetricId, type Window, type WindowVar, type YearVar } from './metrics';
 import type { CostLevel } from '../lib/adu';
 
 /** Where to Build: today's rules, or the state bill HB 2186 (not law). */
@@ -31,6 +31,11 @@ interface ExploreState {
   /** The ACS window and measure for the "Over Time" map. */
   winVar: WindowVar;
   win: Window;
+  /** The year and measure for the yearly town map (By Year). */
+  year: number;
+  /** ADUs by 2031: show what HB 2186 adds over today, in place of one scenario. */
+  billGain: boolean;
+  yearVar: YearVar;
   counties: FC<CountyProps> | null;
   status: 'loading' | 'ready' | 'error';
   /** Tracts, towns and counties (areas.ts). */
@@ -87,6 +92,9 @@ export const useTool = create<ExploreState>((set) => ({
   payRate: RATE,
   winVar: 'rent',
   win: '24',
+  year: YEAR_MAX,
+  billGain: false,
+  yearVar: 'pop',
   counties: null,
   status: 'loading',
   areas: 'idle',

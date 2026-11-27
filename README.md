@@ -16,6 +16,16 @@ A state bill, HB 2186, would allow a backyard home (an accessory dwelling unit, 
 
 The results feed an interactive map on the website and a lot-level tool for homeowners (https://pa-adu.vercel.app, the MUSA 6950 half).
 
+What you can do on the website map:
+
+- Hover any tract, town or county for its numbers. Click it for the details.
+- Play the towns year by year, 2010 to 2025 (people and new homes permitted).
+- Switch between today's rules and HB 2186, and map what the bill adds.
+- Sort, search and download (CSV) every town and county by ADUs by 2031.
+- Search an address and see if a unit pays off there, with the rent, build cost and loan rate it needs.
+
+The notebook pages are interactive too: Altair charts with menus and brushing, and folium maps.
+
 ## Main findings
 
 - **Growth slowed after 2019.** Job growth fell from 0.95% a year to 0.31%. Most single-tract changes sit inside their margin of error.

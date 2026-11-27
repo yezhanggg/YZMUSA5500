@@ -3,7 +3,7 @@
 // homeowner. Pure: the panel (LayerHere.tsx) gathers the numbers from the loaded data, this file only words them.
 // Every number comes from the data passed in. No rule is decided here: Where to Build words come from the place's own
 // status, and a bill is always marked as not law.
-import { AREA_STEPS, FORECAST_LABEL, GROUP_COLORS, METRICS, MOE_GREY, NO_DATA, WINDOW_LABEL, WINDOW_VAR_LABEL, windowLegend, WINDOW_STEPS, type Forecast, type MetricId, type Window, type WindowVar } from './metrics';
+import { AREA_STEPS, FORECAST_LABEL, GROUP_COLORS, METRICS, MOE_GREY, NO_DATA, WINDOW_LABEL, WINDOW_VAR_LABEL, windowLegend, WINDOW_STEPS, YEAR_STEPS, type Forecast, type MetricId, type Window, type WindowVar, type YearVar } from './metrics';
 import { STATUS_COLOR, STATUS_NAME, shareText, type ShownStatus } from './places';
 
 /** The map layers of Explore: every tract metric, and ADUs by 2031 (towns or counties). */
@@ -18,6 +18,7 @@ export type Facts =
   | { layer: 'pays'; pays: 'yes' | 'maybe' | 'no' | null; gap: number | null; yesShare: number | null }
   | { layer: 'room'; mid: number | null; lots: number | null; measured: boolean; outside: boolean; all: number[] }
   | { layer: 'window'; v: WindowVar; w: Window; value: number | null; all: number[] }
+  | { layer: 'yearly'; v: YearVar; year: number; value: number | null; all: number[] }
   | { layer: 'forecast'; kind: 'town' | 'county'; perK: number | null; adus: number | null; scenario: Forecast; all: number[] }
   | { layer: GrowthId; value: number | null; moe: boolean; all: number[] };
 
@@ -263,6 +264,35 @@ export function readLayer(f: Facts): Reading {
         unit: what,
         color: stepColor(steps, f.value),
         insight: [...(rank ? [rank] : []), ...(med != null ? [`The median Pennsylvania tract: ${show(med)}.`] : [])],
+        takeaway,
+        estimate: false,
+        notLaw: false,
+      };
+    }
+    case 'yearly': {
+      const unit = f.v === 'pop' ? `Change in people from 2010 to ${f.year}` : `New homes permitted in ${f.year}, per 1,000 people`;
+      if (f.value === null) return NO_FIGURE('town', unit);
+      const show = (v: number) => (f.v === 'pop' ? `${signed(v)}% since 2010` : `${v.toFixed(1)} per 1,000 people`);
+      const med = median(f.all);
+      const rank = rankLine(f.all, f.value, 'town');
+      const b = band(f.all, f.value) ?? 'mid';
+      const takeaway =
+        f.v === 'pop'
+          ? b === 'high'
+            ? 'This town has grown faster than most since 2010, so renters are likely looking here.'
+            : b === 'low'
+              ? 'This town has grown slower than most since 2010, so check demand before you build.'
+              : 'This town has grown at about the state pace since 2010.'
+          : b === 'high'
+            ? 'Builders added more homes here this year than in most towns, a sign of demand.'
+            : b === 'low'
+              ? 'Few new homes were permitted here this year, so a backyard unit would add supply where little is built.'
+              : 'Home building here was about average for Pennsylvania this year.';
+      return {
+        value: show(f.value),
+        unit,
+        color: stepColor(YEAR_STEPS[f.v], f.value),
+        insight: [...(rank ? [rank] : []), ...(med != null ? [`The median Pennsylvania town: ${show(med)}.`] : [])],
         takeaway,
         estimate: false,
         notLaw: false,

@@ -64,7 +64,7 @@ Margins of error:
 Notebook `03_land_access.ipynb` (unchanged)
 
 - Developed land: share of each tract in NLCD classes 21-24, for 2010, 2019, 2025, with `rasterstats.zonal_stats(..., categorical=True)`
-- Jobs within 30 minutes by car from each tract center, OSMnx drive network, Dijkstra with a 1800 s cutoff, LODES 2024 block jobs. Philadelphia only. Harrisburg could not be downloaded on the run day
+- Jobs within 30 minutes by car from each tract center, OSMnx drive network, Dijkstra with a 1800 s cutoff, LODES 2024 block jobs. Philadelphia only. Harrisburg could not be downloaded on the run day, nor on a retry with Pittsburgh on Nov 26
 - Output: `data/processed/access_tract.csv`
 
 ## 5. Does a backyard unit pay off?
@@ -179,8 +179,8 @@ The tract model says where demand and payoff are. It does not say what the law o
 | Data from an API | Census API (ACS, decennial), USGS web service (land cover), HUD SAFMR feature service |
 | 3+ data sources | Census, LEHD, IRS, Freddie Mac, HUD, USGS, OpenStreetMap |
 | Complex analysis (joins, reshaping) | Steps 1-2 |
-| OSMnx network analysis | Step 4 |
+| OSMnx network analysis | Step 4, with an interactive map of jobs within 30 minutes |
 | Clustering | Step 3 (K-means, Gaussian mixture, Ward) |
-| Raster analysis | Step 4 (zonal stats) |
-| scikit-learn models with honest validation | Step 6 (spatial block CV, temporal backtest, conformal intervals), step 12 (hold out one city) |
-| Interactive visualization | Step 9 (linked Altair view) and the tool |
+| Raster analysis | Step 4 (zonal stats, plus a rasterio window of the pixels and a reprojected overlay on a web map) |
+| scikit-learn models with honest validation | Step 6 (spatial block CV, GridSearchCV in a Pipeline with counties held out, temporal backtest, conformal intervals), step 12 (hold out one city) |
+| Interactive visualization | In every notebook: Altair charts with menus, legend picks and brushing, and folium maps (GeoPandas `.explore()`). Step 9 (linked Altair view, live in notebook 04). The website map (hover labels, a yearly time slider with Play, rules and bill switches, a sortable town and county table with CSV download) |

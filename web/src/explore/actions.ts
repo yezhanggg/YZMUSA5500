@@ -74,7 +74,8 @@ export function redrawPick() {
 
 /** The outline of the area the map layer is about, at a clicked spot. */
 function exploreOutline(pt: LngLat, tract: Feature<TractProps> | undefined, town: Feature<TownProps> | undefined, legal: boolean): Feature<unknown> | undefined {
-  const { level, counties } = useTool.getState();
+  const { level, counties, metric } = useTool.getState();
+  if (level === 'tract' && metric === 'yearly' && town) return town;
   if (level === 'county') return (counties ? findFeature(counties, pt) : undefined) ?? tract;
   if ((legal || level === 'town') && town) return town;
   return tract;

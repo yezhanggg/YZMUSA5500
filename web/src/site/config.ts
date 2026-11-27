@@ -24,8 +24,8 @@ export interface Notebook {
 
 /** The four notebooks, in the order they run. Each is rendered to public/notebooks/<id>.html (render_notebooks.py). */
 export const NOTEBOOKS: Notebook[] = [
-  { id: '01_trends', n: '01', title: 'Trends', what: 'Puts every source on 2020 tracts. Growth before and after 2019, inflation to 2024 dollars, and margins of error.', saves: ['trends_tract.csv', 'tract_panel.csv'] },
-  { id: '02_groups', n: '02', title: 'Trend groups', what: `Groups tracts by how they changed. k from 2 to 10, stability checks, and K-means against a Gaussian mixture and Ward clustering. ${HEADLINE.groups_k} groups.`, saves: ['trend_group column in trends_tract.csv'] },
-  { id: '03_land_access', n: '03', title: 'Land and job access', what: 'Developed land from the NLCD rasters (zonal statistics) and jobs within 30 minutes on the street network (OSMnx).', saves: ['access_tract.csv'] },
-  { id: '04_payoff_forecast', n: '04', title: 'Payoff and forecast', what: 'The rent against cost test, the housing growth model with spatial cross-validation and a backtest, ADUs by 2031, the county roll-up and the linked view.', saves: ['payoff_tract.csv', 'forecast_town.csv', 'county_rollup.csv', 'figures/tract_explorer.html'] },
+  { id: '01_trends', n: '01', title: 'Trends', what: 'Puts every source on 2020 tracts. Growth before and after 2019, inflation to 2024 dollars, and margins of error. Interactive: a linked scatter with a measure menu and a tract map.', saves: ['trends_tract.csv', 'tract_panel.csv'] },
+  { id: '02_groups', n: '02', title: 'Trend groups', what: `Groups tracts by how they changed. k from 2 to 10, stability checks, and K-means against a Gaussian mixture and Ward clustering. ${HEADLINE.groups_k} groups. Interactive: a score menu, a legend you can click, and a group map.`, saves: ['trend_group column in trends_tract.csv'] },
+  { id: '03_land_access', n: '03', title: 'Land and job access', what: 'Developed land from the NLCD rasters (zonal statistics) and jobs within 30 minutes on the street network (OSMnx). The raster pixels behind the numbers, on a static view and a web map.', saves: ['access_tract.csv'] },
+  { id: '04_payoff_forecast', n: '04', title: 'Payoff and forecast', what: 'The rent against cost test, the housing growth model with spatial cross-validation and a backtest, GridSearchCV tuning, ADUs by 2031, the county roll-up and the linked view, live in the page.', saves: ['payoff_tract.csv', 'forecast_town.csv', 'county_rollup.csv', 'figures/tract_explorer.html'] },
 ];

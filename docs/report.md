@@ -49,7 +49,7 @@ The four notebooks run in order. The logic of each step is a tested Python modul
 
 ![Where a new ADU pays off](figures/04_payoff_map.png)
 
-**Housing growth is only a little predictable.** With counties held out, gradient boosting reaches R2 0.20 with the lowest error (MAE 0.092 log points), against about 0 for the baseline. It was picked over the random forest named in the proposal. Five years ahead the backtest explains only about 2% of the spread, and a tract's own past change says nothing about its next one. The 90% intervals are honest and wide: a tract predicted to grow 5% gets about -14% to +29%. Small tracts with many workers per home and more developed land grow the most.
+**Housing growth is only a little predictable.** With counties held out, gradient boosting reaches R2 0.20 with the lowest error (MAE 0.092 log points), against about 0 for the baseline. It was picked over the random forest named in the proposal. Tuning both with GridSearchCV changed the error by less than 0.001. Five years ahead the backtest explains only about 2% of the spread, and a tract's own past change says nothing about its next one. The 90% intervals are honest and wide: a tract predicted to grow 5% gets about -14% to +29%. Small tracts with many workers per home and more developed land grow the most.
 
 **Why so few get built today.** The limit differs by place. In Philadelphia the law is the limit: only 1.2% of lots have any legal ADU path, and none can add a new detached unit, even though 73 of its tracts pass the payoff test. In Pittsburgh every lot has a legal path since Oct 2026, and the yard is the limit: a detached unit fits on 66% of lots. Of the 36 largest other towns, 17 have no ADU text in their code and Reading bans them.
 
@@ -65,4 +65,4 @@ Three things would change the answer the most. Lower build costs would help more
 
 **Limits.** ACS tract data is noisy and the 2020-24 base changed. The crosswalk splits by land area. The payoff test is a screen with one cost and one running cost share. The forecast factors are judgment calls, written down in `shared/assumptions.json`. Job access covers only Philadelphia, so it is not in the model.
 
-Full tables and figures are in [docs/results.md](https://github.com/yezhanggg/YZMUSA5500/blob/main/docs/results.md) and every step can be rerun from the [notebooks](https://musa5500.vercel.app/#/notebooks).
+The website map is interactive: hover any area, play the towns year by year from 2010 to 2025, switch between today's rules and HB 2186, and sort or download the town and county table. The notebooks carry interactive charts and maps too. Full tables and figures are in [docs/results.md](https://github.com/yezhanggg/YZMUSA5500/blob/main/docs/results.md) and every step can be rerun from the [notebooks](https://musa5500.vercel.app/#/notebooks).

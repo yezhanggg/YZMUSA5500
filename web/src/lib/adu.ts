@@ -52,6 +52,29 @@ export function payoff(rent: number, size: number, level: CostLevel = 'mid', rat
   return { rent, net, cost, costLow, gap: net - cost, pays, legacy: false };
 }
 
+/** Break-even for one payoff: the rent that covers the payment, the most it could cost per sq ft, and the highest loan
+ *  rate at which it still pays (null when no rate from 0% to 15% does). */
+export function breakEven(p: Payoff, size: number, rate = RATE): { rent: number; psf: number; rate: number | null } {
+  const rent = p.cost / (1 - OPEX);
+  // The payment is linear in the loan, so the cost per sq ft that matches the net rent scales directly.
+  const perDollar = payment(1, rate);
+  const psf = p.net / perDollar / (size * (1 + SOFT));
+  const principal = p.cost / perDollar;
+  let lo = 0;
+  let hi = 0.15;
+  let best: number | null = null;
+  if (payment(principal, 0) <= p.net) {
+    for (let i = 0; i < 40; i++) {
+      const mid = (lo + hi) / 2;
+      if (payment(principal, mid) <= p.net) {
+        best = mid;
+        lo = mid;
+      } else hi = mid;
+    }
+  }
+  return { rent, psf, rate: best };
+}
+
 export interface TractRent {
   rent_b0?: number | null;
   rent_b1?: number | null;

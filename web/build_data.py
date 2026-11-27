@@ -61,6 +61,7 @@ TRACT_KEEP = [
     "NAMELSAD",
     "county",
     "jobs_2010",
+    "jobs_2014",
     "jobs_2019",
     "jobs_2024",
     "pop",
@@ -99,7 +100,8 @@ TRACT_KEEP = [
     "rent_19",
     "rent_24",
 ]
-TOWN_KEEP_DROP = [f"pop_{y}" for y in range(2010, 2026) if y not in (2010, 2019, 2025)]
+# Towns keep every yearly population (2010 to 2025) and new homes permitted each year, for the yearly time slider.
+TOWN_KEEP_DROP: list[str] = []
 COUNTY_KEEP = [
     "GEOID",
     "NAME",
@@ -292,6 +294,10 @@ def build_areas(processed, legal_status, out_dir):
         after = permits[permits.year >= 2020].groupby("town_geoid").units_total.sum() / (permits.year.max() - 2019)
         p = pd.DataFrame({"permits_yr_before": before.round(1), "permits_yr_after": after.round(1)})
         towns = towns.merge(p.rename_axis("GEOID").reset_index(), on="GEOID", how="left")
+        # New homes permitted in each year (the yearly time slider)
+        towns = towns.merge(
+            wide(permits.rename(columns={"town_geoid": "GEOID"}), "GEOID", "units_total", "permits"), on="GEOID", how="left"
+        )
     if legal_status.exists():
         legal = pd.read_csv(legal_status, dtype={"GEOID": str}, comment="#")
         keep = [c for c in legal.columns if c not in ("name",)]

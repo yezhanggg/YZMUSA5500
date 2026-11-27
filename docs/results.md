@@ -19,7 +19,7 @@ Every number below comes from the modules in `pipeline/tract/` as run by the exe
 
 - **One payoff number.** The first draft priced a 600 sq ft unit with the all-unit tract median rent and found 20.3% of tracts pay. The tool used a 1-bedroom rent and showed 10.3%. A 600 sq ft unit is a 1-bedroom, so the 1-bedroom rent is the honest basis. The report now uses the tool's column. The answer is 10.3% of tracts. The all-unit number is kept as a cross-check
 - **Trend groups.** The first draft used K-means with k = 5. Rerun with 20 seeds, k = 5 gives different groups each time (adjusted Rand 0.38). The new rule picks k = 7, which is stable (0.95). All k have weak structure, so the groups are now called a description, not a finding
-- **Forecast.** The model is compared with a baseline, ridge and gradient boosting, under county and grid block cross-validation, with a temporal backtest and 90% intervals. Gradient boosting has the lowest held-out error and replaces the random forest. The ADU totals fall because fewer tracts pass the payoff test
+- **Forecast.** The model is compared with a baseline, ridge, a random forest and gradient boosting, under county and grid block cross-validation, with a temporal backtest and 90% intervals. Gradient boosting has the lowest held-out error and replaces the random forest. The ADU totals fall because fewer tracts pass the payoff test
 - **ACS windows.** "Before" and "after" now say which 5-year windows they compare. Tract changes smaller than their margin of error are flagged
 - **IRS migration** was downloaded but unused. It is now tested as a model feature (no gain, so not kept) and shown as a context map
 - **Lots with room.** The forecast used the retired raster pilot: one fit rate per area type times ACS single-family homes. It now uses the lot tool's vector results in Philadelphia and Pittsburgh (measured, every 1 to 4 unit lot) and a model trained on them everywhere else, with a range (section 9)
@@ -168,6 +168,7 @@ Jobs within 30 minutes by car (OSMnx, LODES 2024 jobs):
 - That is 90% of the jobs in the network area (Philadelphia plus 15 km, inside PA) for the median tract. The lowest tract reaches 69%
 - Center City and North Philadelphia reach the most. The far south and far northeast reach the least
 - Harrisburg was planned too but the public Overpass server was down or full for hours on the run day. It was skipped. The notebook adds it when rerun
+- A retry on Nov 26, 2026 (Harrisburg and Pittsburgh, three Overpass mirrors, six tries each) failed the same way: busy servers and timeouts. Job access stays Philadelphia only
 - These are free-flow speeds and miss New Jersey jobs, so they are upper bounds inside PA and lower bounds overall
 - Job access was not used in the forecast, because it only covers one city
 
@@ -256,6 +257,7 @@ Sensitivity. Share of tracts where the unit pays (yes), in %:
 - All three models beat the baseline by about 0.2 R2 in places they have not seen. That is real but modest skill. Four fifths of the tract-to-tract spread is left unexplained
 - Gradient boosting has the lowest held-out error (MAE 0.092) and is used. The random forest has a slightly higher pooled R2. The ranking of tracts is close either way
 - Random CV flatters the random forest (0.225 vs 0.216 with counties held out). Grid blocks give the same picture as counties
+- Tuning with GridSearchCV (counties held out, in a Pipeline) barely moves either model. Gradient boosting: MAE 0.0916 tuned against 0.0920 fixed (best: learning rate 0.03, min leaf 10). Random forest: 0.100 either way. Gradient boosting still wins, so the fixed settings stay
 
 Temporal backtest. Trained on the change from 2010-14 to 2015-19, scored on the change from 2015-19 to 2020-24 (ACS homes, 3,385 tracts with at least 100 homes):
 

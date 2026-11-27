@@ -6,7 +6,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { tractPayoff } from '../lib/adu';
 import { PA_BBOX } from './geo';
-import { METRICS, PAYS_CODE, areaColorExpr, colorExpr, type MetricId } from './metrics';
+import { METRICS, PAYS_CODE, areaColorExpr, areaGainExpr, colorExpr, yearColorExpr, type MetricId } from './metrics';
 import { loadAreas } from './areas';
 import { mapRef, useTool } from './store';
 import { mapPadding, pickSpot } from './actions';
@@ -14,6 +14,7 @@ import { aerialSource, watchAerial } from './aerial';
 import { usePlacesLayer } from './placesLayer';
 import { PlacesLegend } from './PlaceResults';
 import { useBoundaryLayers } from './boundaryLayers';
+import { watchHover } from './hover';
 
 setWorkerUrl(workerUrl);
 
@@ -39,7 +40,7 @@ function tractOpacity(metric: MetricId): ExpressionSpecification {
 
 /** Tracts, towns and counties, once loaded: above the basemap, under its labels. */
 function addAreaLayers(map: MLMap) {
-  const { tracts, towns, counties, metric, forecast, level } = useTool.getState();
+  const { tracts, towns, counties, metric, forecast, level, year, yearVar } = useTool.getState();
   if (!tracts || !towns || map.getSource('tracts')) return;
   const before = map.getStyle().layers.find((l) => l.type === 'symbol')?.id;
   map.addSource('tracts', { type: 'geojson', data: tracts as unknown as GeoJSON.FeatureCollection, promoteId: 'GEOID' });
@@ -63,6 +64,8 @@ function addAreaLayers(map: MLMap) {
   );
   map.addLayer({ id: 'tract-moe', type: 'fill', source: 'tracts', maxzoom: 14, layout: { visibility: 'none' }, filter: MOE_NONE, paint: { 'fill-pattern': 'bh-moe', 'fill-opacity': 0.8 } }, before);
   // Towns and counties: ADUs by 2031 per 1,000 people, under the forecast scenario.
+  // By Year: towns coloured by the year on the time slider.
+  map.addLayer({ id: 'town-year-fill', type: 'fill', source: 'towns', layout: { visibility: level === 'tract' && metric === 'yearly' ? 'visible' : 'none' }, paint: { 'fill-color': yearColorExpr(yearVar, year), 'fill-opacity': fade } }, before);
   map.addLayer({ id: 'town-fill', type: 'fill', source: 'towns', layout: { visibility: level === 'town' ? 'visible' : 'none' }, paint: { 'fill-color': areaColorExpr(forecast, 'pop_2025'), 'fill-opacity': fade } }, before);
   if (counties) {
     map.addSource('counties', { type: 'geojson', data: counties as unknown as GeoJSON.FeatureCollection });
@@ -84,6 +87,9 @@ export default function MapCanvas() {
   const payRate = useTool((s) => s.payRate);
   const winVar = useTool((s) => s.winVar);
   const win = useTool((s) => s.win);
+  const billGain = useTool((s) => s.billGain);
+  const year = useTool((s) => s.year);
+  const yearVar = useTool((s) => s.yearVar);
   const status = useTool((s) => s.status);
   const areas = useTool((s) => s.areas);
   const view3d = useTool((s) => s.view3d);
@@ -155,8 +161,11 @@ export default function MapCanvas() {
 
     // A click picks the tract and town there.
     map.on('click', (e) => void pickSpot([e.lngLat.lng, e.lngLat.lat]));
+    // The name and value under the mouse (hover.ts).
+    const stopHover = watchHover(map);
 
     return () => {
+      stopHover();
       alive = false;
       map.remove();
       mapRef.current = null;
@@ -178,7 +187,8 @@ export default function MapCanvas() {
     map.setPaintProperty('tract-fill', 'fill-color', colorExpr(metric, { v: winVar, w: win }));
     map.setPaintProperty('tract-fill', 'fill-opacity', tractOpacity(metric));
     const show = (id: string, on: boolean) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
-    show('tract-fill', level === 'tract' && metric !== 'legal');
+    show('tract-fill', level === 'tract' && metric !== 'legal' && metric !== 'yearly');
+    show('town-year-fill', level === 'tract' && metric === 'yearly');
     show('town-fill', level === 'town');
     show('county-fill', level === 'county');
     show('county-line', level === 'county');
@@ -187,9 +197,15 @@ export default function MapCanvas() {
     map.setFilter('tract-moe', moe ? (['==', ['get', moe], 1] as unknown as ExpressionSpecification) : MOE_NONE);
     // Room hatches most of the state (modelled outside the training range), so its hatch is fainter.
     map.setPaintProperty('tract-moe', 'fill-opacity', metric === 'room' ? 0.4 : 0.8);
-    map.setPaintProperty('town-fill', 'fill-color', areaColorExpr(forecast, 'pop_2025'));
-    if (map.getLayer('county-fill')) map.setPaintProperty('county-fill', 'fill-color', areaColorExpr(forecast, 'pop_2024'));
-  }, [metric, winVar, win, level, forecast, status, areas]);
+    map.setPaintProperty('town-fill', 'fill-color', billGain ? areaGainExpr('pop_2025') : areaColorExpr(forecast, 'pop_2025'));
+    if (map.getLayer('county-fill')) map.setPaintProperty('county-fill', 'fill-color', billGain ? areaGainExpr('pop_2024') : areaColorExpr(forecast, 'pop_2024'));
+  }, [metric, winVar, win, level, forecast, billGain, status, areas]);
+
+  // By Year: the fill follows the time slider (cheap, so no debounce: Play steps once a second).
+  useEffect(() => {
+    const map = mapRef.current;
+    if (status === 'ready' && areas === 'ready' && map?.getLayer('town-year-fill')) map.setPaintProperty('town-year-fill', 'fill-color', yearColorExpr(yearVar, year));
+  }, [year, yearVar, status, areas]);
 
   // Pays off for every tract follows the ADU and payoff settings (debounced for the sliders).
   useEffect(() => {

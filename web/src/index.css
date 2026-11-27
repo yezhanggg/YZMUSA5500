@@ -469,3 +469,11 @@ input[type='range'].weight:focus-visible::-webkit-slider-thumb {
     break-after: avoid;
   }
 }
+
+/* Explore: the label under the mouse (hover.ts) */
+.bh-hover .maplibregl-popup-content { padding: 6px 10px; border-radius: 10px; box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.3); font: inherit; pointer-events: none; }
+.bh-hover { pointer-events: none; }
+.bh-hover .maplibregl-popup-tip { display: none; }
+.bh-hover-title { font-weight: 600; font-size: 13px; color: #0f172a; line-height: 1.25; }
+.bh-hover-sub { font-size: 11px; color: #64748b; line-height: 1.25; }
+.bh-hover-value { margin-top: 2px; font-size: 12px; color: #1f5e5a; font-weight: 600; font-variant-numeric: tabular-nums; }

@@ -2,15 +2,15 @@
 // Layers card with every map layer as a row in three groups (ADU, Trends, Prediction). One layer is on the map at a
 // time. The row that is on shows its legend right under it, and the settings that change that layer (Rules for Where
 // to Build, your ADU and the payoff for Does It Pay Off, the scenario for ADUs by 2031, the time slider for Over Time).
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { RotateCcw } from 'lucide-react';
+import { Pause, Play, RotateCcw } from 'lucide-react';
 import { Segmented } from '../components/primitives';
 import { cx } from '../lib/cx';
 import { footprint, isBase, payShare, sides, type CostLevel } from '../lib/adu';
 import { BASE, BED_LABEL, BED_SIZE, COST_PSF, HEADLINE, NUMBERS, RATE, ROOM_SENTENCE, SIZE_MAX, SIZE_MIN, SIZE_STEP, type Bed, type Stories } from '../lib/numbers';
 import { fmt } from '../lib/format';
-import { AREA_NAMES, AREA_STEPS, FORECAST_LABEL, GROUP_COLORS, METRICS, NO_DATA, WINDOW_LABEL, WINDOW_VAR_LABEL, windowLegend, type Forecast, type MapLevel, type MetricId, type Window, type WindowVar } from './metrics';
+import { AREA_NAMES, AREA_STEPS, FORECAST_LABEL, GAIN_STEPS, GROUP_COLORS, METRICS, NO_DATA, WINDOW_LABEL, WINDOW_VAR_LABEL, YEAR_MAX, YEAR_MIN, YEAR_NAMES, YEAR_STEPS, YEAR_VAR_LABEL, windowLegend, type Forecast, type MapLevel, type MetricId, type Window, type WindowVar, type YearVar } from './metrics';
 import type { LayerId } from './layerInsight';
 import { PlacesKey } from './PlaceResults';
 import { useTool, type Rule } from './store';
@@ -43,7 +43,8 @@ export const LAYER_GROUPS: { title: string; layers: { id: LayerId; name: string;
       { id: 'units_after', name: 'Homes', hint: 'Growth in homes per year, recent ACS' },
       { id: 'rent_after', name: 'Rent', hint: 'Rent growth per year, in 2024 dollars' },
       { id: 'group', name: 'Trend Groups', hint: 'Tracts grouped by how they changed' },
-      { id: 'window', name: 'Over Time', hint: 'People, homes or rent from 2010 to today: drag the time slider' },
+      { id: 'yearly', name: 'Towns by Year', hint: 'People and new homes in every town, year by year from 2010 to 2025. Press Play.' },
+      { id: 'window', name: 'Tracts Over Time', hint: 'People, homes or rent per tract in three ACS 5-year windows' },
     ],
   },
   {
@@ -153,7 +154,18 @@ function LayerLegend({ id }: { id: LayerId }) {
   const forecast = useTool((s) => s.forecast);
   const winVar = useTool((s) => s.winVar);
   const win = useTool((s) => s.win);
+  const billGain = useTool((s) => s.billGain);
   if (id === 'legal') return <PlacesKey />;
+  if (id === 'forecast' && billGain)
+    return (
+      <Key
+        label="What HB 2186 adds legend"
+        cols={2}
+        hint="HB 2186 mid minus today's mid. The bill is not law."
+        items={[...GAIN_STEPS.map(([, c], i) => ({ name: AREA_NAMES[i], color: c })), { name: 'No data', color: NO_DATA }]}
+        note={<>Extra ADUs by 2031 under HB 2186, per 1,000 people. Estimate. Not law.</>}
+      />
+    );
   if (id === 'forecast')
     return (
       <Key
@@ -166,6 +178,7 @@ function LayerLegend({ id }: { id: LayerId }) {
     );
   const m = METRICS[id];
   if (id === 'group') return <Key label="Trend Groups legend" hint={`${m.label}. Descriptive. Soft lines (silhouette ${NUMBERS.groupsSilhouette}).`} items={[...GROUP_COLORS.map(([name, color]) => ({ name, color })), { name: 'Not enough data', color: NO_DATA }]} />;
+  if (id === 'yearly') return <YearLegend />;
   if (id === 'window') {
     const l = windowLegend(winVar);
     return (
@@ -198,6 +211,7 @@ function LayerLegend({ id }: { id: LayerId }) {
       cols={id === 'pays' ? 2 : 1}
       hint={m.label}
       items={[...m.steps.map(([, c], i) => ({ name: m.names[i], color: c })), ...(m.moe ? [{ name: 'Inside the margin of error', color: '#64748b', hatch: true }] : []), { name: 'No data', color: NO_DATA }]}
+      note={id === 'pays' ? 'Close: rent covers the cost within the close band, a small change in cost or rate tips it.' : undefined}
     />
   );
 }
@@ -233,6 +247,7 @@ function LayerSettings({ id }: { id: LayerId }) {
       </Settings>
     );
   if (id === 'window') return <WindowPick />;
+  if (id === 'yearly') return <YearPick />;
   return null;
 }
 
@@ -367,6 +382,68 @@ function WindowPick() {
   );
 }
 
+function YearLegend() {
+  const yearVar = useTool((s) => s.yearVar);
+  const year = useTool((s) => s.year);
+  return (
+    <Key
+      label="Towns by Year legend"
+      cols={2}
+      hint={yearVar === 'pop' ? 'Census population estimates, change since 2010.' : 'Census Building Permits Survey, homes permitted that year per 1,000 people.'}
+      items={[...YEAR_STEPS[yearVar].map(([, c], i) => ({ name: YEAR_NAMES[yearVar][i], color: c })), { name: 'No data', color: NO_DATA }]}
+      note={yearVar === 'pop' ? <>People, change from 2010 to {year}.</> : <>New homes permitted in {year}, per 1,000 people.</>}
+    />
+  );
+}
+
+const YEARS = Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => YEAR_MIN + i);
+
+/** Towns by Year: the measure, a yearly time slider from 2010 to 2025, and Play. */
+function YearPick() {
+  const yearVar = useTool((s) => s.yearVar);
+  const year = useTool((s) => s.year);
+  const set = useTool((s) => s.set);
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    if (!playing) return;
+    const t = window.setInterval(() => {
+      const y = useTool.getState().year;
+      if (y >= YEAR_MAX) setPlaying(false);
+      else set({ year: y + 1 });
+    }, 900);
+    return () => window.clearInterval(t);
+  }, [playing, set]);
+  const play = () => {
+    if (!playing && year >= YEAR_MAX) set({ year: YEAR_MIN });
+    setPlaying(!playing);
+  };
+  const pct = ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100;
+  return (
+    <Settings>
+      <Segmented<YearVar> full label="Measure" value={yearVar} onChange={(v) => set({ yearVar: v })} className="bg-white/70" options={(Object.keys(YEAR_VAR_LABEL) as YearVar[]).map((v) => ({ value: v, label: YEAR_VAR_LABEL[v], hint: v === 'pop' ? 'Change in people since 2010' : 'Homes permitted that year per 1,000 people' }))} />
+      <div>
+        <div className="flex items-center justify-between gap-2">
+          <label htmlFor="year-slider" className="text-caption font-semibold text-slate-600">
+            Year
+          </label>
+          <span className="text-small font-semibold text-violet-800 tnum" aria-live="polite">{year}</span>
+        </div>
+        <div className="mt-1 flex items-center gap-2">
+          <button type="button" onClick={play} aria-label={playing ? 'Pause' : 'Play the years'} data-year-play className="tap grid h-7 w-7 shrink-0 place-items-center rounded-full bg-violet-600 text-white hover:bg-violet-700">
+            {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+          </button>
+          <input id="year-slider" type="range" className="weight w-full" min={YEAR_MIN} max={YEAR_MAX} step={1} value={year} aria-valuetext={String(year)} onChange={(e) => { setPlaying(false); set({ year: Number(e.target.value) }); }} style={{ ['--pct' as string]: `${pct}%` }} />
+        </div>
+        <div className="mt-0.5 flex justify-between pl-9 text-caption text-slate-500 tnum" aria-hidden>
+          {YEARS.filter((y) => y % 5 === 0 || y === YEAR_MAX).map((y) => (
+            <span key={y}>{y}</span>
+          ))}
+        </div>
+      </div>
+    </Settings>
+  );
+}
+
 const FORECASTS: Forecast[] = ['current', 'hb2186', 'sb1346'];
 const fmtRange = (r: { low: number; mid: number; high: number }) => `${fmt(r.mid)} (${fmt(r.low)} to ${fmt(r.high)})`;
 
@@ -380,14 +457,19 @@ const FORECAST_HINT: Record<Forecast, string> = {
 function ForecastSettings() {
   const forecast = useTool((s) => s.forecast);
   const level = useTool((s) => s.level);
+  const billGain = useTool((s) => s.billGain);
   const set = useTool((s) => s.set);
   return (
     <>
       <div>
+        <SettingLabel extra={billGain ? <NotLaw /> : undefined}>Show</SettingLabel>
+        <Segmented<'one' | 'gain'> full label="Show" value={billGain ? 'gain' : 'one'} onChange={(v) => set({ billGain: v === 'gain' })} options={[{ value: 'one', label: 'Scenario', hint: 'ADUs by 2031 under one set of rules' }, { value: 'gain', label: 'Bill Adds', hint: 'HB 2186 minus today, per 1,000 people' }]} className="bg-white/70" />
+      </div>
+      <div>
         <SettingLabel>Map By</SettingLabel>
         <Segmented<MapLevel> full label="Map by" value={level} onChange={(v) => set({ level: v })} options={[{ value: 'town', label: 'Towns' }, { value: 'county', label: 'Counties' }]} className="bg-white/70" />
       </div>
-      <div>
+      <div className={cx(billGain && 'pointer-events-none opacity-40')} aria-disabled={billGain}>
         <SettingLabel extra={forecast !== 'current' ? <NotLaw /> : undefined}>Scenario</SettingLabel>
         <Segmented<Forecast> full label="ADUs by 2031 scenario" value={forecast} onChange={(v) => set({ forecast: v })} options={FORECASTS.map((f) => ({ value: f, label: FORECAST_LABEL[f], hint: FORECAST_HINT[f] }))} className="bg-white/70" />
       </div>

@@ -6,7 +6,7 @@ import { useEffect, useMemo } from 'react';
 import { Lightbulb } from 'lucide-react';
 import { isNum } from '../lib/format';
 import { payShare, tractPayoff, tractRoom } from '../lib/adu';
-import { METRICS } from './metrics';
+import { METRICS, YEAR_MAX, YEAR_MIN, yearValue } from './metrics';
 import { readLayer, type Facts, type GrowthId, type LayerId } from './layerInsight';
 import { LAYER_NAME, useActiveLayer } from './ExploreControls';
 import { usePlaceRow } from './PlaceResults';
@@ -35,6 +35,8 @@ function useFacts(spot: Spot, layer: LayerId): { facts: Facts; where: string } {
   const forecast = useTool((s) => s.forecast);
   const winVar = useTool((s) => s.winVar);
   const win = useTool((s) => s.win);
+  const year = useTool((s) => s.year);
+  const yearVar = useTool((s) => s.yearVar);
   const rule = useTool((s) => s.rule);
   const adu = useTool((s) => s.adu);
   const costLevel = useTool((s) => s.costLevel);
@@ -50,9 +52,10 @@ function useFacts(spot: Spot, layer: LayerId): { facts: Facts; where: string } {
       return level === 'county'
         ? nums(((counties as FC<CountyProps> | null)?.features ?? []).map((f) => perK(f.properties[`adus_mid_${forecast}`], f.properties.pop_2024)))
         : nums(((towns as FC<TownProps> | null)?.features ?? []).map((f) => perK(f.properties[`adus_mid_${forecast}`], f.properties.pop_2025)));
+    if (layer === 'yearly') return nums(((towns as FC<TownProps> | null)?.features ?? []).map((f) => yearValue(f.properties, yearVar, year)));
     if (layer === 'legal' || layer === 'pays' || layer === 'group') return [];
     return tractValues(tracts, layer, prop);
-  }, [layer, prop, level, forecast, tracts, towns, counties]);
+  }, [layer, prop, level, forecast, tracts, towns, counties, year, yearVar]);
   const groupCounts = useMemo(() => {
     const m = new Map<string, number>();
     for (const f of tracts?.features ?? []) if (f.properties.trend_group) m.set(f.properties.trend_group, (m.get(f.properties.trend_group) ?? 0) + 1);
@@ -83,6 +86,8 @@ function useFacts(spot: Spot, layer: LayerId): { facts: Facts; where: string } {
       const r = tractRoom(t);
       return { where: 'this tract', facts: { layer, mid: r?.mid ?? null, lots: r?.lots ?? null, measured: !!r?.measured, outside: !!r?.outside, all } };
     }
+    case 'yearly':
+      return { where: townName ?? 'this town', facts: { layer, v: yearVar, year, value: yearValue(spot.town, yearVar, year), all } };
     case 'window':
       return { where: 'this tract', facts: { layer, v: winVar, w: win, value: isNum(t[prop]) ? (t[prop] as number) : null, all } };
     default: {
@@ -123,6 +128,7 @@ export default function LayerHere({ spot }: { spot: Spot }) {
           </span>
         </div>
         <p className="mt-0.5 text-small text-slate-600">{r.unit}</p>
+        {layer === 'yearly' && <YearSpark spot={spot} />}
         {r.insight.length > 0 && (
           <ul className="mt-2.5 space-y-0.5 border-t border-stone-100 pt-2.5" aria-label="How it compares">
             {r.insight.map((l) => (
@@ -141,5 +147,39 @@ export default function LayerHere({ spot }: { spot: Spot }) {
         </p>
       </div>
     </section>
+  );
+}
+
+/** Towns by Year: the town's line from 2010 to 2025, with the slider's year marked. Click a year to jump there. */
+function YearSpark({ spot }: { spot: Spot }) {
+  const yearVar = useTool((s) => s.yearVar);
+  const year = useTool((s) => s.year);
+  const set = useTool((s) => s.set);
+  const years = Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => YEAR_MIN + i);
+  const vals = years.map((y) => yearValue(spot.town, yearVar, y));
+  const ok = vals.filter((v): v is number => v != null);
+  if (ok.length < 2) return null;
+  const W = 260, H = 64, P = 4;
+  const lo = Math.min(0, ...ok), hi = Math.max(0, ...ok);
+  const x = (i: number) => P + (i / (years.length - 1)) * (W - 2 * P);
+  const y = (v: number) => H - P - ((v - lo) / (hi - lo || 1)) * (H - 2 * P);
+  const pts = vals.map((v, i) => (v == null ? null : `${x(i).toFixed(1)},${y(v).toFixed(1)}`)).filter(Boolean).join(' ');
+  const i = years.indexOf(year);
+  const cur = vals[i];
+  return (
+    <figure className="mt-2" aria-label={`${yearVar === 'pop' ? 'Change in people' : 'New homes per 1,000 people'}, ${YEAR_MIN} to ${YEAR_MAX}`}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="h-16 w-full" role="img">
+        <line x1={P} x2={W - P} y1={y(0)} y2={y(0)} stroke="#cbd5e1" strokeDasharray="2 2" />
+        {yearVar === 'permits'
+          ? vals.map((v, k) => v != null && <rect key={k} x={x(k) - 5} width={10} y={y(v)} height={Math.max(0.5, y(0) - y(v))} fill={k === i ? '#6d28d9' : '#a7c7c3'} onClick={() => set({ year: years[k] })} className="cursor-pointer"><title>{`${years[k]}: ${v.toFixed(1)}`}</title></rect>)
+          : <polyline points={pts} fill="none" stroke="#2f746f" strokeWidth={2} />}
+        {yearVar === 'pop' && years.map((yy, k) => vals[k] != null && <circle key={yy} cx={x(k)} cy={y(vals[k] as number)} r={k === i ? 4 : 6} fill={k === i ? '#6d28d9' : 'transparent'} onClick={() => set({ year: yy })} className="cursor-pointer"><title>{`${yy}: ${(vals[k] as number).toFixed(1)}%`}</title></circle>)}
+      </svg>
+      <figcaption className="flex justify-between text-caption text-slate-500 tnum">
+        <span>{YEAR_MIN}</span>
+        <span className="font-semibold text-violet-800">{year}{cur != null ? `: ${yearVar === 'pop' ? `${cur > 0 ? '+' : ''}${cur.toFixed(1)}%` : cur.toFixed(1)}` : ''}</span>
+        <span>{YEAR_MAX}</span>
+      </figcaption>
+    </figure>
   );
 }

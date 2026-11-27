@@ -39,6 +39,6 @@ title: "MUSA 5500 Proposal"
 
 - **Model:** gradient boosting beat the random forest on held-out counties, so it is used. The random forest stays in the comparison.
 - **Payoff test:** uses each tract's 1-bedroom rent.
-- **Time slider:** steps through the three ACS 5-year windows, since yearly tract data does not exist.
+- **Time slider:** yearly tract data does not exist, so there are two sliders. Towns by Year steps through every year from 2010 to 2025 (people and new homes permitted) with a Play button. Tracts Over Time steps through the three ACS 5-year windows.
 - **Bills:** SB 1346 was added next to HB 2186.
 - **Website:** hosted on Vercel instead of GitHub Pages.

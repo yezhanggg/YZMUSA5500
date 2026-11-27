@@ -4,7 +4,7 @@
 import { useEffect } from 'react';
 import { Minus } from 'lucide-react';
 import { cx } from '../lib/cx';
-import { tractPayoff, tractRoom, rentNote } from '../lib/adu';
+import { breakEven, tractPayoff, tractRoom, rentNote } from '../lib/adu';
 import { COST_PSF } from '../lib/numbers';
 import { fmt, isNum, money } from '../lib/format';
 import { ruleFor, ruleWarnings } from '../lib/rules';
@@ -84,6 +84,26 @@ function PlaceRuleNote({ row, sub }: { row: PlaceRow; sub: string }) {
   );
 }
 
+/** What it would take to pay off: the rent needed, the most it could cost to build, the highest loan rate. */
+function BreakEven({ pay, size, rate }: { pay: NonNullable<ReturnType<typeof tractPayoff>>; size: number; rate: number }) {
+  const b = breakEven(pay, size, rate);
+  const items = [
+    { k: 'Rent needed', v: `${money(b.rent)}/mo`, t: `Rent that covers the payment after 30% for upkeep. Rent here: ${money(pay.rent)}.` },
+    { k: 'Max build cost', v: `$${Math.round(b.psf)}/sq ft`, t: `The most it could cost per sq ft (before soft costs) and still pay off at ${(rate * 100).toFixed(2)}%.` },
+    { k: 'Max loan rate', v: b.rate == null ? 'None' : b.rate > 0.1499 ? 'Over 15%' : `${(b.rate * 100).toFixed(2)}%`, t: 'The highest 30-year rate at which it still pays off at this build cost.' },
+  ];
+  return (
+    <dl className="mt-1 grid grid-cols-3 gap-1.5 text-center" aria-label="Break-even" data-break-even>
+      {items.map((x) => (
+        <div key={x.k} className="rounded-lg bg-stone-50 px-1.5 py-1 ring-1 ring-stone-200/80" title={x.t}>
+          <dt className="text-[11px] text-slate-500">{x.k}</dt>
+          <dd className="text-small font-semibold text-slate-900 tnum">{x.v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 const PAY_STATE = { yes: 'pass', maybe: 'approval', no: 'fail' } as const;
 const PAY_LABEL = { yes: 'Pays off', maybe: 'Close', no: 'Does not pay off' } as const;
 const RULE_STATE: Record<'good' | 'warn' | 'bad' | 'none', RowState> = { good: 'pass', warn: 'approval', bad: 'fail', none: 'unknown' };
@@ -94,11 +114,18 @@ export function AreaRows({ spot, skipRule }: { spot: Spot; skipRule?: boolean })
   const { adu, mode, costLevel, payRate, pay, rule, fromPlaces } = useArea(spot);
   const placeRow = usePlaces((s) => (spot.town.GEOID ? s.places?.byGeoid.get(spot.town.GEOID as string) : undefined));
   const forecast = useTool((s) => s.forecast);
+  const level = useTool((s) => s.level);
+  const countyRow = useTool((s) => (s.level === 'county' ? s.counties?.features.find((f) => f.properties.GEOID === spot.tract.GEOID.slice(0, 5))?.properties : undefined));
   const room = tractRoom(spot.tract);
   const warnings = ruleWarnings(mode, spot.town, null, adu.size);
   const w = spot.town;
-  const n = (k: string) => (isNum(w[k]) ? (w[k] as number) : null);
-  const mid = n(`adus_mid_${forecast}`);
+  // By county, the ADUs by 2031 row reads the county (with its range), else the town.
+  const src = level === 'county' && countyRow ? (countyRow as Record<string, unknown>) : w;
+  const m = (k: string) => (isNum(src[k]) ? (src[k] as number) : null);
+  const mid = m(`adus_mid_${forecast}`);
+  const lo = m(`adus_low_${forecast}`);
+  const hi = m(`adus_high_${forecast}`);
+  const where = level === 'county' && countyRow ? 'in county' : 'in town';
   const ruleValue = mode === 'hb2186' ? 'By right' : fromPlaces ? rule.label : rule.tone === 'none' ? 'Not on file' : rule.tone === 'good' && rule.sub !== "Today's rules" ? rule.sub : rule.label;
   return (
     <Rows label="Area checklist">
@@ -111,6 +138,7 @@ export function AreaRows({ spot, skipRule }: { spot: Spot; skipRule?: boolean })
             <p className="text-caption text-slate-500">
               {fmt(adu.size)} sq ft at ${COST_PSF[costLevel]} / sq ft, {(payRate * 100).toFixed(2)}%. {rentNote(adu, pay)}. Estimate (MUSA 5500).
             </p>
+            {!pay.legacy && <BreakEven pay={pay} size={adu.size} rate={payRate} />}
           </>
         ) : (
           <p>No rent figure for this tract and unit size.</p>
@@ -146,8 +174,9 @@ export function AreaRows({ spot, skipRule }: { spot: Spot; skipRule?: boolean })
         state={null}
         name="ADUs by 2031"
         value={
-          <span className="inline-flex items-center gap-1.5" title={`${FORECAST_LABEL[forecast]}, mid case for this town`}>
-            {mid != null ? `about ${fmt(mid, mid < 10 ? 1 : 0)} in town` : 'No estimate'}
+          <span className="inline-flex items-center gap-1.5" title={`${FORECAST_LABEL[forecast]}, mid case ${where}${lo != null && hi != null ? `, range ${fmt(lo, lo < 10 ? 1 : 0)} to ${fmt(hi, hi < 10 ? 1 : 0)}` : ''}`}>
+            {mid != null ? `about ${fmt(mid, mid < 10 ? 1 : 0)} ${where}` : 'No estimate'}
+            {lo != null && hi != null && <span className="text-caption font-normal text-slate-500">({fmt(lo, lo < 10 ? 1 : 0)} to {fmt(hi, hi < 10 ? 1 : 0)})</span>}
             {forecast !== 'current' && <NotLaw />}
           </span>
         }

@@ -19,7 +19,7 @@ import type { MapLevel } from './metrics';
 import { Fold, Folds, ShortNotice } from './ui/Answer';
 
 /** The header title for a spot: the area the layer is about. The town on Where to Build and on ADUs by 2031 by town,
- * the county by county, else the tract. */
+ * the county by county, else the tract. `legal` also stands for Towns by Year (a town answer). */
 export function headOf(spot: Spot | null, legal: boolean, level: MapLevel = 'tract') {
   if (!spot) return null;
   const town = spot.town.NAMELSAD as string | undefined;
@@ -37,7 +37,7 @@ export function ReportStack() {
   const msg = useTool((s) => s.msg);
   const legal = useTool((s) => placesShown(s));
   if (busy && !spot) return <ReportSkeleton />;
-  const counties = level === 'county';
+  const counties = level !== 'tract';
   // Where to Build: the municipality's answer first, four short rows, then the payoff and room rows folded.
   if (legal && spot)
     return (
@@ -74,7 +74,8 @@ export default function RightPanel({ style, drawer, onClose, below }: { style: R
   const busy = useTool((s) => s.busy);
   const legal = useTool((s) => placesShown(s));
   const level = useTool((s) => s.level);
-  const head = headOf(spot, legal, level);
+  const townHead = useTool((s) => s.level === 'tract' && s.metric === 'yearly');
+  const head = headOf(spot, legal || townHead, level);
   // The same elements while the width changes, so a drag only re-lays out the panel and re-renders nothing inside.
   const header = useMemo(
     () => (

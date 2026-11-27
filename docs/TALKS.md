@@ -122,10 +122,10 @@ Say once: not legal advice, not a zoning determination.
 ## Live demo (about 2 minutes)
 
 1. **Home.** The question and the four numbers: 10.3% of tracts pay off, about 1,000 ADUs by 2031 today, about 13,500 with HB 2186, about 2.9 million lots with room.
-2. **The map, address search.** Search "1818 E Moyamensing Ave, Philadelphia". The map switches to Does It Pay Off and Details opens: Maybe, close to paying off, allowed with limits in Philadelphia.
-3. **Over Time.** Pick Over Time, Rent, and drag the time slider from 2010-14 to 2020-24.
-4. **Today against the bill.** Pick Where to Build and switch Today to State Bill. Then ADUs by 2031: Today, HB 2186, SB 1346. Say again: bills, not law.
+2. **The map, address search.** Search "1818 E Moyamensing Ave, Philadelphia". The map switches to Does It Pay Off and Details opens: Maybe, close to paying off, allowed with limits in Philadelphia. Open the Pays off row: the rent needed, the most it could cost per sq ft, and the highest loan rate.
+3. **Towns by Year.** Pick Towns by Year and press Play: 2010 to 2025, one year a second. Hover a few towns as it plays. Switch to New Homes for permits per 1,000 people. Click a town for its line.
+4. **Today against the bill.** Pick Where to Build and switch Today to State Bill. Then ADUs by 2031: Today, HB 2186, SB 1346, and Show: Bill Adds. In the table, sort by Bill adds and click Philadelphia. Say again: bills, not law.
 5. **Lots with Room.** The two cities drawn solid (measured), the rest lighter (modelled), hatching outside the training range.
-6. **Notebooks & Code.** Open notebook 04 to show the model comparison and the backtest.
+6. **Notebooks & Code.** Open notebook 01 and drag a box on the scatter. Then notebook 04: the model menu and the linked view.
 
 Backup if the network is slow: open the map once before the talk so the tract and town files are cached.

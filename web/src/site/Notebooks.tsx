@@ -39,7 +39,7 @@ export default function Notebooks() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <h1 className="font-display text-[36px] font-semibold leading-tight tracking-tight text-slate-900">Notebooks and code</h1>
       <p className="mt-3 max-w-2xl text-body text-slate-700">
-        The analysis runs in four Jupyter notebooks, in this order. Each opens here as it was run, with every output, and each code cell has a copy button. The code is on{' '}
+        The analysis runs in four Jupyter notebooks, in this order. Each opens here as it was run, with every output, and each code cell has a copy button. The charts with a menu and the maps work in the page: pick, hover, drag and zoom. The code is on{' '}
         <a className={LINK} href={REPO_URL} target="_blank" rel="noreferrer">
           GitHub
         </a>

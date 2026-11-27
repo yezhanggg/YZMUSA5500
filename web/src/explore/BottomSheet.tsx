@@ -30,7 +30,8 @@ export default function BottomSheet({ maxWidth }: { maxWidth?: number }) {
   // Where to Build answers for the municipality: its name heads the sheet (as in the right panel).
   const legal = useTool((s) => placesShown(s));
   const level = useTool((s) => s.level);
-  const head = headOf(spot, legal, level);
+  const townHead = useTool((s) => s.level === 'tract' && s.metric === 'yearly');
+  const head = headOf(spot, legal || townHead, level);
   return (
     <motion.section
       aria-label="Details sheet"
